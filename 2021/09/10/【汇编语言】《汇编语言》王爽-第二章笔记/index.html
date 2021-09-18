@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="CPU的组成一个典型的CPU由运算器、控制器、寄存器等器件构成，这也是CPU的工作原理。这些器件是由CPU内部总线连接的。 运算器进行信息的处理；寄存器进行信息的储存；控制器控制各种器件进行工作；内部总线连接各种器件，在他们之间进行数据的传送。 不同的CPU的寄存器数、结构是不同的。 本书介绍的8086CPU共有14个寄存器。 8086CPU的寄存器都是十六位的，一个寄存器能存储两个字节的数据，能">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【汇编语言】《汇编语言》王爽-第二章笔记">
+<meta property="og:url" content="http://chantmee.github.io/2021/09/10/%E3%80%90%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%91%E3%80%8A%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%8B%E7%8E%8B%E7%88%BD-%E7%AC%AC%E4%BA%8C%E7%AB%A0%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="Chant&#39;s Blog">
+<meta property="og:description" content="CPU的组成一个典型的CPU由运算器、控制器、寄存器等器件构成，这也是CPU的工作原理。这些器件是由CPU内部总线连接的。 运算器进行信息的处理；寄存器进行信息的储存；控制器控制各种器件进行工作；内部总线连接各种器件，在他们之间进行数据的传送。 不同的CPU的寄存器数、结构是不同的。 本书介绍的8086CPU共有14个寄存器。 8086CPU的寄存器都是十六位的，一个寄存器能存储两个字节的数据，能">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-09-10T03:54:54.000Z">
+<meta property="article:modified_time" content="2021-09-18T12:15:43.564Z">
+<meta property="article:author" content="Chant Mee">
+<meta property="article:tag" content="汇编语言">
+<meta property="article:tag" content="王爽">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>【汇编语言】《汇编语言》王爽-第二章笔记</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" "Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">主页</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇 " href="/2021/09/13/%E6%AC%A7%E6%8B%89%E6%96%B9%E6%B3%95%E8%A7%A3%E5%86%B3%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B%E5%88%9D%E5%80%BC%E9%97%AE%E9%A2%98/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇 " href="/2021/09/08/vim%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部 " href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章 " href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://chantmee.github.io/2021/09/10/%E3%80%90%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%91%E3%80%8A%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%8B%E7%8E%8B%E7%88%BD-%E7%AC%AC%E4%BA%8C%E7%AB%A0%E7%AC%94%E8%AE%B0/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://chantmee.github.io/2021/09/10/%E3%80%90%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%91%E3%80%8A%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%8B%E7%8E%8B%E7%88%BD-%E7%AC%AC%E4%BA%8C%E7%AB%A0%E7%AC%94%E8%AE%B0/&text=【汇编语言】《汇编语言》王爽-第二章笔记"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://chantmee.github.io/2021/09/10/%E3%80%90%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%91%E3%80%8A%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%8B%E7%8E%8B%E7%88%BD-%E7%AC%AC%E4%BA%8C%E7%AB%A0%E7%AC%94%E8%AE%B0/&title=【汇编语言】《汇编语言》王爽-第二章笔记"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://chantmee.github.io/2021/09/10/%E3%80%90%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%91%E3%80%8A%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%8B%E7%8E%8B%E7%88%BD-%E7%AC%AC%E4%BA%8C%E7%AB%A0%E7%AC%94%E8%AE%B0/&is_video=false&description=【汇编语言】《汇编语言》王爽-第二章笔记"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=【汇编语言】《汇编语言》王爽-第二章笔记&body=Check out this article: http://chantmee.github.io/2021/09/10/%E3%80%90%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%91%E3%80%8A%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%8B%E7%8E%8B%E7%88%BD-%E7%AC%AC%E4%BA%8C%E7%AB%A0%E7%AC%94%E8%AE%B0/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://chantmee.github.io/2021/09/10/%E3%80%90%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%91%E3%80%8A%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%8B%E7%8E%8B%E7%88%BD-%E7%AC%AC%E4%BA%8C%E7%AB%A0%E7%AC%94%E8%AE%B0/&title=【汇编语言】《汇编语言》王爽-第二章笔记"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://chantmee.github.io/2021/09/10/%E3%80%90%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%91%E3%80%8A%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%8B%E7%8E%8B%E7%88%BD-%E7%AC%AC%E4%BA%8C%E7%AB%A0%E7%AC%94%E8%AE%B0/&title=【汇编语言】《汇编语言》王爽-第二章笔记"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://chantmee.github.io/2021/09/10/%E3%80%90%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%91%E3%80%8A%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%8B%E7%8E%8B%E7%88%BD-%E7%AC%AC%E4%BA%8C%E7%AB%A0%E7%AC%94%E8%AE%B0/&title=【汇编语言】《汇编语言》王爽-第二章笔记"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://chantmee.github.io/2021/09/10/%E3%80%90%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%91%E3%80%8A%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%8B%E7%8E%8B%E7%88%BD-%E7%AC%AC%E4%BA%8C%E7%AB%A0%E7%AC%94%E8%AE%B0/&title=【汇编语言】《汇编语言》王爽-第二章笔记"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://chantmee.github.io/2021/09/10/%E3%80%90%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%91%E3%80%8A%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%8B%E7%8E%8B%E7%88%BD-%E7%AC%AC%E4%BA%8C%E7%AB%A0%E7%AC%94%E8%AE%B0/&name=【汇编语言】《汇编语言》王爽-第二章笔记&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://chantmee.github.io/2021/09/10/%E3%80%90%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%91%E3%80%8A%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%8B%E7%8E%8B%E7%88%BD-%E7%AC%AC%E4%BA%8C%E7%AB%A0%E7%AC%94%E8%AE%B0/&t=【汇编语言】《汇编语言》王爽-第二章笔记"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#CPU%E7%9A%84%E7%BB%84%E6%88%90"><span class="toc-number">1.</span> <span class="toc-text">CPU的组成</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%9A%E7%94%A8%E5%AF%84%E5%AD%98%E5%99%A8"><span class="toc-number">2.</span> <span class="toc-text">通用寄存器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%84%E5%AD%98%E5%99%A8%E5%86%85%E6%95%B0%E6%8D%AE%E7%9A%84%E8%A1%A8%E7%A4%BA"><span class="toc-number">3.</span> <span class="toc-text">寄存器内数据的表示</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%A0%E6%9D%A1%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B1%87%E7%BC%96%E6%8C%87%E4%BB%A4"><span class="toc-number">4.</span> <span class="toc-text">几条常用的汇编指令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%89%A9%E7%90%86%E5%9C%B0%E5%9D%80"><span class="toc-number">5.</span> <span class="toc-text">物理地址</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8086CPU%E7%BB%99%E5%87%BA%E7%89%A9%E7%90%86%E5%9C%B0%E5%9D%80%E7%9A%84%E6%96%B9%E6%B3%95"><span class="toc-number">6.</span> <span class="toc-text">8086CPU给出物理地址的方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%89%A9%E7%90%86%E5%9C%B0%E5%9D%80%E7%9A%84%E8%A1%A8%E7%A4%BA%EF%BC%9A"><span class="toc-number">6.1.</span> <span class="toc-text">物理地址的表示：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E7%90%86%E8%A7%A3%E9%87%8A%EF%BC%9A"><span class="toc-number">6.2.</span> <span class="toc-text">原理解释：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A88086CPU%E5%86%85%E9%83%A8%E5%85%B7%E4%BD%93%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%AD%A5%E9%AA%A4%E4%B8%BA%EF%BC%9A"><span class="toc-number">6.3.</span> <span class="toc-text">在8086CPU内部具体的实现步骤为：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%B9%E4%BA%8E%E6%AE%B5%E7%9A%84%E7%90%86%E8%A7%A3"><span class="toc-number">7.</span> <span class="toc-text">对于段的理解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CS%E5%92%8CIP"><span class="toc-number">8.</span> <span class="toc-text">CS和IP</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#CS-IP%E7%9A%84%E4%BF%AE%E6%94%B9"><span class="toc-number">8.1.</span> <span class="toc-text">CS:IP的修改</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A1%A5%E5%85%85%EF%BC%9A"><span class="toc-number">8.2.</span> <span class="toc-text">补充：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%B9%E4%BA%8E%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%9A%84%E4%B8%80%E4%BA%9B%E7%96%91%E9%97%AE"><span class="toc-number">9.</span> <span class="toc-text">对于命令执行的一些疑问</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Debug%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8"><span class="toc-number">10.</span> <span class="toc-text">Debug的基本使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="toc-number">10.1.</span> <span class="toc-text">常用命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#R%E5%91%BD%E4%BB%A4%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%EF%BC%9A"><span class="toc-number">10.2.</span> <span class="toc-text">R命令的基本使用：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#D%E5%91%BD%E4%BB%A4%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%EF%BC%9A"><span class="toc-number">10.3.</span> <span class="toc-text">D命令的基本使用：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#E%E5%91%BD%E4%BB%A4%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%EF%BC%9A"><span class="toc-number">10.4.</span> <span class="toc-text">E命令的基本使用：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#U%E5%91%BD%E4%BB%A4%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%EF%BC%9A"><span class="toc-number">10.5.</span> <span class="toc-text">U命令的基本使用：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#T%E5%91%BD%E4%BB%A4%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%EF%BC%9A"><span class="toc-number">10.6.</span> <span class="toc-text">T命令的基本使用：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#A%E5%91%BD%E4%BB%A4%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%EF%BC%9A"><span class="toc-number">10.7.</span> <span class="toc-text">A命令的基本使用：</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        【汇编语言】《汇编语言》王爽-第二章笔记
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Chant Mee</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2021-09-10T03:54:54.000Z" itemprop="datePublished">2021-09-10</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/" rel="tag">汇编语言</a>, <a class="tag-link-link" href="/tags/%E7%8E%8B%E7%88%BD/" rel="tag">王爽</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="CPU的组成"><a href="#CPU的组成" class="headerlink" title="CPU的组成"></a>CPU的组成</h2><p>一个典型的CPU由运算器、控制器、寄存器等器件构成，这也是CPU的工作原理。<br>这些器件是由CPU内部总线连接的。</p>
+<p>运算器进行信息的处理；寄存器进行信息的储存；控制器控制各种器件进行工作；<br>内部总线连接各种器件，在他们之间进行数据的传送。</p>
+<p>不同的CPU的寄存器数、结构是不同的。 本书介绍的8086CPU共有14个寄存器。</p>
+<p>8086CPU的寄存器都是十六位的，一个寄存器能存储两个字节的数据，能存储最大的十进制数字就是$2^{16}-1=65536$.</p>
+<hr>
+<h2 id="通用寄存器"><a href="#通用寄存器" class="headerlink" title="通用寄存器"></a>通用寄存器</h2><p>AX,BX,CX,DX这四个寄存器通常用来存放一般性的数据，成为通用寄存器。</p>
+<p>其中每个寄存器都可以分为高位和低位，例如AX可分为AL和AH。<br>AH和AL都是八位，也就是一个字节。</p>
+<p>当对AL操作的时候，CPU是把AL和AH当作两个独立的寄存器对待的，无论对AL进行何种操作都不会对AH中存储的数据造成影响。</p>
+<hr>
+<h2 id="寄存器内数据的表示"><a href="#寄存器内数据的表示" class="headerlink" title="寄存器内数据的表示"></a>寄存器内数据的表示</h2><p>寄存器的数据用二进制表示出来有十六位，阅读起来会非常困难，<br>用十六进制的数字来表示寄存器的内容会非常简洁明了。</p>
+<p>一个十六进制数字可以表示四位二进制数字，那么十六个二进制数字就可以用四个十六进制数字表示。</p>
+<p>例如要在寄存器存储的数字是$20000$，那么它的二进制表示就是$0100111000100000B$，而用十六进制表示则为：$4E20H$，非常简洁方便。</p>
+<hr>
+<h2 id="几条常用的汇编指令"><a href="#几条常用的汇编指令" class="headerlink" title="几条常用的汇编指令"></a>几条常用的汇编指令</h2><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>汇编指令</th>
+<th>操作说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MOV AX,BX</td>
+<td>AX=BX</td>
+</tr>
+<tr>
+<td>ADD AX,BX</td>
+<td>AX=AX+BX</td>
+</tr>
+<tr>
+<td>SUB AX,BX</td>
+<td>AX=AX-BX</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>其中BX都是可以变更为具体的值的。</p>
+<p>需要注意的是，如果是两个寄存器之间的操作，那么他们之间的位数必须保持一致，例如：</p>
+<p><strong>MOV AL,BH</strong> 是正确的，他们都是八位的；<strong>MOV AX,BH</strong>就是错误的，因为AX是十六位的而BH是八位的。</p>
+<hr>
+<h2 id="物理地址"><a href="#物理地址" class="headerlink" title="物理地址"></a>物理地址</h2><p>每一个存储单元在这个空间中都有唯一的地址，我们称这个唯一的地址为<strong>物理地址</strong>。</p>
+<p>CPU通过地址总线送入存储器的是一个存储单元的物理地址，在CPU向地址总线发出物理地址之前必须现在CPU内部生成这个物理地址。</p>
+<hr>
+<h2 id="8086CPU给出物理地址的方法"><a href="#8086CPU给出物理地址的方法" class="headerlink" title="8086CPU给出物理地址的方法"></a>8086CPU给出物理地址的方法</h2><p>8086CPU是一个十六位的CPU，十六进制的CPU有以下特性：</p>
+<p> 1.存储器一次最多可以处理十六位的数据；</p>
+<p> 2.寄存器的最大宽度为十六位；</p>
+<p> 3.寄存器和运算器之间的通路为十六位。</p>
+<p>8086CPU作为一个十六位的CPU，理论上来说它的寻址能力应该仅有64KB，而实际上它的寻址能力却又1MB这么多，也就是二十位这么多，那么它是怎么实现的？</p>
+<p>实际上8086CPU的地址总线确实是二十位，否则它也不可能具有1MB的寻址能力。那问题就转换为它是怎么生成的二十位地址。</p>
+<p>8086CPU是通过两个十六位地址来合成一个二十位地址，两个十六位地址分别称为：段地址，偏移地址。</p>
+<p>合成的具体方法为：<strong>物理地址=段地址*16+偏移地址</strong></p>
+<p>段地址是一个十六位的二进制数字，它乘以$16$也就是$2^4$相当于把这个十六进制的数字左移了4位，就变成了一个二十位的二进制数字。</p>
+<h3 id="物理地址的表示："><a href="#物理地址的表示：" class="headerlink" title="物理地址的表示："></a>物理地址的表示：</h3><p><strong>物理地址=段地址*16+偏移地址</strong>，假如有一个物理地址为：<em>21F60H</em>，那么它还可以表示为：<em>2000:1F60</em>，其中<em>2000</em>为段地址，<em>1F60</em>为偏移地址。</p>
+<p>数据存储在<em>21F60H</em>内存单元，习惯上这么说：</p>
+<ol>
+<li>数据存储在内存<em>2000:1F60</em>单元中；</li>
+<li>数据储存在内存的<em>2000H</em>段中的<em>1F60H</em>单元中。</li>
+</ol>
+<h3 id="原理解释："><a href="#原理解释：" class="headerlink" title="原理解释："></a>原理解释：</h3><p>这是一种用小数字表示大数字的通用方法，比如我有两张纸片，一张红色的一张蓝色的，每张纸片只能写两个十进制数字，现在我想用这这两张卡片给你传达一个三位十进制数字，那么我可以提前和你约定好：红色卡片上的数字乘以十加上蓝色卡片上的数字就是我想要传达给你的三位十进制数字。这样我只需要在红色空片上写15，蓝色卡片上写26，你就知道我想传达给你的数字就是176.</p>
+<h3 id="在8086CPU内部具体的实现步骤为："><a href="#在8086CPU内部具体的实现步骤为：" class="headerlink" title="在8086CPU内部具体的实现步骤为："></a>在8086CPU内部具体的实现步骤为：</h3><ol>
+<li>CPU的相关部件提供两个十六位地址：段地址和偏移地址；</li>
+<li>段地址和偏移地址通过内部总线传入一个成为地址加法器的部件；</li>
+<li>地址加法器将两个十六位地址合成为一个二十位物理地址；</li>
+<li>地址加法器通过内部总线将二十位物理地址传入输入输出控制电路；</li>
+<li>输入输出电路将二十位物理地址送上地址总线；</li>
+<li>二十位物理地址通过地址总线传送到存储器。</li>
+</ol>
+<hr>
+<h2 id="对于段的理解"><a href="#对于段的理解" class="headerlink" title="对于段的理解"></a>对于段的理解</h2><p>在8086CPU中，由于它是通过<strong>段地址*16+偏移地址</strong>的方式给出了物理地址，因此可以通过分段的方式管理内存。</p>
+<p>在编程的时候，可以将一些连续的内存看作一个段，这个段的起始地址就是<strong>段地址*16</strong>，然后通过改变偏移地址来定位段中的某个内存单元。</p>
+<p>由于偏移地址为十六位地址，因此一个段的最大长度就是$2^16$也就是64KB。</p>
+<hr>
+<h2 id="CS和IP"><a href="#CS和IP" class="headerlink" title="CS和IP"></a>CS和IP</h2><p>CS和IP是8086CPU的两个寄存器，CS为代码段寄存器，IP为指令指针寄存器，他们指示了CPU当前要读取指令的地址，也就是说CPU将<strong>CS:IP</strong>指向的内容当作指令执行。</p>
+<p>如果说内存中的一段信息曾被CPU执行过的话，那么它所在的内存单元必然被<strong>CS:IP</strong>指向过。</p>
+<h3 id="CS-IP的修改"><a href="#CS-IP的修改" class="headerlink" title="CS:IP的修改"></a>CS:IP的修改</h3><p>对于<strong>CS:IP</strong>的修改不能使用MOV，ADD等常规指令实现。</p>
+<p>在8086CPU中有专门的对<strong>CS:IP</strong>进行修改的指令，这种命令称为转移指令，<br>这里给出这其中最简单的指令JMP的介绍。</p>
+<p>如果要同时修改<strong>CS:IP</strong>可以执行 <strong>JMP 段地址:偏移地址</strong> 指令完成，例如：</p>
+<p><em>JMP 2AE2:3</em> 执行后<em>CS=2AE2H</em>，<em>IP=0003H</em>。</p>
+<p>若仅仅想修改IP的内容，可以执行 <strong>JMP 某个合法寄存器</strong> 指令完成，例如：</p>
+<p><em>AX=2AE3H</em>，则 <em>JMP AX</em> 执行后<em>IP=2AE3H</em>.</p>
+<h3 id="补充："><a href="#补充：" class="headerlink" title="补充："></a>补充：</h3><p>8086CPU除了CS这个段寄存器外还有三个段寄存器，分别为：DS、SS、ES。</p>
+<hr>
+<h2 id="对于命令执行的一些疑问"><a href="#对于命令执行的一些疑问" class="headerlink" title="对于命令执行的一些疑问"></a>对于命令执行的一些疑问</h2><ol>
+<li><p>命令是存储在存储器中的，但是每条命令的长度并不都是相同的，那么CPU是如何知道每条命令的长度的呢？</p>
+</li>
+<li><p>CPU是按照顺序从前往后依次执行存储在存储器中的命令的，那么CPU是如何知道执行到哪一条命令才停止的呢？</p>
+</li>
+<li><p>书中提到“8086机中，任意时刻，CPU将CS:IP指向的内容当作指令执行”，那么这个任意时刻是如何定义的呢？也就是说，CPU是不断地执行CS:IP指向的内容吗？如果是，这个“不断的”是怎样的频率呢？</p>
+</li>
+</ol>
+<hr>
+<h2 id="Debug的基本使用"><a href="#Debug的基本使用" class="headerlink" title="Debug的基本使用"></a>Debug的基本使用</h2><p>Debug是DOS(Disk Operating System)、Windows都提供的实模式（8086方式）程序的调试工具。</p>
+<p>使用它可以查看CPU各种寄存器中的内容、内存的情况和机器码级跟踪程序的运行。</p>
+<h3 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h3><p>R：改变CPU寄存器的内容；</p>
+<p>D：查看内存中的内容；</p>
+<p>E：改写内存中的内容；</p>
+<p>U：将内存中的机器指令翻译成汇编指令；</p>
+<p>T：执行一条机器指令；</p>
+<p>A：以汇编指令的格式在内存中写入一条机器指令。</p>
+<h3 id="R命令的基本使用："><a href="#R命令的基本使用：" class="headerlink" title="R命令的基本使用："></a>R命令的基本使用：</h3><ol>
+<li><p><code>- R</code> 可以查看CPU中寄存器的内容。在下方，Debug还会列出<em>CS:IP</em>所指向的内存单元存放的机器码，并将它翻译为汇编指令。</p>
+</li>
+<li><p><code>- R AX</code>，按回车键，终端就会显示 <code>:</code>，这样就可以改变AX的值。</p>
+</li>
+</ol>
+<p>比如要将 AX的值改变为13H，就可以执行：<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">- R AX</span><br><span class="line">: 13</span><br></pre></td></tr></table></figure><br>AX的值就被改变成13了。</p>
+<p>值得注意的是，R命令可以直接修改<em>CS:IP</em>的内容，没有限制。</p>
+<h3 id="D命令的基本使用："><a href="#D命令的基本使用：" class="headerlink" title="D命令的基本使用："></a>D命令的基本使用：</h3><ol>
+<li><p><code>- D 段地址:偏移地址</code> 可以查看内存中<em>段地址:偏移地址</em>开始之后128个内存单元的内容。</p>
+</li>
+<li><p>如果想指定D命令的查看范围，可以执行<code>D 段地址:起始偏移地址 截止偏移地址</code>。</p>
+</li>
+</ol>
+<p>比如想要查看<em>1000:0000</em>到<em>1000:0009</em>中的内容，可以用<code>1000:0000 0009</code>实现。</p>
+<h3 id="E命令的基本使用："><a href="#E命令的基本使用：" class="headerlink" title="E命令的基本使用："></a>E命令的基本使用：</h3><ol>
+<li><p>使用 <code>E 起始地址 数据1 数据2 数据3 ...</code> 指令，可以将从起始地址开始的存储单元依次赋值为<em>数据1，数据2，数据3，…</em>。</p>
+</li>
+<li><p>采用提问的方式依次改变存储单元中的数据。 向Debug中输入<code>E 1000:0</code>，按回车键，之后Debug会显示起始地址<em>1000:0000</em>以及起始地址对应存储单元存储的值，在<code>.</code>后面可以输入值按空格，这个存储单元的值就改变了，或者不输入值直接按空格当前的存储单元的值就不会被改变。按下空格之后Debug就会显示下一个存储单元的原始内容并提示修改。当所有要修改的值都修改完毕后，按回车键E命令操作就会结束。</p>
+</li>
+<li><p>向内存单元中写入字符/字符串。用上面第一种命令，里面的数据可以是一个字符。</p>
+</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- E 1000:0000 1 2 3 4 &#x27;a&#x27; &#x27;B&#x27; &#x27;c&#x27;</span><br><span class="line"></span><br><span class="line">- E 1000:0000 &quot;hello, world!&quot;</span><br></pre></td></tr></table></figure>
+<h3 id="U命令的基本使用："><a href="#U命令的基本使用：" class="headerlink" title="U命令的基本使用："></a>U命令的基本使用：</h3><p>使用<code>U 1000:0000</code>即可查看<em>1000:0</em>开始的内存存储的命令。</p>
+<p>查询结果由三部分组成，最左边是每个命令的存储地址，中间是命令对应的机器指令，最右边是每个机器指令对应的汇编指令。</p>
+<h3 id="T命令的基本使用："><a href="#T命令的基本使用：" class="headerlink" title="T命令的基本使用："></a>T命令的基本使用：</h3><p>每执行一次T指令，就会执行一次<em>CS:IP</em>指向的指令，之后<em>CS:IP</em>就会自动指向下一条命令的位置。</p>
+<h3 id="A命令的基本使用："><a href="#A命令的基本使用：" class="headerlink" title="A命令的基本使用："></a>A命令的基本使用：</h3><p>输入<code>A 1000:0000</code>之后按回车，之后就可以依次输入汇编指令，输入完毕按回车键，Debug会将这些汇编指令翻译为对应的机器指令存储在对应的位置，之后自动将位置调整到下一个能存储指令的位置。若不输入任何内容直接按回车键，则A命令操作就会结束。</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">主页</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#CPU%E7%9A%84%E7%BB%84%E6%88%90"><span class="toc-number">1.</span> <span class="toc-text">CPU的组成</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%9A%E7%94%A8%E5%AF%84%E5%AD%98%E5%99%A8"><span class="toc-number">2.</span> <span class="toc-text">通用寄存器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%84%E5%AD%98%E5%99%A8%E5%86%85%E6%95%B0%E6%8D%AE%E7%9A%84%E8%A1%A8%E7%A4%BA"><span class="toc-number">3.</span> <span class="toc-text">寄存器内数据的表示</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%A0%E6%9D%A1%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B1%87%E7%BC%96%E6%8C%87%E4%BB%A4"><span class="toc-number">4.</span> <span class="toc-text">几条常用的汇编指令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%89%A9%E7%90%86%E5%9C%B0%E5%9D%80"><span class="toc-number">5.</span> <span class="toc-text">物理地址</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8086CPU%E7%BB%99%E5%87%BA%E7%89%A9%E7%90%86%E5%9C%B0%E5%9D%80%E7%9A%84%E6%96%B9%E6%B3%95"><span class="toc-number">6.</span> <span class="toc-text">8086CPU给出物理地址的方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%89%A9%E7%90%86%E5%9C%B0%E5%9D%80%E7%9A%84%E8%A1%A8%E7%A4%BA%EF%BC%9A"><span class="toc-number">6.1.</span> <span class="toc-text">物理地址的表示：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E7%90%86%E8%A7%A3%E9%87%8A%EF%BC%9A"><span class="toc-number">6.2.</span> <span class="toc-text">原理解释：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A88086CPU%E5%86%85%E9%83%A8%E5%85%B7%E4%BD%93%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%AD%A5%E9%AA%A4%E4%B8%BA%EF%BC%9A"><span class="toc-number">6.3.</span> <span class="toc-text">在8086CPU内部具体的实现步骤为：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%B9%E4%BA%8E%E6%AE%B5%E7%9A%84%E7%90%86%E8%A7%A3"><span class="toc-number">7.</span> <span class="toc-text">对于段的理解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CS%E5%92%8CIP"><span class="toc-number">8.</span> <span class="toc-text">CS和IP</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#CS-IP%E7%9A%84%E4%BF%AE%E6%94%B9"><span class="toc-number">8.1.</span> <span class="toc-text">CS:IP的修改</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A1%A5%E5%85%85%EF%BC%9A"><span class="toc-number">8.2.</span> <span class="toc-text">补充：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%B9%E4%BA%8E%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%9A%84%E4%B8%80%E4%BA%9B%E7%96%91%E9%97%AE"><span class="toc-number">9.</span> <span class="toc-text">对于命令执行的一些疑问</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Debug%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8"><span class="toc-number">10.</span> <span class="toc-text">Debug的基本使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="toc-number">10.1.</span> <span class="toc-text">常用命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#R%E5%91%BD%E4%BB%A4%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%EF%BC%9A"><span class="toc-number">10.2.</span> <span class="toc-text">R命令的基本使用：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#D%E5%91%BD%E4%BB%A4%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%EF%BC%9A"><span class="toc-number">10.3.</span> <span class="toc-text">D命令的基本使用：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#E%E5%91%BD%E4%BB%A4%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%EF%BC%9A"><span class="toc-number">10.4.</span> <span class="toc-text">E命令的基本使用：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#U%E5%91%BD%E4%BB%A4%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%EF%BC%9A"><span class="toc-number">10.5.</span> <span class="toc-text">U命令的基本使用：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#T%E5%91%BD%E4%BB%A4%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%EF%BC%9A"><span class="toc-number">10.6.</span> <span class="toc-text">T命令的基本使用：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#A%E5%91%BD%E4%BB%A4%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%EF%BC%9A"><span class="toc-number">10.7.</span> <span class="toc-text">A命令的基本使用：</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://chantmee.github.io/2021/09/10/%E3%80%90%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%91%E3%80%8A%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%8B%E7%8E%8B%E7%88%BD-%E7%AC%AC%E4%BA%8C%E7%AB%A0%E7%AC%94%E8%AE%B0/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://chantmee.github.io/2021/09/10/%E3%80%90%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%91%E3%80%8A%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%8B%E7%8E%8B%E7%88%BD-%E7%AC%AC%E4%BA%8C%E7%AB%A0%E7%AC%94%E8%AE%B0/&text=【汇编语言】《汇编语言》王爽-第二章笔记"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://chantmee.github.io/2021/09/10/%E3%80%90%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%91%E3%80%8A%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%8B%E7%8E%8B%E7%88%BD-%E7%AC%AC%E4%BA%8C%E7%AB%A0%E7%AC%94%E8%AE%B0/&title=【汇编语言】《汇编语言》王爽-第二章笔记"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://chantmee.github.io/2021/09/10/%E3%80%90%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%91%E3%80%8A%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%8B%E7%8E%8B%E7%88%BD-%E7%AC%AC%E4%BA%8C%E7%AB%A0%E7%AC%94%E8%AE%B0/&is_video=false&description=【汇编语言】《汇编语言》王爽-第二章笔记"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=【汇编语言】《汇编语言》王爽-第二章笔记&body=Check out this article: http://chantmee.github.io/2021/09/10/%E3%80%90%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%91%E3%80%8A%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%8B%E7%8E%8B%E7%88%BD-%E7%AC%AC%E4%BA%8C%E7%AB%A0%E7%AC%94%E8%AE%B0/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://chantmee.github.io/2021/09/10/%E3%80%90%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%91%E3%80%8A%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%8B%E7%8E%8B%E7%88%BD-%E7%AC%AC%E4%BA%8C%E7%AB%A0%E7%AC%94%E8%AE%B0/&title=【汇编语言】《汇编语言》王爽-第二章笔记"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://chantmee.github.io/2021/09/10/%E3%80%90%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%91%E3%80%8A%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%8B%E7%8E%8B%E7%88%BD-%E7%AC%AC%E4%BA%8C%E7%AB%A0%E7%AC%94%E8%AE%B0/&title=【汇编语言】《汇编语言》王爽-第二章笔记"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://chantmee.github.io/2021/09/10/%E3%80%90%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%91%E3%80%8A%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%8B%E7%8E%8B%E7%88%BD-%E7%AC%AC%E4%BA%8C%E7%AB%A0%E7%AC%94%E8%AE%B0/&title=【汇编语言】《汇编语言》王爽-第二章笔记"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://chantmee.github.io/2021/09/10/%E3%80%90%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%91%E3%80%8A%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%8B%E7%8E%8B%E7%88%BD-%E7%AC%AC%E4%BA%8C%E7%AB%A0%E7%AC%94%E8%AE%B0/&title=【汇编语言】《汇编语言》王爽-第二章笔记"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://chantmee.github.io/2021/09/10/%E3%80%90%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%91%E3%80%8A%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%8B%E7%8E%8B%E7%88%BD-%E7%AC%AC%E4%BA%8C%E7%AB%A0%E7%AC%94%E8%AE%B0/&name=【汇编语言】《汇编语言》王爽-第二章笔记&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://chantmee.github.io/2021/09/10/%E3%80%90%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%91%E3%80%8A%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%8B%E7%8E%8B%E7%88%BD-%E7%AC%AC%E4%BA%8C%E7%AB%A0%E7%AC%94%E8%AE%B0/&t=【汇编语言】《汇编语言》王爽-第二章笔记"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2019-2021
+    Chant Mee
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">主页</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

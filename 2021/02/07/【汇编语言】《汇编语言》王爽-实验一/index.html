@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="1. 将给定命令写入内存，逐条执行观察寄存器内容变化。从$1000:0$开始写入命令： 123456789101112131415- A 1000:0- MOV AX,4E20- ADD AX,1416- MOV BX,2000- ADD AX,BX- MOV BX,AX- ADD AX,BX- MOV AX,001A- MOV BX,0026- ADD AL,BL- ADD AH,BL- ADD">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【汇编语言】《汇编语言》王爽-实验一">
+<meta property="og:url" content="http://chantmee.github.io/2021/02/07/%E3%80%90%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%91%E3%80%8A%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%8B%E7%8E%8B%E7%88%BD-%E5%AE%9E%E9%AA%8C%E4%B8%80/index.html">
+<meta property="og:site_name" content="Chant&#39;s Blog">
+<meta property="og:description" content="1. 将给定命令写入内存，逐条执行观察寄存器内容变化。从$1000:0$开始写入命令： 123456789101112131415- A 1000:0- MOV AX,4E20- ADD AX,1416- MOV BX,2000- ADD AX,BX- MOV BX,AX- ADD AX,BX- MOV AX,001A- MOV BX,0026- ADD AL,BL- ADD AH,BL- ADD">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://chantmee.github.io/Users/chant/Library/Application%20Support/typora-user-images/image-20210207190939677.png">
+<meta property="og:image" content="http://chantmee.github.io/Users/chant/Library/Application%20Support/typora-user-images/image-20210207190325705.png">
+<meta property="article:published_time" content="2021-02-07T10:38:34.000Z">
+<meta property="article:modified_time" content="2021-09-18T12:12:36.580Z">
+<meta property="article:author" content="Chant Mee">
+<meta property="article:tag" content="汇编语言">
+<meta property="article:tag" content="王爽">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://chantmee.github.io/Users/chant/Library/Application%20Support/typora-user-images/image-20210207190939677.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>【汇编语言】《汇编语言》王爽-实验一</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" "Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">主页</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇 " href="/2021/02/09/%E3%80%90%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%91%E3%80%8A%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%8B%E7%8E%8B%E7%88%BD-%E7%AC%AC%E4%B8%80%E7%AB%A0%E7%AC%94%E8%AE%B0/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇 " href="/2021/01/27/%E4%B8%AA%E4%BA%BAvim%E9%85%8D%E7%BD%AE/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部 " href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章 " href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://chantmee.github.io/2021/02/07/%E3%80%90%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%91%E3%80%8A%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%8B%E7%8E%8B%E7%88%BD-%E5%AE%9E%E9%AA%8C%E4%B8%80/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://chantmee.github.io/2021/02/07/%E3%80%90%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%91%E3%80%8A%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%8B%E7%8E%8B%E7%88%BD-%E5%AE%9E%E9%AA%8C%E4%B8%80/&text=【汇编语言】《汇编语言》王爽-实验一"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://chantmee.github.io/2021/02/07/%E3%80%90%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%91%E3%80%8A%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%8B%E7%8E%8B%E7%88%BD-%E5%AE%9E%E9%AA%8C%E4%B8%80/&title=【汇编语言】《汇编语言》王爽-实验一"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://chantmee.github.io/2021/02/07/%E3%80%90%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%91%E3%80%8A%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%8B%E7%8E%8B%E7%88%BD-%E5%AE%9E%E9%AA%8C%E4%B8%80/&is_video=false&description=【汇编语言】《汇编语言》王爽-实验一"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=【汇编语言】《汇编语言》王爽-实验一&body=Check out this article: http://chantmee.github.io/2021/02/07/%E3%80%90%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%91%E3%80%8A%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%8B%E7%8E%8B%E7%88%BD-%E5%AE%9E%E9%AA%8C%E4%B8%80/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://chantmee.github.io/2021/02/07/%E3%80%90%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%91%E3%80%8A%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%8B%E7%8E%8B%E7%88%BD-%E5%AE%9E%E9%AA%8C%E4%B8%80/&title=【汇编语言】《汇编语言》王爽-实验一"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://chantmee.github.io/2021/02/07/%E3%80%90%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%91%E3%80%8A%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%8B%E7%8E%8B%E7%88%BD-%E5%AE%9E%E9%AA%8C%E4%B8%80/&title=【汇编语言】《汇编语言》王爽-实验一"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://chantmee.github.io/2021/02/07/%E3%80%90%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%91%E3%80%8A%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%8B%E7%8E%8B%E7%88%BD-%E5%AE%9E%E9%AA%8C%E4%B8%80/&title=【汇编语言】《汇编语言》王爽-实验一"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://chantmee.github.io/2021/02/07/%E3%80%90%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%91%E3%80%8A%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%8B%E7%8E%8B%E7%88%BD-%E5%AE%9E%E9%AA%8C%E4%B8%80/&title=【汇编语言】《汇编语言》王爽-实验一"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://chantmee.github.io/2021/02/07/%E3%80%90%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%91%E3%80%8A%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%8B%E7%8E%8B%E7%88%BD-%E5%AE%9E%E9%AA%8C%E4%B8%80/&name=【汇编语言】《汇编语言》王爽-实验一&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://chantmee.github.io/2021/02/07/%E3%80%90%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%91%E3%80%8A%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%8B%E7%8E%8B%E7%88%BD-%E5%AE%9E%E9%AA%8C%E4%B8%80/&t=【汇编语言】《汇编语言》王爽-实验一"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%B0%86%E7%BB%99%E5%AE%9A%E5%91%BD%E4%BB%A4%E5%86%99%E5%85%A5%E5%86%85%E5%AD%98%EF%BC%8C%E9%80%90%E6%9D%A1%E6%89%A7%E8%A1%8C%E8%A7%82%E5%AF%9F%E5%AF%84%E5%AD%98%E5%99%A8%E5%86%85%E5%AE%B9%E5%8F%98%E5%8C%96%E3%80%82"><span class="toc-number">1.</span> <span class="toc-text">1. 将给定命令写入内存，逐条执行观察寄存器内容变化。</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%B0%86%E7%BB%99%E5%AE%9A%E7%9A%84%E6%8C%87%E4%BB%A4%E5%86%99%E5%85%A5%E5%86%85%E5%AD%98%EF%BC%8C%E5%88%A9%E7%94%A8%E7%BB%99%E5%AE%9A%E7%9A%84%E6%8C%87%E4%BB%A4%E8%AE%A1%E7%AE%97-2-%E7%9A%84-8-%E6%AC%A1%E6%96%B9%E3%80%82"><span class="toc-number">2.</span> <span class="toc-text">2. 将给定的指令写入内存，利用给定的指令计算$2$的$8$次方。</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-PC%E6%9C%BA%E4%B8%8A%E7%9A%84ROM%E4%B8%AD%E5%86%99%E6%9C%89%E4%B8%80%E4%B8%AA%E6%97%A5%E6%9C%9F%EF%BC%8C%E5%9C%A8%E5%86%85%E5%AD%98FFF00H-FFFFFH%E2%80%8B%E7%9A%84%E6%9F%90%E5%87%A0%E4%B8%AA%E5%86%85%E5%AD%98%E5%8D%95%E5%85%83%E4%B8%AD%EF%BC%8C%E6%89%BE%E5%88%B0%E8%BF%99%E4%B8%AA%E6%97%A5%E6%9C%9F%E5%B9%B6%E8%AF%95%E5%9B%BE%E6%94%B9%E5%8F%98%E5%AE%83%E3%80%82"><span class="toc-number">3.</span> <span class="toc-text">3. PC机上的ROM中写有一个日期，在内存FFF00H-FFFFFH​的某几个内存单元中，找到这个日期并试图改变它。</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%90%91%E5%86%85%E5%AD%98%E4%BB%8E-B8100H-%E5%BC%80%E5%A7%8B%E7%9A%84%E5%8D%95%E5%85%83%E4%B8%AD%E5%A1%AB%E5%86%99%E6%95%B0%E6%8D%AE%E3%80%82"><span class="toc-number">4.</span> <span class="toc-text">4. 向内存从$B8100H$开始的单元中填写数据。</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        【汇编语言】《汇编语言》王爽-实验一
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Chant Mee</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2021-02-07T10:38:34.000Z" itemprop="datePublished">2021-02-07</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/" rel="tag">汇编语言</a>, <a class="tag-link-link" href="/tags/%E7%8E%8B%E7%88%BD/" rel="tag">王爽</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="1-将给定命令写入内存，逐条执行观察寄存器内容变化。"><a href="#1-将给定命令写入内存，逐条执行观察寄存器内容变化。" class="headerlink" title="1. 将给定命令写入内存，逐条执行观察寄存器内容变化。"></a>1. 将给定命令写入内存，逐条执行观察寄存器内容变化。</h2><p>从$1000:0$开始写入命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">- A 1000:0</span><br><span class="line">- MOV AX,4E20</span><br><span class="line">- ADD AX,1416</span><br><span class="line">- MOV BX,2000</span><br><span class="line">- ADD AX,BX</span><br><span class="line">- MOV BX,AX</span><br><span class="line">- ADD AX,BX</span><br><span class="line">- MOV AX,001A</span><br><span class="line">- MOV BX,0026</span><br><span class="line">- ADD AL,BL</span><br><span class="line">- ADD AH,BL</span><br><span class="line">- ADD BH,AL</span><br><span class="line">- MOV AH,0</span><br><span class="line">- ADD AL,BL</span><br><span class="line">- ADD AL,9C</span><br></pre></td></tr></table></figure>
+<p>改变<strong>CS:IP​</strong>指向的内存单元：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- R CS</span><br><span class="line">- 1000</span><br><span class="line">- R IP</span><br><span class="line">- 0000</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="2-将给定的指令写入内存，利用给定的指令计算-2-的-8-次方。"><a href="#2-将给定的指令写入内存，利用给定的指令计算-2-的-8-次方。" class="headerlink" title="2. 将给定的指令写入内存，利用给定的指令计算$2$的$8$次方。"></a>2. 将给定的指令写入内存，利用给定的指令计算$2$的$8$次方。</h2><p>给定的指令为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">MOV AX,1</span><br><span class="line">ADD AX,AX</span><br><span class="line">JMP 2000:0003</span><br></pre></td></tr></table></figure>
+<p>上述指令将寄存器$AX$的值变更为$1$然后可以不断的循环<strong>AX=AX+AX</strong>，相当于加倍，不断循环$9$次即可计算出$2^8$.</p>
+<hr>
+<h2 id="3-PC机上的ROM中写有一个日期，在内存FFF00H-FFFFFH​的某几个内存单元中，找到这个日期并试图改变它。"><a href="#3-PC机上的ROM中写有一个日期，在内存FFF00H-FFFFFH​的某几个内存单元中，找到这个日期并试图改变它。" class="headerlink" title="3. PC机上的ROM中写有一个日期，在内存FFF00H-FFFFFH​的某几个内存单元中，找到这个日期并试图改变它。"></a>3. PC机上的ROM中写有一个日期，在内存<strong>FFF00H-FFFFFH​</strong>的某几个内存单元中，找到这个日期并试图改变它。</h2><p><img src="/Users/chant/Library/Application Support/typora-user-images/image-20210207190939677.png" alt="寻找过程" style="zoom:67%;" /></p>
+<p>最终定位找到这个日期存储在<strong>F000:FFF5​</strong>到<strong>F000:FFFC​</strong>这段内存中。</p>
+<p>下面对这段内存进行修改：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- E F000:FFF5 &quot;09/27/20&quot;</span><br></pre></td></tr></table></figure>
+<p><img src="/Users/chant/Library/Application Support/typora-user-images/image-20210207190325705.png" alt="修改过程及结果"></p>
+<p>修改不起任何作用，<strong>F000:FFF5​</strong>到<br><strong>F000:FFFC</strong>在<strong>各类ROM地址空间</strong>（<em>8086PC机内存地址空间分配</em>见书P12），而ROM是只读存储器不能修改其内容。</p>
+<hr>
+<h2 id="4-向内存从-B8100H-开始的单元中填写数据。"><a href="#4-向内存从-B8100H-开始的单元中填写数据。" class="headerlink" title="4. 向内存从$B8100H$开始的单元中填写数据。"></a>4. 向内存从$B8100H$开始的单元中填写数据。</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- E B810:0000 01 01 02 02 03 03 04 04</span><br></pre></td></tr></table></figure>
+<p><strong>A0000</strong>到<strong>BFFFF</strong>是显存地址的范围。修改这个范围内存的内容就可以修改显示器中显示的内容。</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">主页</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%B0%86%E7%BB%99%E5%AE%9A%E5%91%BD%E4%BB%A4%E5%86%99%E5%85%A5%E5%86%85%E5%AD%98%EF%BC%8C%E9%80%90%E6%9D%A1%E6%89%A7%E8%A1%8C%E8%A7%82%E5%AF%9F%E5%AF%84%E5%AD%98%E5%99%A8%E5%86%85%E5%AE%B9%E5%8F%98%E5%8C%96%E3%80%82"><span class="toc-number">1.</span> <span class="toc-text">1. 将给定命令写入内存，逐条执行观察寄存器内容变化。</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%B0%86%E7%BB%99%E5%AE%9A%E7%9A%84%E6%8C%87%E4%BB%A4%E5%86%99%E5%85%A5%E5%86%85%E5%AD%98%EF%BC%8C%E5%88%A9%E7%94%A8%E7%BB%99%E5%AE%9A%E7%9A%84%E6%8C%87%E4%BB%A4%E8%AE%A1%E7%AE%97-2-%E7%9A%84-8-%E6%AC%A1%E6%96%B9%E3%80%82"><span class="toc-number">2.</span> <span class="toc-text">2. 将给定的指令写入内存，利用给定的指令计算$2$的$8$次方。</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-PC%E6%9C%BA%E4%B8%8A%E7%9A%84ROM%E4%B8%AD%E5%86%99%E6%9C%89%E4%B8%80%E4%B8%AA%E6%97%A5%E6%9C%9F%EF%BC%8C%E5%9C%A8%E5%86%85%E5%AD%98FFF00H-FFFFFH%E2%80%8B%E7%9A%84%E6%9F%90%E5%87%A0%E4%B8%AA%E5%86%85%E5%AD%98%E5%8D%95%E5%85%83%E4%B8%AD%EF%BC%8C%E6%89%BE%E5%88%B0%E8%BF%99%E4%B8%AA%E6%97%A5%E6%9C%9F%E5%B9%B6%E8%AF%95%E5%9B%BE%E6%94%B9%E5%8F%98%E5%AE%83%E3%80%82"><span class="toc-number">3.</span> <span class="toc-text">3. PC机上的ROM中写有一个日期，在内存FFF00H-FFFFFH​的某几个内存单元中，找到这个日期并试图改变它。</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%90%91%E5%86%85%E5%AD%98%E4%BB%8E-B8100H-%E5%BC%80%E5%A7%8B%E7%9A%84%E5%8D%95%E5%85%83%E4%B8%AD%E5%A1%AB%E5%86%99%E6%95%B0%E6%8D%AE%E3%80%82"><span class="toc-number">4.</span> <span class="toc-text">4. 向内存从$B8100H$开始的单元中填写数据。</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://chantmee.github.io/2021/02/07/%E3%80%90%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%91%E3%80%8A%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%8B%E7%8E%8B%E7%88%BD-%E5%AE%9E%E9%AA%8C%E4%B8%80/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://chantmee.github.io/2021/02/07/%E3%80%90%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%91%E3%80%8A%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%8B%E7%8E%8B%E7%88%BD-%E5%AE%9E%E9%AA%8C%E4%B8%80/&text=【汇编语言】《汇编语言》王爽-实验一"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://chantmee.github.io/2021/02/07/%E3%80%90%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%91%E3%80%8A%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%8B%E7%8E%8B%E7%88%BD-%E5%AE%9E%E9%AA%8C%E4%B8%80/&title=【汇编语言】《汇编语言》王爽-实验一"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://chantmee.github.io/2021/02/07/%E3%80%90%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%91%E3%80%8A%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%8B%E7%8E%8B%E7%88%BD-%E5%AE%9E%E9%AA%8C%E4%B8%80/&is_video=false&description=【汇编语言】《汇编语言》王爽-实验一"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=【汇编语言】《汇编语言》王爽-实验一&body=Check out this article: http://chantmee.github.io/2021/02/07/%E3%80%90%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%91%E3%80%8A%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%8B%E7%8E%8B%E7%88%BD-%E5%AE%9E%E9%AA%8C%E4%B8%80/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://chantmee.github.io/2021/02/07/%E3%80%90%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%91%E3%80%8A%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%8B%E7%8E%8B%E7%88%BD-%E5%AE%9E%E9%AA%8C%E4%B8%80/&title=【汇编语言】《汇编语言》王爽-实验一"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://chantmee.github.io/2021/02/07/%E3%80%90%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%91%E3%80%8A%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%8B%E7%8E%8B%E7%88%BD-%E5%AE%9E%E9%AA%8C%E4%B8%80/&title=【汇编语言】《汇编语言》王爽-实验一"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://chantmee.github.io/2021/02/07/%E3%80%90%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%91%E3%80%8A%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%8B%E7%8E%8B%E7%88%BD-%E5%AE%9E%E9%AA%8C%E4%B8%80/&title=【汇编语言】《汇编语言》王爽-实验一"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://chantmee.github.io/2021/02/07/%E3%80%90%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%91%E3%80%8A%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%8B%E7%8E%8B%E7%88%BD-%E5%AE%9E%E9%AA%8C%E4%B8%80/&title=【汇编语言】《汇编语言》王爽-实验一"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://chantmee.github.io/2021/02/07/%E3%80%90%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%91%E3%80%8A%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%8B%E7%8E%8B%E7%88%BD-%E5%AE%9E%E9%AA%8C%E4%B8%80/&name=【汇编语言】《汇编语言》王爽-实验一&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://chantmee.github.io/2021/02/07/%E3%80%90%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%91%E3%80%8A%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%8B%E7%8E%8B%E7%88%BD-%E5%AE%9E%E9%AA%8C%E4%B8%80/&t=【汇编语言】《汇编语言》王爽-实验一"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2019-2021
+    Chant Mee
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">主页</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

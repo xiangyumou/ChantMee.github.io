@@ -20,11 +20,11 @@
       
         <tags>
             
+            <tag> 数学 </tag>
+            
             <tag> 神经网络 </tag>
             
             <tag> 机器学习 </tag>
-            
-            <tag> 数学 </tag>
             
         </tags>
       
@@ -82,9 +82,36 @@
             
             <tag> python </tag>
             
+            <tag> 数学 </tag>
+            
             <tag> 算法 </tag>
             
-            <tag> 数学 </tag>
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>【汇编语言】《汇编语言》王爽-第二章笔记</title>
+      <link href="/2021/09/10/%E3%80%90%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%91%E3%80%8A%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%8B%E7%8E%8B%E7%88%BD-%E7%AC%AC%E4%BA%8C%E7%AB%A0%E7%AC%94%E8%AE%B0/"/>
+      <url>/2021/09/10/%E3%80%90%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%91%E3%80%8A%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%8B%E7%8E%8B%E7%88%BD-%E7%AC%AC%E4%BA%8C%E7%AB%A0%E7%AC%94%E8%AE%B0/</url>
+      
+        <content type="html"><![CDATA[<h2 id="CPU的组成"><a href="#CPU的组成" class="headerlink" title="CPU的组成"></a>CPU的组成</h2><p>一个典型的CPU由运算器、控制器、寄存器等器件构成，这也是CPU的工作原理。<br>这些器件是由CPU内部总线连接的。</p><p>运算器进行信息的处理；寄存器进行信息的储存；控制器控制各种器件进行工作；<br>内部总线连接各种器件，在他们之间进行数据的传送。</p><p>不同的CPU的寄存器数、结构是不同的。 本书介绍的8086CPU共有14个寄存器。</p><p>8086CPU的寄存器都是十六位的，一个寄存器能存储两个字节的数据，能存储最大的十进制数字就是$2^{16}-1=65536$.</p><hr><h2 id="通用寄存器"><a href="#通用寄存器" class="headerlink" title="通用寄存器"></a>通用寄存器</h2><p>AX,BX,CX,DX这四个寄存器通常用来存放一般性的数据，成为通用寄存器。</p><p>其中每个寄存器都可以分为高位和低位，例如AX可分为AL和AH。<br>AH和AL都是八位，也就是一个字节。</p><p>当对AL操作的时候，CPU是把AL和AH当作两个独立的寄存器对待的，无论对AL进行何种操作都不会对AH中存储的数据造成影响。</p><hr><h2 id="寄存器内数据的表示"><a href="#寄存器内数据的表示" class="headerlink" title="寄存器内数据的表示"></a>寄存器内数据的表示</h2><p>寄存器的数据用二进制表示出来有十六位，阅读起来会非常困难，<br>用十六进制的数字来表示寄存器的内容会非常简洁明了。</p><p>一个十六进制数字可以表示四位二进制数字，那么十六个二进制数字就可以用四个十六进制数字表示。</p><p>例如要在寄存器存储的数字是$20000$，那么它的二进制表示就是$0100111000100000B$，而用十六进制表示则为：$4E20H$，非常简洁方便。</p><hr><h2 id="几条常用的汇编指令"><a href="#几条常用的汇编指令" class="headerlink" title="几条常用的汇编指令"></a>几条常用的汇编指令</h2><div class="table-container"><table><thead><tr><th>汇编指令</th><th>操作说明</th></tr></thead><tbody><tr><td>MOV AX,BX</td><td>AX=BX</td></tr><tr><td>ADD AX,BX</td><td>AX=AX+BX</td></tr><tr><td>SUB AX,BX</td><td>AX=AX-BX</td></tr></tbody></table></div><p>其中BX都是可以变更为具体的值的。</p><p>需要注意的是，如果是两个寄存器之间的操作，那么他们之间的位数必须保持一致，例如：</p><p><strong>MOV AL,BH</strong> 是正确的，他们都是八位的；<strong>MOV AX,BH</strong>就是错误的，因为AX是十六位的而BH是八位的。</p><hr><h2 id="物理地址"><a href="#物理地址" class="headerlink" title="物理地址"></a>物理地址</h2><p>每一个存储单元在这个空间中都有唯一的地址，我们称这个唯一的地址为<strong>物理地址</strong>。</p><p>CPU通过地址总线送入存储器的是一个存储单元的物理地址，在CPU向地址总线发出物理地址之前必须现在CPU内部生成这个物理地址。</p><hr><h2 id="8086CPU给出物理地址的方法"><a href="#8086CPU给出物理地址的方法" class="headerlink" title="8086CPU给出物理地址的方法"></a>8086CPU给出物理地址的方法</h2><p>8086CPU是一个十六位的CPU，十六进制的CPU有以下特性：</p><p> 1.存储器一次最多可以处理十六位的数据；</p><p> 2.寄存器的最大宽度为十六位；</p><p> 3.寄存器和运算器之间的通路为十六位。</p><p>8086CPU作为一个十六位的CPU，理论上来说它的寻址能力应该仅有64KB，而实际上它的寻址能力却又1MB这么多，也就是二十位这么多，那么它是怎么实现的？</p><p>实际上8086CPU的地址总线确实是二十位，否则它也不可能具有1MB的寻址能力。那问题就转换为它是怎么生成的二十位地址。</p><p>8086CPU是通过两个十六位地址来合成一个二十位地址，两个十六位地址分别称为：段地址，偏移地址。</p><p>合成的具体方法为：<strong>物理地址=段地址*16+偏移地址</strong></p><p>段地址是一个十六位的二进制数字，它乘以$16$也就是$2^4$相当于把这个十六进制的数字左移了4位，就变成了一个二十位的二进制数字。</p><h3 id="物理地址的表示："><a href="#物理地址的表示：" class="headerlink" title="物理地址的表示："></a>物理地址的表示：</h3><p><strong>物理地址=段地址*16+偏移地址</strong>，假如有一个物理地址为：<em>21F60H</em>，那么它还可以表示为：<em>2000:1F60</em>，其中<em>2000</em>为段地址，<em>1F60</em>为偏移地址。</p><p>数据存储在<em>21F60H</em>内存单元，习惯上这么说：</p><ol><li>数据存储在内存<em>2000:1F60</em>单元中；</li><li>数据储存在内存的<em>2000H</em>段中的<em>1F60H</em>单元中。</li></ol><h3 id="原理解释："><a href="#原理解释：" class="headerlink" title="原理解释："></a>原理解释：</h3><p>这是一种用小数字表示大数字的通用方法，比如我有两张纸片，一张红色的一张蓝色的，每张纸片只能写两个十进制数字，现在我想用这这两张卡片给你传达一个三位十进制数字，那么我可以提前和你约定好：红色卡片上的数字乘以十加上蓝色卡片上的数字就是我想要传达给你的三位十进制数字。这样我只需要在红色空片上写15，蓝色卡片上写26，你就知道我想传达给你的数字就是176.</p><h3 id="在8086CPU内部具体的实现步骤为："><a href="#在8086CPU内部具体的实现步骤为：" class="headerlink" title="在8086CPU内部具体的实现步骤为："></a>在8086CPU内部具体的实现步骤为：</h3><ol><li>CPU的相关部件提供两个十六位地址：段地址和偏移地址；</li><li>段地址和偏移地址通过内部总线传入一个成为地址加法器的部件；</li><li>地址加法器将两个十六位地址合成为一个二十位物理地址；</li><li>地址加法器通过内部总线将二十位物理地址传入输入输出控制电路；</li><li>输入输出电路将二十位物理地址送上地址总线；</li><li>二十位物理地址通过地址总线传送到存储器。</li></ol><hr><h2 id="对于段的理解"><a href="#对于段的理解" class="headerlink" title="对于段的理解"></a>对于段的理解</h2><p>在8086CPU中，由于它是通过<strong>段地址*16+偏移地址</strong>的方式给出了物理地址，因此可以通过分段的方式管理内存。</p><p>在编程的时候，可以将一些连续的内存看作一个段，这个段的起始地址就是<strong>段地址*16</strong>，然后通过改变偏移地址来定位段中的某个内存单元。</p><p>由于偏移地址为十六位地址，因此一个段的最大长度就是$2^16$也就是64KB。</p><hr><h2 id="CS和IP"><a href="#CS和IP" class="headerlink" title="CS和IP"></a>CS和IP</h2><p>CS和IP是8086CPU的两个寄存器，CS为代码段寄存器，IP为指令指针寄存器，他们指示了CPU当前要读取指令的地址，也就是说CPU将<strong>CS:IP</strong>指向的内容当作指令执行。</p><p>如果说内存中的一段信息曾被CPU执行过的话，那么它所在的内存单元必然被<strong>CS:IP</strong>指向过。</p><h3 id="CS-IP的修改"><a href="#CS-IP的修改" class="headerlink" title="CS:IP的修改"></a>CS:IP的修改</h3><p>对于<strong>CS:IP</strong>的修改不能使用MOV，ADD等常规指令实现。</p><p>在8086CPU中有专门的对<strong>CS:IP</strong>进行修改的指令，这种命令称为转移指令，<br>这里给出这其中最简单的指令JMP的介绍。</p><p>如果要同时修改<strong>CS:IP</strong>可以执行 <strong>JMP 段地址:偏移地址</strong> 指令完成，例如：</p><p><em>JMP 2AE2:3</em> 执行后<em>CS=2AE2H</em>，<em>IP=0003H</em>。</p><p>若仅仅想修改IP的内容，可以执行 <strong>JMP 某个合法寄存器</strong> 指令完成，例如：</p><p><em>AX=2AE3H</em>，则 <em>JMP AX</em> 执行后<em>IP=2AE3H</em>.</p><h3 id="补充："><a href="#补充：" class="headerlink" title="补充："></a>补充：</h3><p>8086CPU除了CS这个段寄存器外还有三个段寄存器，分别为：DS、SS、ES。</p><hr><h2 id="对于命令执行的一些疑问"><a href="#对于命令执行的一些疑问" class="headerlink" title="对于命令执行的一些疑问"></a>对于命令执行的一些疑问</h2><ol><li><p>命令是存储在存储器中的，但是每条命令的长度并不都是相同的，那么CPU是如何知道每条命令的长度的呢？</p></li><li><p>CPU是按照顺序从前往后依次执行存储在存储器中的命令的，那么CPU是如何知道执行到哪一条命令才停止的呢？</p></li><li><p>书中提到“8086机中，任意时刻，CPU将CS:IP指向的内容当作指令执行”，那么这个任意时刻是如何定义的呢？也就是说，CPU是不断地执行CS:IP指向的内容吗？如果是，这个“不断的”是怎样的频率呢？</p></li></ol><hr><h2 id="Debug的基本使用"><a href="#Debug的基本使用" class="headerlink" title="Debug的基本使用"></a>Debug的基本使用</h2><p>Debug是DOS(Disk Operating System)、Windows都提供的实模式（8086方式）程序的调试工具。</p><p>使用它可以查看CPU各种寄存器中的内容、内存的情况和机器码级跟踪程序的运行。</p><h3 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h3><p>R：改变CPU寄存器的内容；</p><p>D：查看内存中的内容；</p><p>E：改写内存中的内容；</p><p>U：将内存中的机器指令翻译成汇编指令；</p><p>T：执行一条机器指令；</p><p>A：以汇编指令的格式在内存中写入一条机器指令。</p><h3 id="R命令的基本使用："><a href="#R命令的基本使用：" class="headerlink" title="R命令的基本使用："></a>R命令的基本使用：</h3><ol><li><p><code>- R</code> 可以查看CPU中寄存器的内容。在下方，Debug还会列出<em>CS:IP</em>所指向的内存单元存放的机器码，并将它翻译为汇编指令。</p></li><li><p><code>- R AX</code>，按回车键，终端就会显示 <code>:</code>，这样就可以改变AX的值。</p></li></ol><p>比如要将 AX的值改变为13H，就可以执行：<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">- R AX</span><br><span class="line">: 13</span><br></pre></td></tr></table></figure><br>AX的值就被改变成13了。</p><p>值得注意的是，R命令可以直接修改<em>CS:IP</em>的内容，没有限制。</p><h3 id="D命令的基本使用："><a href="#D命令的基本使用：" class="headerlink" title="D命令的基本使用："></a>D命令的基本使用：</h3><ol><li><p><code>- D 段地址:偏移地址</code> 可以查看内存中<em>段地址:偏移地址</em>开始之后128个内存单元的内容。</p></li><li><p>如果想指定D命令的查看范围，可以执行<code>D 段地址:起始偏移地址 截止偏移地址</code>。</p></li></ol><p>比如想要查看<em>1000:0000</em>到<em>1000:0009</em>中的内容，可以用<code>1000:0000 0009</code>实现。</p><h3 id="E命令的基本使用："><a href="#E命令的基本使用：" class="headerlink" title="E命令的基本使用："></a>E命令的基本使用：</h3><ol><li><p>使用 <code>E 起始地址 数据1 数据2 数据3 ...</code> 指令，可以将从起始地址开始的存储单元依次赋值为<em>数据1，数据2，数据3，…</em>。</p></li><li><p>采用提问的方式依次改变存储单元中的数据。 向Debug中输入<code>E 1000:0</code>，按回车键，之后Debug会显示起始地址<em>1000:0000</em>以及起始地址对应存储单元存储的值，在<code>.</code>后面可以输入值按空格，这个存储单元的值就改变了，或者不输入值直接按空格当前的存储单元的值就不会被改变。按下空格之后Debug就会显示下一个存储单元的原始内容并提示修改。当所有要修改的值都修改完毕后，按回车键E命令操作就会结束。</p></li><li><p>向内存单元中写入字符/字符串。用上面第一种命令，里面的数据可以是一个字符。</p></li></ol><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- E 1000:0000 1 2 3 4 &#x27;a&#x27; &#x27;B&#x27; &#x27;c&#x27;</span><br><span class="line"></span><br><span class="line">- E 1000:0000 &quot;hello, world!&quot;</span><br></pre></td></tr></table></figure><h3 id="U命令的基本使用："><a href="#U命令的基本使用：" class="headerlink" title="U命令的基本使用："></a>U命令的基本使用：</h3><p>使用<code>U 1000:0000</code>即可查看<em>1000:0</em>开始的内存存储的命令。</p><p>查询结果由三部分组成，最左边是每个命令的存储地址，中间是命令对应的机器指令，最右边是每个机器指令对应的汇编指令。</p><h3 id="T命令的基本使用："><a href="#T命令的基本使用：" class="headerlink" title="T命令的基本使用："></a>T命令的基本使用：</h3><p>每执行一次T指令，就会执行一次<em>CS:IP</em>指向的指令，之后<em>CS:IP</em>就会自动指向下一条命令的位置。</p><h3 id="A命令的基本使用："><a href="#A命令的基本使用：" class="headerlink" title="A命令的基本使用："></a>A命令的基本使用：</h3><p>输入<code>A 1000:0000</code>之后按回车，之后就可以依次输入汇编指令，输入完毕按回车键，Debug会将这些汇编指令翻译为对应的机器指令存储在对应的位置，之后自动将位置调整到下一个能存储指令的位置。若不输入任何内容直接按回车键，则A命令操作就会结束。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 汇编语言 </tag>
+            
+            <tag> 王爽 </tag>
             
         </tags>
       
@@ -288,6 +315,33 @@
     
     
     <entry>
+      <title>vector的扩容机制使得它比较慢的原因</title>
+      <link href="/2021/03/21/vector%E7%9A%84%E6%89%A9%E5%AE%B9%E6%9C%BA%E5%88%B6%E4%BD%BF%E5%BE%97%E5%AE%83%E6%AF%94%E8%BE%83%E6%85%A2%E7%9A%84%E5%8E%9F%E5%9B%A0/"/>
+      <url>/2021/03/21/vector%E7%9A%84%E6%89%A9%E5%AE%B9%E6%9C%BA%E5%88%B6%E4%BD%BF%E5%BE%97%E5%AE%83%E6%AF%94%E8%BE%83%E6%85%A2%E7%9A%84%E5%8E%9F%E5%9B%A0/</url>
+      
+        <content type="html"><![CDATA[<p>内存初始状态：</p><p>xxxxxxxxxx000000000000000000000000000000000000000000000000000000000000</p><p>vector申请内存：</p><p>xxxxxxxxxx～～～～～～～000000000000000000000000000000000000000000000000</p><p>vector后面的内存也被申请：</p><p>xxxxxxxxxx～～～～～～～xxxxxxxx00000000000000000000000000000000000000000</p><p>vector被存满，申请了新的内存，并把原来内存的内容复制到新申请的内存中：</p><p>xxxxxxxxxx～～～～～～～xxxxxxxx～～～～～～～～～～～～～～00000000000000000</p><p>释放原来的内存：</p><p>xxxxxxxxxx000000000000xxxxxxxx～～～～～～～～～～～～～～00000000000000000</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> c++ </tag>
+            
+            <tag> vector </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>由我的世界水生成机制引发的思考</title>
       <link href="/2021/03/16/%E7%94%B1%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C%E6%B0%B4%E7%94%9F%E6%88%90%E6%9C%BA%E5%88%B6%E5%BC%95%E5%8F%91%E7%9A%84%E6%80%9D%E8%80%83/"/>
       <url>/2021/03/16/%E7%94%B1%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C%E6%B0%B4%E7%94%9F%E6%88%90%E6%9C%BA%E5%88%B6%E5%BC%95%E5%8F%91%E7%9A%84%E6%80%9D%E8%80%83/</url>
@@ -307,6 +361,85 @@
             <tag> 我的世界 </tag>
             
             <tag> BFS </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>【汇编语言】《汇编语言》王爽-第一章笔记</title>
+      <link href="/2021/02/09/%E3%80%90%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%91%E3%80%8A%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%8B%E7%8E%8B%E7%88%BD-%E7%AC%AC%E4%B8%80%E7%AB%A0%E7%AC%94%E8%AE%B0/"/>
+      <url>/2021/02/09/%E3%80%90%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%91%E3%80%8A%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%8B%E7%8E%8B%E7%88%BD-%E7%AC%AC%E4%B8%80%E7%AB%A0%E7%AC%94%E8%AE%B0/</url>
+      
+        <content type="html"><![CDATA[<h2 id="第一章"><a href="#第一章" class="headerlink" title="第一章"></a>第一章</h2><p>《微机原理与接口》：PC机与CPU物理结构和编程结构的全面研究。</p><p>《组成原理》：计算机一般的结构、功能、性能的研究。</p><hr><h2 id="机器语言与汇编语言"><a href="#机器语言与汇编语言" class="headerlink" title="机器语言与汇编语言"></a>机器语言与汇编语言</h2><p>机器语言：机器语言是机器指令的集合，是一台机器可以正确执行的命令。<br>每一种微处理器都有自己的机器指令集。</p><p>汇编语言：机器指令便于记忆的书写形式。汇编语言可以通过编译器转换为汇编语言。</p><hr><h2 id="寄存器"><a href="#寄存器" class="headerlink" title="寄存器"></a>寄存器</h2><p>CPU中可以存储数据的器件，一个CPU中有多个寄存器。</p><h3 id="小知识"><a href="#小知识" class="headerlink" title="小知识"></a>小知识</h3><p>寄存器一般整合在CPU内部，它的性能优越，其读写速度与CPU的运行速度基本匹配，提高指令的执行速度。</p><p>但是寄存器的造价极为昂贵，一个好的CPU只有几MB的2级缓存，1级缓存更小。</p><p>CPU的一级缓存基本上是用来缓存指令的。二级三级缓存是用来缓存数据的。</p><hr><h2 id="存储器"><a href="#存储器" class="headerlink" title="存储器"></a>存储器</h2><p>存储器就是俗称的内存。指令和数据都存储在存储器中。</p><p>对于CPU而言，它可以将一段存储在存储器中的一段内容看作指令，也可以将一段内容看作数据。一段内容究竟是指令还是数据，是由你赋予它什么意义决定的。</p><hr><h2 id="存储单元"><a href="#存储单元" class="headerlink" title="存储单元"></a>存储单元</h2><p>存储器是由一个一个存储单元组成的。</p><p>每个存储单元可以存储一个字节（$1Byte=1B$），也就是八个比特（$8bit$)。</p><p>微机存储器的容量是以字节为最小单位进行计算的。</p><hr><h2 id="CPU对存储器的读写"><a href="#CPU对存储器的读写" class="headerlink" title="CPU对存储器的读写"></a>CPU对存储器的读写</h2><p>CPU要从存储器中读写数据，需要</p><ol><li>指定存储单元的地址</li><li>说明是要读取数据还是要写入数据</li><li>如果是写入数据，那么写入的数据是什么；</li></ol><p>这里没有提到书中说的要从那个器件读取数据，我认为这里不必要指明要读取/写入数据的器件：</p><p>所有器件的内存对于CPU而言是连续在一起的，他们的不同是根据区间划分的，<br>例如所有器件一共有$1000$个存储单元，那么假如$0-200$是显卡的地址空间，<br>那么对于CPU而言，假设它要在$100-150$这段地址空间读取/写入数据，<br>就相当于它指定了它要读取/写入的器件是显卡的内存。</p><p>书中原文：对CPU来讲，系统中的所有存储器中的存储单元都处于一个统一的逻辑存储器中，它的容量首CPU寻址能力的限制。</p><hr><h2 id="总线"><a href="#总线" class="headerlink" title="总线"></a>总线</h2><p>在计算机中有专门的连接CPU与其他芯片的导线，通常称为<strong>总线</strong>，它其实就是一根根导线的集合。</p><p>根据传送信息的不同，总线从逻辑上分为三类：地址总线，控制总线，数据总线。</p><hr><h2 id="地址总线"><a href="#地址总线" class="headerlink" title="地址总线"></a>地址总线</h2><p>CPU是通过地址总线来指定存储器单元的，因此地址总线上能存储多少个不同的信息，<br>CPU就可以对多少个存储单元进行寻址。</p><p>一个CPU有$N$根地址线，则可以说这个CPU的地址总线的宽度为$N$，同时这个地址总线可以对$2^N$个地址单元进行寻址。</p><hr><h2 id="数据总线"><a href="#数据总线" class="headerlink" title="数据总线"></a>数据总线</h2><p>CPU与内存或其他器件之间的数据传送是通过数据总线来进行的。</p><p>数据总线的宽度决定了CPU与外界的数据传送速度：<br>八根数据总线一次可以传输一个字节的数据，而十六根数据总线一次可以传输两个字节的数据。</p><hr><h2 id="控制总线"><a href="#控制总线" class="headerlink" title="控制总线"></a>控制总线</h2><p>CPU对外部器件的控制是通过控制总线进行的。</p><p>有多少根控制总线，就意味着CPU提供了多少种对外界器件的控制，<br>因此控制总线的宽度决定了CPU对外部器件的控制能力。</p><p>例如上面说到的CPU究竟是要读取数据还是写入数据，就是有控制总线中的 <strong>读信号输入</strong> 和 <strong>写信号输出</strong> 完成的。</p><hr><h2 id="各类存储器芯片"><a href="#各类存储器芯片" class="headerlink" title="各类存储器芯片"></a>各类存储器芯片</h2><p>存储器按照读写属性分类可分为：</p><p>​    随机存储器（RAM）：断电之后存储的数据都会丢失。<br>​    只读存储器（ROM）：个人理解，类似于出厂设置这种数据就是存储在只读存储器中，这些数据是不能够被修改的。</p><p>从功能和连接上可以分为以下几类：</p><p>随机存储器、装有BIOS（Basic Input/Output System）、接口卡上的ROM。</p><p>接口卡：在计算机系统中，所有可用程序控制其工作的设备，必须受到CPU的控制。而外部器件与CPU的连接就说通过接口卡实现的。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 汇编语言 </tag>
+            
+            <tag> 王爽 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>【汇编语言】《汇编语言》王爽-实验一</title>
+      <link href="/2021/02/07/%E3%80%90%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%91%E3%80%8A%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%8B%E7%8E%8B%E7%88%BD-%E5%AE%9E%E9%AA%8C%E4%B8%80/"/>
+      <url>/2021/02/07/%E3%80%90%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%91%E3%80%8A%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%8B%E7%8E%8B%E7%88%BD-%E5%AE%9E%E9%AA%8C%E4%B8%80/</url>
+      
+        <content type="html"><![CDATA[<h2 id="1-将给定命令写入内存，逐条执行观察寄存器内容变化。"><a href="#1-将给定命令写入内存，逐条执行观察寄存器内容变化。" class="headerlink" title="1. 将给定命令写入内存，逐条执行观察寄存器内容变化。"></a>1. 将给定命令写入内存，逐条执行观察寄存器内容变化。</h2><p>从$1000:0$开始写入命令：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">- A 1000:0</span><br><span class="line">- MOV AX,4E20</span><br><span class="line">- ADD AX,1416</span><br><span class="line">- MOV BX,2000</span><br><span class="line">- ADD AX,BX</span><br><span class="line">- MOV BX,AX</span><br><span class="line">- ADD AX,BX</span><br><span class="line">- MOV AX,001A</span><br><span class="line">- MOV BX,0026</span><br><span class="line">- ADD AL,BL</span><br><span class="line">- ADD AH,BL</span><br><span class="line">- ADD BH,AL</span><br><span class="line">- MOV AH,0</span><br><span class="line">- ADD AL,BL</span><br><span class="line">- ADD AL,9C</span><br></pre></td></tr></table></figure><p>改变<strong>CS:IP​</strong>指向的内存单元：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- R CS</span><br><span class="line">- 1000</span><br><span class="line">- R IP</span><br><span class="line">- 0000</span><br></pre></td></tr></table></figure><hr><h2 id="2-将给定的指令写入内存，利用给定的指令计算-2-的-8-次方。"><a href="#2-将给定的指令写入内存，利用给定的指令计算-2-的-8-次方。" class="headerlink" title="2. 将给定的指令写入内存，利用给定的指令计算$2$的$8$次方。"></a>2. 将给定的指令写入内存，利用给定的指令计算$2$的$8$次方。</h2><p>给定的指令为：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">MOV AX,1</span><br><span class="line">ADD AX,AX</span><br><span class="line">JMP 2000:0003</span><br></pre></td></tr></table></figure><p>上述指令将寄存器$AX$的值变更为$1$然后可以不断的循环<strong>AX=AX+AX</strong>，相当于加倍，不断循环$9$次即可计算出$2^8$.</p><hr><h2 id="3-PC机上的ROM中写有一个日期，在内存FFF00H-FFFFFH​的某几个内存单元中，找到这个日期并试图改变它。"><a href="#3-PC机上的ROM中写有一个日期，在内存FFF00H-FFFFFH​的某几个内存单元中，找到这个日期并试图改变它。" class="headerlink" title="3. PC机上的ROM中写有一个日期，在内存FFF00H-FFFFFH​的某几个内存单元中，找到这个日期并试图改变它。"></a>3. PC机上的ROM中写有一个日期，在内存<strong>FFF00H-FFFFFH​</strong>的某几个内存单元中，找到这个日期并试图改变它。</h2><p><img src="/Users/chant/Library/Application Support/typora-user-images/image-20210207190939677.png" alt="寻找过程" style="zoom:67%;" /></p><p>最终定位找到这个日期存储在<strong>F000:FFF5​</strong>到<strong>F000:FFFC​</strong>这段内存中。</p><p>下面对这段内存进行修改：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- E F000:FFF5 &quot;09/27/20&quot;</span><br></pre></td></tr></table></figure><p><img src="/Users/chant/Library/Application Support/typora-user-images/image-20210207190325705.png" alt="修改过程及结果"></p><p>修改不起任何作用，<strong>F000:FFF5​</strong>到<br><strong>F000:FFFC</strong>在<strong>各类ROM地址空间</strong>（<em>8086PC机内存地址空间分配</em>见书P12），而ROM是只读存储器不能修改其内容。</p><hr><h2 id="4-向内存从-B8100H-开始的单元中填写数据。"><a href="#4-向内存从-B8100H-开始的单元中填写数据。" class="headerlink" title="4. 向内存从$B8100H$开始的单元中填写数据。"></a>4. 向内存从$B8100H$开始的单元中填写数据。</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- E B810:0000 01 01 02 02 03 03 04 04</span><br></pre></td></tr></table></figure><p><strong>A0000</strong>到<strong>BFFFF</strong>是显存地址的范围。修改这个范围内存的内容就可以修改显示器中显示的内容。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 汇编语言 </tag>
+            
+            <tag> 王爽 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>个人vim配置</title>
+      <link href="/2021/01/27/%E4%B8%AA%E4%BA%BAvim%E9%85%8D%E7%BD%AE/"/>
+      <url>/2021/01/27/%E4%B8%AA%E4%BA%BAvim%E9%85%8D%E7%BD%AE/</url>
+      
+        <content type="html"><![CDATA[<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">syntax</span> <span class="keyword">on</span></span><br><span class="line"><span class="keyword">set</span> <span class="keyword">nu</span></span><br><span class="line"><span class="keyword">set</span> mouse=<span class="keyword">a</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">set</span> ci</span><br><span class="line"><span class="keyword">set</span> si</span><br><span class="line"><span class="keyword">set</span> ai</span><br><span class="line"></span><br><span class="line"><span class="keyword">set</span> <span class="keyword">ts</span>=<span class="number">4</span></span><br><span class="line"><span class="keyword">set</span> <span class="keyword">sw</span>=<span class="number">4</span></span><br><span class="line"><span class="keyword">set</span> <span class="keyword">sts</span>=<span class="number">4</span></span><br><span class="line"><span class="keyword">set</span> noexpandtab</span><br><span class="line"></span><br><span class="line"><span class="keyword">imap</span> jj <span class="symbol">&lt;ESC&gt;</span></span><br><span class="line"><span class="keyword">imap</span> ww <span class="symbol">&lt;ESC&gt;</span>:<span class="keyword">w</span><span class="symbol">&lt;CR&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">map</span> <span class="symbol">&lt;F5&gt;</span> :<span class="keyword">call</span> CompileRunGcc()<span class="symbol">&lt;CR&gt;</span></span><br><span class="line"></span><br><span class="line">func! CompileRunGcc()</span><br><span class="line">    exec <span class="string">&quot;w&quot;</span> </span><br><span class="line">    <span class="keyword">if</span> &amp;<span class="keyword">filetype</span> == <span class="string">&#x27;c&#x27;</span> </span><br><span class="line">        exec <span class="string">&#x27;!g++ % -o %&lt;&#x27;</span></span><br><span class="line">        exec <span class="string">&#x27;!time %&lt;&#x27;</span></span><br><span class="line">    <span class="keyword">elseif</span> &amp;<span class="keyword">filetype</span> == <span class="string">&#x27;cpp&#x27;</span></span><br><span class="line">        exec <span class="string">&#x27;!g++ % -o %&lt;&#x27;</span></span><br><span class="line">        exec <span class="string">&#x27;!time %&lt;&#x27;</span></span><br><span class="line">    <span class="keyword">elseif</span> &amp;<span class="keyword">filetype</span> == <span class="string">&#x27;python&#x27;</span></span><br><span class="line">        exec <span class="string">&#x27;!time python %&#x27;</span></span><br><span class="line">    <span class="keyword">elseif</span> &amp;<span class="keyword">filetype</span> == <span class="string">&#x27;sh&#x27;</span></span><br><span class="line">        :!time bash %</span><br><span class="line">    <span class="keyword">endif</span>                                                                              </span><br><span class="line">endfunc </span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> 工具 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> vim </tag>
             
         </tags>
       
