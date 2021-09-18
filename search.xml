@@ -8,7 +8,7 @@
       <link href="/2021/09/18/test1715/"/>
       <url>/2021/09/18/test1715/</url>
       
-        <content type="html"><![CDATA[<script type="math/tex; mode=display">dp[i][j] = \begin{cases}   0 & j = 0 \\ \min\{ dp[i][k] + dp[(i+ k + 1) \% n][j - k - 1] + sum(i,j) \} & 0 \leq k  < j \end{cases}</script>]]></content>
+        <content type="html"><![CDATA[<p>$dp[i][j] = \begin{cases}   0 &amp; j = 0 \\ \min\{ dp[i][k] + dp[(i+ k + 1) \% n][j - k - 1] + sum(i,j) \} &amp; 0 \leq k  &lt; j \end{cases}$</p><p>1231231231</p>]]></content>
       
       
       <categories>
