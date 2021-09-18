@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="前言在最一开始，我的B站收藏一直是存放在默认收藏夹中，但是随着视频收藏的越来越多，没有分类的视频放在一起，想在众多视频中找到想要的视频非常困难，因此就对收藏夹里面的视频进行了分类。但是分类之后紧接着又出现了一个新的问题：原来存放在默认收藏夹里面视频的相对顺序被打乱了——明明前几天刚收藏的视频却要翻很多很多页才能找到，因此有了这个程序。 程序的作用因为我们看到的视频大部分都是通过推荐得到的，而推荐的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="利用python对B站收藏夹排序">
+<meta property="og:url" content="http://chantmee.github.io/2021/05/12/%E5%88%A9%E7%94%A8python%E5%AF%B9B%E7%AB%99%E6%94%B6%E8%97%8F%E5%A4%B9%E6%8E%92%E5%BA%8F/index.html">
+<meta property="og:site_name" content="Chant&#39;s Blog">
+<meta property="og:description" content="前言在最一开始，我的B站收藏一直是存放在默认收藏夹中，但是随着视频收藏的越来越多，没有分类的视频放在一起，想在众多视频中找到想要的视频非常困难，因此就对收藏夹里面的视频进行了分类。但是分类之后紧接着又出现了一个新的问题：原来存放在默认收藏夹里面视频的相对顺序被打乱了——明明前几天刚收藏的视频却要翻很多很多页才能找到，因此有了这个程序。 程序的作用因为我们看到的视频大部分都是通过推荐得到的，而推荐的">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-05-12T01:28:52.000Z">
+<meta property="article:modified_time" content="2021-09-18T10:37:50.967Z">
+<meta property="article:author" content="Chant Mee">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="网络爬虫">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>利用python对B站收藏夹排序</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body class="max-width mx-auto px3 ltr">    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" "Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">主页</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇 " href="/2021/08/28/ACM%E7%AE%97%E6%B3%95%E6%A8%A1%E7%89%88/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇 " href="/2021/04/22/mac%E4%B8%8Bconda%E7%9A%84%E5%AE%89%E8%A3%85%E3%80%81%E4%BD%BF%E7%94%A8/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部 " href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章 " href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://chantmee.github.io/2021/05/12/%E5%88%A9%E7%94%A8python%E5%AF%B9B%E7%AB%99%E6%94%B6%E8%97%8F%E5%A4%B9%E6%8E%92%E5%BA%8F/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://chantmee.github.io/2021/05/12/%E5%88%A9%E7%94%A8python%E5%AF%B9B%E7%AB%99%E6%94%B6%E8%97%8F%E5%A4%B9%E6%8E%92%E5%BA%8F/&text=利用python对B站收藏夹排序"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://chantmee.github.io/2021/05/12/%E5%88%A9%E7%94%A8python%E5%AF%B9B%E7%AB%99%E6%94%B6%E8%97%8F%E5%A4%B9%E6%8E%92%E5%BA%8F/&title=利用python对B站收藏夹排序"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://chantmee.github.io/2021/05/12/%E5%88%A9%E7%94%A8python%E5%AF%B9B%E7%AB%99%E6%94%B6%E8%97%8F%E5%A4%B9%E6%8E%92%E5%BA%8F/&is_video=false&description=利用python对B站收藏夹排序"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=利用python对B站收藏夹排序&body=Check out this article: http://chantmee.github.io/2021/05/12/%E5%88%A9%E7%94%A8python%E5%AF%B9B%E7%AB%99%E6%94%B6%E8%97%8F%E5%A4%B9%E6%8E%92%E5%BA%8F/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://chantmee.github.io/2021/05/12/%E5%88%A9%E7%94%A8python%E5%AF%B9B%E7%AB%99%E6%94%B6%E8%97%8F%E5%A4%B9%E6%8E%92%E5%BA%8F/&title=利用python对B站收藏夹排序"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://chantmee.github.io/2021/05/12/%E5%88%A9%E7%94%A8python%E5%AF%B9B%E7%AB%99%E6%94%B6%E8%97%8F%E5%A4%B9%E6%8E%92%E5%BA%8F/&title=利用python对B站收藏夹排序"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://chantmee.github.io/2021/05/12/%E5%88%A9%E7%94%A8python%E5%AF%B9B%E7%AB%99%E6%94%B6%E8%97%8F%E5%A4%B9%E6%8E%92%E5%BA%8F/&title=利用python对B站收藏夹排序"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://chantmee.github.io/2021/05/12/%E5%88%A9%E7%94%A8python%E5%AF%B9B%E7%AB%99%E6%94%B6%E8%97%8F%E5%A4%B9%E6%8E%92%E5%BA%8F/&title=利用python对B站收藏夹排序"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://chantmee.github.io/2021/05/12/%E5%88%A9%E7%94%A8python%E5%AF%B9B%E7%AB%99%E6%94%B6%E8%97%8F%E5%A4%B9%E6%8E%92%E5%BA%8F/&name=利用python对B站收藏夹排序&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://chantmee.github.io/2021/05/12/%E5%88%A9%E7%94%A8python%E5%AF%B9B%E7%AB%99%E6%94%B6%E8%97%8F%E5%A4%B9%E6%8E%92%E5%BA%8F/&t=利用python对B站收藏夹排序"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A8%8B%E5%BA%8F%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-number">2.</span> <span class="toc-text">程序的作用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%BA%E7%90%86"><span class="toc-number">3.</span> <span class="toc-text">机理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%BA%E7%8E%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">4.</span> <span class="toc-text">出现的问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95"><span class="toc-number">5.</span> <span class="toc-text">使用方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%B8%A3%E8%B0%A2"><span class="toc-number">6.</span> <span class="toc-text">鸣谢</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        利用python对B站收藏夹排序
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Chant Mee</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2021-05-12T01:28:52.000Z" itemprop="datePublished">2021-05-12</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/%E5%B7%A5%E5%85%B7/">工具</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/python/" rel="tag">python</a>, <a class="tag-link-link" href="/tags/%E7%BD%91%E7%BB%9C%E7%88%AC%E8%99%AB/" rel="tag">网络爬虫</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在最一开始，我的B站收藏一直是存放在默认收藏夹中，但是随着视频收藏的越来越多，没有分类的视频放在一起，想在众多视频中找到想要的视频非常困难，因此就对收藏夹里面的视频进行了分类。但是分类之后紧接着又出现了一个新的问题：原来存放在默认收藏夹里面视频的相对顺序被打乱了——明明前几天刚收藏的视频却要翻很多很多页才能找到，因此有了这个程序。</p>
+<h2 id="程序的作用"><a href="#程序的作用" class="headerlink" title="程序的作用"></a>程序的作用</h2><p>因为我们看到的视频大部分都是通过推荐得到的，而推荐的视频大部分都是刚发布不久，因此大部分收藏的视频的顺序也基本是按照视频发布的顺序来的。那么通过程序对收藏夹中的视频按照发布时间重新排序，那么就和我们收藏视频的顺序几乎一致了。</p>
+<h2 id="机理"><a href="#机理" class="headerlink" title="机理"></a>机理</h2><p>利用b站的API获取收藏夹中视频的视频的编号，用python中的request库获得视频对应网页的html，之后利用正则表达式得到视频发布的时间。将发布时间和视频的编号绑定，按照视频发布时间从小到大排序，再次利用b站的API将视频收藏到指定收藏夹。</p>
+<h2 id="出现的问题"><a href="#出现的问题" class="headerlink" title="出现的问题"></a>出现的问题</h2><p>b站视频的av号在八位以下的时候是按照视频发布顺序编排的，但是当到达九位的时候就不是按照发布顺序编排的了，因此只能通过访问视频主页来得到视频发布时间。</p>
+<p>b站的API如果长时间比较高频率的访问会出现错误码，因此每次调用API之后都sleep了一下。</p>
+<p>中间程序可能因为各种原因挂掉，因此在中间加入了储存中间状态的功能，否则每次挂掉都要重新爬速度非常慢。</p>
+<h2 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h2><p>在创建<code>Sort</code>类对象时，将<code>userAgent</code>,<code>cookie</code>,<code>fid</code>,<code>toFid</code>,<code>csrf</code>传入类的构造函数中，之后调用类中的<code>sortVideos()</code>方法即可完成排序。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests, json, time, re, datetime, random</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">WriteLog</span>(<span class="params"><span class="built_in">object</span></span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getCurrentTime</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">str</span>(time.ctime(time.time()))</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">writeFile</span>(<span class="params">self, fileName, l</span>):</span></span><br><span class="line">        <span class="keyword">with</span> <span class="built_in">open</span>(self.__getCurrentTime() + fileName, <span class="string">&#x27;w&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> l:</span><br><span class="line">                f.write(<span class="built_in">str</span>(i) + <span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Sort</span>(<span class="params">WriteLog</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, fid, toFid, csrf, userAgent, cookie, MinSleepTime=<span class="number">5</span>, MaxSleepTime=<span class="number">10</span></span>):</span></span><br><span class="line">        self.MinSleepTime = MinSleepTime</span><br><span class="line">        self.MaxSleepTime = MaxSleepTime</span><br><span class="line">        self.fid = <span class="built_in">str</span>(fid)</span><br><span class="line">        self.toFid = <span class="built_in">str</span>(toFid)</span><br><span class="line">        self.csrf = csrf</span><br><span class="line">        self.DeadVideo = []</span><br><span class="line">        self.headers = &#123;<span class="string">&#x27;User-Agent&#x27;</span>: userAgent, <span class="string">&#x27;cookie&#x27;</span>: cookie&#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__Sleep</span>(<span class="params">self</span>):</span></span><br><span class="line">        sleepTime = random.randint(self.MinSleepTime, self.MaxSleepTime)</span><br><span class="line">        time.sleep(sleepTime)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getAllVideoId</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;Start get all video ID&#x27;</span>)</span><br><span class="line">        fid = self.fid</span><br><span class="line">        res = []</span><br><span class="line">        cnt = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">100</span>):</span><br><span class="line">            <span class="keyword">if</span> i == <span class="number">0</span>:</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            url = <span class="string">&#x27;https://api.bilibili.com/x/v3/fav/resource/list?media_id=&#x27;</span> + fid + <span class="string">&#x27;&amp;pn=&#x27;</span> + <span class="built_in">str</span>(i) + <span class="string">&#x27;&amp;ps=20&amp;keyword=&amp;order=mtime&amp;type=0&amp;tid=0&amp;platform=web&amp;jsonp=jsonp&#x27;</span></span><br><span class="line">            html = requests.get(url=url, headers=self.headers)</span><br><span class="line">            te = json.loads(html.text)</span><br><span class="line">            te = te[<span class="string">&#x27;data&#x27;</span>][<span class="string">&#x27;medias&#x27;</span>]</span><br><span class="line">            <span class="keyword">if</span> te != <span class="literal">None</span>:</span><br><span class="line">                <span class="keyword">for</span> j <span class="keyword">in</span> te:</span><br><span class="line">                    res.append(j[<span class="string">&#x27;id&#x27;</span>])</span><br><span class="line">                    <span class="built_in">print</span>(<span class="string">&#x27;num: &#x27;</span>, cnt, <span class="string">&#x27;\tvideoID: &#x27;</span>, j[<span class="string">&#x27;id&#x27;</span>])</span><br><span class="line">                    cnt = cnt + <span class="number">1</span></span><br><span class="line">                self.__Sleep()</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;Finish get all video ID, in total %d&#x27;</span> % (<span class="built_in">len</span>(res)))</span><br><span class="line">        <span class="keyword">return</span> res</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__addVideoToFavorite</span>(<span class="params">self, vid</span>):</span></span><br><span class="line">        fid = self.toFid</span><br><span class="line">        csrf = self.csrf</span><br><span class="line">        url = <span class="string">&#x27;https://api.bilibili.com/x/v3/fav/resource/deal&#x27;</span></span><br><span class="line">        data = &#123;</span><br><span class="line">            <span class="string">&#x27;rid&#x27;</span>: vid,</span><br><span class="line">            <span class="string">&#x27;type&#x27;</span>: <span class="string">&#x27;2&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;add_media_ids&#x27;</span>: fid,</span><br><span class="line">            <span class="string">&#x27;del_media_ids&#x27;</span>: <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;jsonp&#x27;</span>: <span class="string">&#x27;jsonp&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;csrf&#x27;</span>: csrf,</span><br><span class="line">            <span class="string">&#x27;platform&#x27;</span>: <span class="string">&#x27;web&#x27;</span>,</span><br><span class="line">        &#125;</span><br><span class="line">        requests.post(url=url, data=data, headers=self.headers)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;finish add video %s to folder %s&#x27;</span> % (vid, fid))</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getVideoPostTime</span>(<span class="params">self, vid</span>):</span></span><br><span class="line">        vid = <span class="built_in">str</span>(vid)</span><br><span class="line">        url = <span class="string">&#x27;https://www.bilibili.com/video/av&#x27;</span> + vid</span><br><span class="line">        text = requests.get(url).text</span><br><span class="line">        <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">        data-vue-meta=&quot;true&quot; itemprop=&quot;uploadDate&quot; content=&quot;2021-04-07 23:29:21&quot;&gt;&lt;meta data-vue-meta=&quot;true&quot; itemprop=&quot;datePublished&quot; c</span></span><br><span class="line"><span class="string">        &#x27;&#x27;&#x27;</span></span><br><span class="line">        reg = re.<span class="built_in">compile</span>(<span class="string">&#x27;content=&quot;([0-9]+)-([0-9]+)-([0-9]+)\s([0-9]+):([0-9]+):([0-9]+)&quot;&#x27;</span>)</span><br><span class="line">        text = reg.findall(text)</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(text) == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">return</span> -<span class="number">1</span></span><br><span class="line">        text = text[<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(text) &lt; <span class="number">6</span>:</span><br><span class="line">            <span class="keyword">return</span> -<span class="number">1</span></span><br><span class="line">        t = <span class="string">&quot;&quot;</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> text:</span><br><span class="line">            t = t + <span class="built_in">str</span>(i)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;finish get video %s post time, it\&#x27;s post time is: %s&#x27;</span> % (vid, t))</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">int</span>(t)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__Unique</span>(<span class="params">self, l</span>):</span></span><br><span class="line">        size = <span class="built_in">len</span>(l)</span><br><span class="line">        <span class="keyword">if</span> size == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">return</span> []</span><br><span class="line">        res = [l[<span class="number">0</span>]]</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(size):</span><br><span class="line">            <span class="keyword">if</span> i == <span class="number">0</span>:</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            <span class="keyword">if</span> l[i] != l[i - <span class="number">1</span>]:</span><br><span class="line">                res.append(l[i])</span><br><span class="line">        <span class="keyword">return</span> res</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__addVideo</span>(<span class="params">self, res</span>):</span></span><br><span class="line">        cnt = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> res:</span><br><span class="line">            self.__addVideoToFavorite(vid=i)</span><br><span class="line">            self.__Sleep()</span><br><span class="line">            cnt = cnt + <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getVideosTime</span>(<span class="params">self, res</span>):</span></span><br><span class="line">        videos = []</span><br><span class="line">        cnt = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> res:</span><br><span class="line">            t = self.__getVideoPostTime(i)</span><br><span class="line">            <span class="keyword">if</span> t == -<span class="number">1</span>:</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            item = &#123;</span><br><span class="line">                <span class="string">&#x27;vid&#x27;</span>: <span class="built_in">str</span>(i),</span><br><span class="line">                <span class="string">&#x27;postTime&#x27;</span>: t</span><br><span class="line">            &#125;</span><br><span class="line">            videos.append(item)</span><br><span class="line">            cnt = cnt + <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> videos</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">sortVideos</span>(<span class="params">self</span>):</span></span><br><span class="line">        fid = self.fid</span><br><span class="line">        toFid = self.toFid</span><br><span class="line">        res = self.__getAllVideoId()</span><br><span class="line">        self.writeFile(<span class="string">&#x27;getAllVideoId&#x27;</span> + fid + <span class="string">&#x27;to&#x27;</span> + toFid, res)</span><br><span class="line">        videos = self.__getVideosTime(res)</span><br><span class="line">        videos = <span class="built_in">sorted</span>(videos, key=<span class="keyword">lambda</span> x: x[<span class="string">&#x27;postTime&#x27;</span>])</span><br><span class="line">        res = []</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> videos:</span><br><span class="line">            res.append(i[<span class="string">&#x27;vid&#x27;</span>])</span><br><span class="line">        res = self.__Unique(res)</span><br><span class="line">        self.writeFile(<span class="string">&#x27;getVideosTime&#x27;</span> + fid + <span class="string">&#x27;to&#x27;</span> + toFid, res)</span><br><span class="line">        self.__addVideo(res)</span><br><span class="line">        self.writeFile(<span class="string">&#x27;err&#x27;</span> + fid + <span class="string">&#x27;to&#x27;</span> + toFid, self.DeadVideo)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__==<span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    userAgent = <span class="string">&#x27;&#x27;</span></span><br><span class="line">    cookie = <span class="string">&#x27;&#x27;</span></span><br><span class="line">    fid = <span class="string">&#x27;&#x27;</span></span><br><span class="line">    toFid = <span class="string">&#x27;&#x27;</span></span><br><span class="line">    csrf = <span class="string">&#x27;&#x27;</span></span><br><span class="line">    sortVideo = Sort(fid=fid, toFid=toFid, csrf=csrf, userAgent=userAgent, cookie=cookie)</span><br><span class="line">    sortVideo.sortVideos()</span><br></pre></td></tr></table></figure>
+<h2 id="鸣谢"><a href="#鸣谢" class="headerlink" title="鸣谢"></a>鸣谢</h2><p>在此特别感谢<strong>ZLQ</strong>在本人书写此程序时提供的技术支持，大佬的博客：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/ZlycerQan/">ZlycerQan</a>.</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">主页</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A8%8B%E5%BA%8F%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-number">2.</span> <span class="toc-text">程序的作用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%BA%E7%90%86"><span class="toc-number">3.</span> <span class="toc-text">机理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%BA%E7%8E%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">4.</span> <span class="toc-text">出现的问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95"><span class="toc-number">5.</span> <span class="toc-text">使用方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%B8%A3%E8%B0%A2"><span class="toc-number">6.</span> <span class="toc-text">鸣谢</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://chantmee.github.io/2021/05/12/%E5%88%A9%E7%94%A8python%E5%AF%B9B%E7%AB%99%E6%94%B6%E8%97%8F%E5%A4%B9%E6%8E%92%E5%BA%8F/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://chantmee.github.io/2021/05/12/%E5%88%A9%E7%94%A8python%E5%AF%B9B%E7%AB%99%E6%94%B6%E8%97%8F%E5%A4%B9%E6%8E%92%E5%BA%8F/&text=利用python对B站收藏夹排序"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://chantmee.github.io/2021/05/12/%E5%88%A9%E7%94%A8python%E5%AF%B9B%E7%AB%99%E6%94%B6%E8%97%8F%E5%A4%B9%E6%8E%92%E5%BA%8F/&title=利用python对B站收藏夹排序"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://chantmee.github.io/2021/05/12/%E5%88%A9%E7%94%A8python%E5%AF%B9B%E7%AB%99%E6%94%B6%E8%97%8F%E5%A4%B9%E6%8E%92%E5%BA%8F/&is_video=false&description=利用python对B站收藏夹排序"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=利用python对B站收藏夹排序&body=Check out this article: http://chantmee.github.io/2021/05/12/%E5%88%A9%E7%94%A8python%E5%AF%B9B%E7%AB%99%E6%94%B6%E8%97%8F%E5%A4%B9%E6%8E%92%E5%BA%8F/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://chantmee.github.io/2021/05/12/%E5%88%A9%E7%94%A8python%E5%AF%B9B%E7%AB%99%E6%94%B6%E8%97%8F%E5%A4%B9%E6%8E%92%E5%BA%8F/&title=利用python对B站收藏夹排序"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://chantmee.github.io/2021/05/12/%E5%88%A9%E7%94%A8python%E5%AF%B9B%E7%AB%99%E6%94%B6%E8%97%8F%E5%A4%B9%E6%8E%92%E5%BA%8F/&title=利用python对B站收藏夹排序"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://chantmee.github.io/2021/05/12/%E5%88%A9%E7%94%A8python%E5%AF%B9B%E7%AB%99%E6%94%B6%E8%97%8F%E5%A4%B9%E6%8E%92%E5%BA%8F/&title=利用python对B站收藏夹排序"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://chantmee.github.io/2021/05/12/%E5%88%A9%E7%94%A8python%E5%AF%B9B%E7%AB%99%E6%94%B6%E8%97%8F%E5%A4%B9%E6%8E%92%E5%BA%8F/&title=利用python对B站收藏夹排序"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://chantmee.github.io/2021/05/12/%E5%88%A9%E7%94%A8python%E5%AF%B9B%E7%AB%99%E6%94%B6%E8%97%8F%E5%A4%B9%E6%8E%92%E5%BA%8F/&name=利用python对B站收藏夹排序&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://chantmee.github.io/2021/05/12/%E5%88%A9%E7%94%A8python%E5%AF%B9B%E7%AB%99%E6%94%B6%E8%97%8F%E5%A4%B9%E6%8E%92%E5%BA%8F/&t=利用python对B站收藏夹排序"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2019-2021
+    Chant Mee
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">主页</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+</body>
+</html>

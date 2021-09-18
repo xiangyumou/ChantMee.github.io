@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="程序使用bash脚本编写的，内部内置了一些日志，全部采用echo命令实现。 使用方法 将用户切换为root. 在脚本所在目录下创建usernames.txt文件并将要创建的用户名存放在该文件里，每个用户占用一行，例如要创建test1、test2这两个账户，那么就在文件中存入：  12test1test2 此外usernames.txt这个文件名可以在脚本最上方的config中进行修改.  在命令行">
+<meta property="og:type" content="article">
+<meta property="og:title" content="利用bash_shell批量添加删除用户">
+<meta property="og:url" content="http://chantmee.github.io/2021/09/14/%E5%88%A9%E7%94%A8bash-shell%E6%89%B9%E9%87%8F%E6%B7%BB%E5%8A%A0%E5%88%A0%E9%99%A4%E7%94%A8%E6%88%B7/index.html">
+<meta property="og:site_name" content="Chant&#39;s Blog">
+<meta property="og:description" content="程序使用bash脚本编写的，内部内置了一些日志，全部采用echo命令实现。 使用方法 将用户切换为root. 在脚本所在目录下创建usernames.txt文件并将要创建的用户名存放在该文件里，每个用户占用一行，例如要创建test1、test2这两个账户，那么就在文件中存入：  12test1test2 此外usernames.txt这个文件名可以在脚本最上方的config中进行修改.  在命令行">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-09-14T03:32:20.000Z">
+<meta property="article:modified_time" content="2021-09-18T09:09:29.320Z">
+<meta property="article:author" content="Chant Mee">
+<meta property="article:tag" content="效率">
+<meta property="article:tag" content="bash">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="管理">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>利用bash_shell批量添加删除用户</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body class="max-width mx-auto px3 ltr">    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" "Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">主页</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇 " href="/2021/09/17/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E5%85%AC%E5%BC%8F%E6%8E%A8%E5%AF%BC/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇 " href="/2021/09/13/%E6%AC%A7%E6%8B%89%E6%96%B9%E6%B3%95%E8%A7%A3%E5%86%B3%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B%E5%88%9D%E5%80%BC%E9%97%AE%E9%A2%98/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部 " href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章 " href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://chantmee.github.io/2021/09/14/%E5%88%A9%E7%94%A8bash-shell%E6%89%B9%E9%87%8F%E6%B7%BB%E5%8A%A0%E5%88%A0%E9%99%A4%E7%94%A8%E6%88%B7/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://chantmee.github.io/2021/09/14/%E5%88%A9%E7%94%A8bash-shell%E6%89%B9%E9%87%8F%E6%B7%BB%E5%8A%A0%E5%88%A0%E9%99%A4%E7%94%A8%E6%88%B7/&text=利用bash_shell批量添加删除用户"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://chantmee.github.io/2021/09/14/%E5%88%A9%E7%94%A8bash-shell%E6%89%B9%E9%87%8F%E6%B7%BB%E5%8A%A0%E5%88%A0%E9%99%A4%E7%94%A8%E6%88%B7/&title=利用bash_shell批量添加删除用户"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://chantmee.github.io/2021/09/14/%E5%88%A9%E7%94%A8bash-shell%E6%89%B9%E9%87%8F%E6%B7%BB%E5%8A%A0%E5%88%A0%E9%99%A4%E7%94%A8%E6%88%B7/&is_video=false&description=利用bash_shell批量添加删除用户"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=利用bash_shell批量添加删除用户&body=Check out this article: http://chantmee.github.io/2021/09/14/%E5%88%A9%E7%94%A8bash-shell%E6%89%B9%E9%87%8F%E6%B7%BB%E5%8A%A0%E5%88%A0%E9%99%A4%E7%94%A8%E6%88%B7/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://chantmee.github.io/2021/09/14/%E5%88%A9%E7%94%A8bash-shell%E6%89%B9%E9%87%8F%E6%B7%BB%E5%8A%A0%E5%88%A0%E9%99%A4%E7%94%A8%E6%88%B7/&title=利用bash_shell批量添加删除用户"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://chantmee.github.io/2021/09/14/%E5%88%A9%E7%94%A8bash-shell%E6%89%B9%E9%87%8F%E6%B7%BB%E5%8A%A0%E5%88%A0%E9%99%A4%E7%94%A8%E6%88%B7/&title=利用bash_shell批量添加删除用户"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://chantmee.github.io/2021/09/14/%E5%88%A9%E7%94%A8bash-shell%E6%89%B9%E9%87%8F%E6%B7%BB%E5%8A%A0%E5%88%A0%E9%99%A4%E7%94%A8%E6%88%B7/&title=利用bash_shell批量添加删除用户"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://chantmee.github.io/2021/09/14/%E5%88%A9%E7%94%A8bash-shell%E6%89%B9%E9%87%8F%E6%B7%BB%E5%8A%A0%E5%88%A0%E9%99%A4%E7%94%A8%E6%88%B7/&title=利用bash_shell批量添加删除用户"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://chantmee.github.io/2021/09/14/%E5%88%A9%E7%94%A8bash-shell%E6%89%B9%E9%87%8F%E6%B7%BB%E5%8A%A0%E5%88%A0%E9%99%A4%E7%94%A8%E6%88%B7/&name=利用bash_shell批量添加删除用户&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://chantmee.github.io/2021/09/14/%E5%88%A9%E7%94%A8bash-shell%E6%89%B9%E9%87%8F%E6%B7%BB%E5%8A%A0%E5%88%A0%E9%99%A4%E7%94%A8%E6%88%B7/&t=利用bash_shell批量添加删除用户"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95"><span class="toc-number">1.</span> <span class="toc-text">使用方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81"><span class="toc-number">2.</span> <span class="toc-text">代码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#centOS%E7%89%88%E6%9C%AC"><span class="toc-number">2.1.</span> <span class="toc-text">centOS版本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ubuntu%E7%89%88%E6%9C%AC"><span class="toc-number">2.2.</span> <span class="toc-text">ubuntu版本</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        利用bash_shell批量添加删除用户
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Chant Mee</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2021-09-14T03:32:20.000Z" itemprop="datePublished">2021-09-14</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/%E5%B7%A5%E5%85%B7/">工具</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/bash/" rel="tag">bash</a>, <a class="tag-link-link" href="/tags/linux/" rel="tag">linux</a>, <a class="tag-link-link" href="/tags/%E6%95%88%E7%8E%87/" rel="tag">效率</a>, <a class="tag-link-link" href="/tags/%E7%AE%A1%E7%90%86/" rel="tag">管理</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>程序使用bash脚本编写的，内部内置了一些日志，全部采用<code>echo</code>命令实现。</p>
+<h2 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h2><ol>
+<li>将用户切换为root.</li>
+<li>在脚本所在目录下创建<em>usernames.txt</em>文件并将要创建的用户名存放在该文件里，每个用户占用一行，例如要创建<em>test1</em>、<em>test2</em>这两个账户，那么就在文件中存入：</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">test1</span><br><span class="line">test2</span><br></pre></td></tr></table></figure>
+<p>此外<em>usernames.txt</em>这个文件名可以在脚本最上方的<em>config</em>中进行修改.</p>
+<ol>
+<li>在命令行中输入<code>bash scriptName.sh -create</code>就可以创建在<em>usernames.txt</em>中存储的账号。</li>
+<li>在命令行中输入<code>bash scriptName.sh -delete</code>就可以删除在<em>usernames.txt</em>中存储的账号.</li>
+</ol>
+<p>其中<code>-create</code>和<code>-delete</code>可以在脚本最上方的<em>config</em>中进行修改.</p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><h3 id="centOS版本"><a href="#centOS版本" class="headerlink" title="centOS版本"></a>centOS版本</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># config</span></span><br><span class="line">userNameFile=<span class="string">&quot;usernames.txt&quot;</span></span><br><span class="line">logStorageFile=<span class="string">&quot;log.txt&quot;</span></span><br><span class="line">create=<span class="string">&quot;-create&quot;</span></span><br><span class="line">delete=<span class="string">&quot;-delete&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># function code</span></span><br><span class="line"><span class="function"><span class="title">addUser</span></span>() &#123;</span><br><span class="line">    userName=<span class="variable">$1</span></span><br><span class="line">        <span class="keyword">if</span> id -u <span class="variable">$userName</span> &gt;/dev/null 2&gt;&amp;1; <span class="keyword">then</span></span><br><span class="line">                data=<span class="string">&quot;Attempted to add an existing user: <span class="variable">$userName</span>&quot;</span></span><br><span class="line">                <span class="built_in">echo</span> <span class="variable">$data</span></span><br><span class="line">                <span class="built_in">echo</span> <span class="variable">$data</span> &gt;&gt; <span class="variable">$logStorageFile</span></span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">                password=$(openssl rand -base64 6)</span><br><span class="line">                useradd -m <span class="variable">$userName</span></span><br><span class="line">                <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$userName</span>:<span class="variable">$password</span>&quot;</span> | chpasswd</span><br><span class="line">                <span class="built_in">echo</span> <span class="string">&quot;added a new user: <span class="variable">$userName</span>&quot;</span></span><br><span class="line">                data=<span class="string">&quot;userName: <span class="variable">$userName</span> password: <span class="variable">$password</span>&quot;</span></span><br><span class="line">                <span class="built_in">echo</span> <span class="variable">$data</span> &gt;&gt; <span class="variable">$logStorageFile</span></span><br><span class="line">        <span class="keyword">fi</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">deleteUser</span></span>() &#123;</span><br><span class="line">    userName=<span class="variable">$1</span></span><br><span class="line">        <span class="keyword">if</span> id -u <span class="variable">$userName</span> &gt;/dev/null 2&gt;&amp;1; <span class="keyword">then</span></span><br><span class="line">                <span class="built_in">echo</span> <span class="string">&quot;deleting <span class="variable">$userName</span>&quot;</span></span><br><span class="line">                userdel -r <span class="variable">$userName</span></span><br><span class="line">                data=<span class="string">&quot;deleted a user: <span class="variable">$userName</span>&quot;</span></span><br><span class="line">                <span class="built_in">echo</span> <span class="variable">$data</span></span><br><span class="line">                <span class="built_in">echo</span> <span class="variable">$data</span> &gt;&gt; <span class="variable">$logStorageFile</span></span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">                <span class="built_in">echo</span> <span class="string">&quot;user <span class="variable">$userName</span> does not exist!&quot;</span></span><br><span class="line">                data=<span class="string">&quot;Attempted to delete a user that did not exist: <span class="variable">$userName</span>&quot;</span></span><br><span class="line">                <span class="built_in">echo</span> <span class="variable">$data</span> &gt;&gt; <span class="variable">$logStorageFile</span></span><br><span class="line">        <span class="keyword">fi</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">help</span></span>() &#123;</span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;</span></span><br><span class="line"><span class="string">        1. Check whether file <span class="variable">$userNameFile</span> is correctly configured.</span></span><br><span class="line"><span class="string">                Example:</span></span><br><span class="line"><span class="string">                testUser1</span></span><br><span class="line"><span class="string">                testUser2</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        2. Check that the options are correctly selected.</span></span><br><span class="line"><span class="string">                Append &#x27;-create&#x27; behind the script name to add the user stored in file <span class="variable">$userNameFile</span>;</span></span><br><span class="line"><span class="string">                Append &#x27;-delete&#x27; behind the script name to delete the user stored in file <span class="variable">$userNameFile</span>.</span></span><br><span class="line"><span class="string">        &quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># main code</span></span><br><span class="line"><span class="keyword">if</span> [ ! -f <span class="variable">$userNameFile</span> ]; <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">help</span></span><br><span class="line">        <span class="built_in">exit</span> 1</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">userNames=$(cat <span class="variable">$userNameFile</span>)</span><br><span class="line">op=<span class="string">&quot;<span class="variable">$&#123;1&#125;</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> $(date) &gt;&gt; <span class="variable">$logStorageFile</span></span><br><span class="line"><span class="keyword">if</span> [[ <span class="variable">$op</span> == <span class="variable">$create</span> || <span class="variable">$op</span> == <span class="variable">$delete</span> ]]</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;operate: <span class="variable">$op</span>&quot;</span> &gt;&gt; <span class="variable">$logStorageFile</span></span><br><span class="line">        <span class="keyword">for</span> userName <span class="keyword">in</span> <span class="variable">$userNames</span></span><br><span class="line">        <span class="keyword">do</span></span><br><span class="line">                <span class="keyword">if</span> [[ <span class="variable">$op</span> == <span class="variable">$create</span> ]]</span><br><span class="line">                <span class="keyword">then</span></span><br><span class="line">                        addUser <span class="variable">$userName</span></span><br><span class="line">                <span class="keyword">else</span></span><br><span class="line">                        deleteUser <span class="variable">$userName</span></span><br><span class="line">                <span class="keyword">fi</span></span><br><span class="line">        <span class="keyword">done</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="variable">$op</span></span><br><span class="line">        <span class="built_in">help</span></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+<h3 id="ubuntu版本"><a href="#ubuntu版本" class="headerlink" title="ubuntu版本"></a>ubuntu版本</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># config</span></span><br><span class="line">userNameFile=<span class="string">&quot;usernames.txt&quot;</span></span><br><span class="line">logStorageFile=<span class="string">&quot;log.txt&quot;</span></span><br><span class="line">create=<span class="string">&quot;-create&quot;</span></span><br><span class="line">delete=<span class="string">&quot;-delete&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># function code</span></span><br><span class="line"><span class="function"><span class="title">addUser</span></span>() &#123;</span><br><span class="line">    	userName=<span class="variable">$1</span></span><br><span class="line">        <span class="keyword">if</span> id -u <span class="variable">$userName</span> &gt;/dev/null 2&gt;&amp;1; <span class="keyword">then</span></span><br><span class="line">                data=<span class="string">&quot;Attempted to add an existing user: <span class="variable">$userName</span>&quot;</span></span><br><span class="line">                <span class="built_in">echo</span> <span class="variable">$data</span></span><br><span class="line">                <span class="built_in">echo</span> <span class="variable">$data</span> &gt;&gt; <span class="variable">$logStorageFile</span></span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">                password=$(openssl rand -base64 6)</span><br><span class="line">                useradd -m <span class="variable">$userName</span></span><br><span class="line">                <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$userName</span>:<span class="variable">$password</span>&quot;</span> | chpasswd</span><br><span class="line">                <span class="built_in">echo</span> <span class="string">&quot;added a new user: <span class="variable">$userName</span>&quot;</span></span><br><span class="line">                data=<span class="string">&quot;userName: <span class="variable">$userName</span> password: <span class="variable">$password</span>&quot;</span></span><br><span class="line">                <span class="built_in">echo</span> <span class="variable">$data</span> &gt;&gt; <span class="variable">$logStorageFile</span></span><br><span class="line">        <span class="keyword">fi</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">deleteUser</span></span>() &#123;</span><br><span class="line">    	userName=<span class="variable">$1</span></span><br><span class="line">        <span class="keyword">if</span> id -u <span class="variable">$userName</span> &gt;/dev/null 2&gt;&amp;1; <span class="keyword">then</span></span><br><span class="line">                <span class="built_in">echo</span> <span class="string">&quot;deleting <span class="variable">$userName</span>&quot;</span></span><br><span class="line">                userdel -r <span class="variable">$userName</span></span><br><span class="line">                data=<span class="string">&quot;deleted a user: <span class="variable">$userName</span>&quot;</span></span><br><span class="line">                <span class="built_in">echo</span> <span class="variable">$data</span></span><br><span class="line">                <span class="built_in">echo</span> <span class="variable">$data</span> &gt;&gt; <span class="variable">$logStorageFile</span></span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">                <span class="built_in">echo</span> <span class="string">&quot;user <span class="variable">$userName</span> does not exist!&quot;</span></span><br><span class="line">                data=<span class="string">&quot;Attempted to delete a user that did not exist: <span class="variable">$userName</span>&quot;</span></span><br><span class="line">                <span class="built_in">echo</span> <span class="variable">$data</span> &gt;&gt; <span class="variable">$logStorageFile</span></span><br><span class="line">        <span class="keyword">fi</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">help</span></span>() &#123;</span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;</span></span><br><span class="line"><span class="string">        1. Check whether file <span class="variable">$userNameFile</span> is correctly configured.</span></span><br><span class="line"><span class="string">                Example:</span></span><br><span class="line"><span class="string">                testUser1</span></span><br><span class="line"><span class="string">                testUser2</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        2. Check that the options are correctly selected.</span></span><br><span class="line"><span class="string">                Append &#x27;-create&#x27; behind the script name to add the user stored in file <span class="variable">$userNameFile</span>;</span></span><br><span class="line"><span class="string">                Append &#x27;-delete&#x27; behind the script name to delete the user stored in file <span class="variable">$userNameFile</span>.</span></span><br><span class="line"><span class="string">        &quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># main code</span></span><br><span class="line"><span class="keyword">if</span> [ ! -f <span class="variable">$userNameFile</span> ]; <span class="keyword">then</span></span><br><span class="line">    	<span class="built_in">help</span></span><br><span class="line">    	<span class="built_in">exit</span> 1</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">userNames=$(cat <span class="variable">$userNameFile</span>)</span><br><span class="line">op=<span class="string">&quot;<span class="variable">$&#123;1&#125;</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> $(date) &gt;&gt; <span class="variable">$logStorageFile</span></span><br><span class="line"><span class="keyword">if</span> [[ <span class="variable">$op</span> == <span class="variable">$create</span> || <span class="variable">$op</span> == <span class="variable">$delete</span> ]]</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;operate: <span class="variable">$op</span>&quot;</span> &gt;&gt; <span class="variable">$logStorageFile</span></span><br><span class="line">        <span class="keyword">for</span> userName <span class="keyword">in</span> <span class="variable">$userNames</span></span><br><span class="line">        <span class="keyword">do</span></span><br><span class="line">                <span class="keyword">if</span> [[ <span class="variable">$op</span> == <span class="variable">$create</span> ]]</span><br><span class="line">                <span class="keyword">then</span></span><br><span class="line">                        addUser <span class="variable">$userName</span></span><br><span class="line">                <span class="keyword">else</span></span><br><span class="line">                        deleteUser <span class="variable">$userName</span></span><br><span class="line">                <span class="keyword">fi</span></span><br><span class="line">        <span class="keyword">done</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="variable">$op</span></span><br><span class="line">        <span class="built_in">help</span></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">主页</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95"><span class="toc-number">1.</span> <span class="toc-text">使用方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81"><span class="toc-number">2.</span> <span class="toc-text">代码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#centOS%E7%89%88%E6%9C%AC"><span class="toc-number">2.1.</span> <span class="toc-text">centOS版本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ubuntu%E7%89%88%E6%9C%AC"><span class="toc-number">2.2.</span> <span class="toc-text">ubuntu版本</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://chantmee.github.io/2021/09/14/%E5%88%A9%E7%94%A8bash-shell%E6%89%B9%E9%87%8F%E6%B7%BB%E5%8A%A0%E5%88%A0%E9%99%A4%E7%94%A8%E6%88%B7/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://chantmee.github.io/2021/09/14/%E5%88%A9%E7%94%A8bash-shell%E6%89%B9%E9%87%8F%E6%B7%BB%E5%8A%A0%E5%88%A0%E9%99%A4%E7%94%A8%E6%88%B7/&text=利用bash_shell批量添加删除用户"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://chantmee.github.io/2021/09/14/%E5%88%A9%E7%94%A8bash-shell%E6%89%B9%E9%87%8F%E6%B7%BB%E5%8A%A0%E5%88%A0%E9%99%A4%E7%94%A8%E6%88%B7/&title=利用bash_shell批量添加删除用户"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://chantmee.github.io/2021/09/14/%E5%88%A9%E7%94%A8bash-shell%E6%89%B9%E9%87%8F%E6%B7%BB%E5%8A%A0%E5%88%A0%E9%99%A4%E7%94%A8%E6%88%B7/&is_video=false&description=利用bash_shell批量添加删除用户"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=利用bash_shell批量添加删除用户&body=Check out this article: http://chantmee.github.io/2021/09/14/%E5%88%A9%E7%94%A8bash-shell%E6%89%B9%E9%87%8F%E6%B7%BB%E5%8A%A0%E5%88%A0%E9%99%A4%E7%94%A8%E6%88%B7/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://chantmee.github.io/2021/09/14/%E5%88%A9%E7%94%A8bash-shell%E6%89%B9%E9%87%8F%E6%B7%BB%E5%8A%A0%E5%88%A0%E9%99%A4%E7%94%A8%E6%88%B7/&title=利用bash_shell批量添加删除用户"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://chantmee.github.io/2021/09/14/%E5%88%A9%E7%94%A8bash-shell%E6%89%B9%E9%87%8F%E6%B7%BB%E5%8A%A0%E5%88%A0%E9%99%A4%E7%94%A8%E6%88%B7/&title=利用bash_shell批量添加删除用户"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://chantmee.github.io/2021/09/14/%E5%88%A9%E7%94%A8bash-shell%E6%89%B9%E9%87%8F%E6%B7%BB%E5%8A%A0%E5%88%A0%E9%99%A4%E7%94%A8%E6%88%B7/&title=利用bash_shell批量添加删除用户"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://chantmee.github.io/2021/09/14/%E5%88%A9%E7%94%A8bash-shell%E6%89%B9%E9%87%8F%E6%B7%BB%E5%8A%A0%E5%88%A0%E9%99%A4%E7%94%A8%E6%88%B7/&title=利用bash_shell批量添加删除用户"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://chantmee.github.io/2021/09/14/%E5%88%A9%E7%94%A8bash-shell%E6%89%B9%E9%87%8F%E6%B7%BB%E5%8A%A0%E5%88%A0%E9%99%A4%E7%94%A8%E6%88%B7/&name=利用bash_shell批量添加删除用户&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://chantmee.github.io/2021/09/14/%E5%88%A9%E7%94%A8bash-shell%E6%89%B9%E9%87%8F%E6%B7%BB%E5%8A%A0%E5%88%A0%E9%99%A4%E7%94%A8%E6%88%B7/&t=利用bash_shell批量添加删除用户"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2019-2021
+    Chant Mee
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">主页</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+</body>
+</html>
