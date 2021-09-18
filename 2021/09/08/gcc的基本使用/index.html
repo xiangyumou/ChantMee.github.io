@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="编译gcc文件在hello_world.c文件中有如下代码： 123456#include &lt;stdio.h&gt;int main() &amp;#123;    int i;    printf(&quot;Hello world!\n&quot;);&amp;#125; 在终端中输入： 1gcc hello_world.c 这样hello_world.c文件所在的文件夹中编译出了叫做a.out的可执行">
+<meta property="og:type" content="article">
+<meta property="og:title" content="gcc的基本使用">
+<meta property="og:url" content="http://chantmee.github.io/2021/09/08/gcc%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:site_name" content="Chant&#39;s Blog">
+<meta property="og:description" content="编译gcc文件在hello_world.c文件中有如下代码： 123456#include &lt;stdio.h&gt;int main() &amp;#123;    int i;    printf(&quot;Hello world!\n&quot;);&amp;#125; 在终端中输入： 1gcc hello_world.c 这样hello_world.c文件所在的文件夹中编译出了叫做a.out的可执行">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-09-08T03:58:20.000Z">
+<meta property="article:modified_time" content="2021-09-18T08:39:43.464Z">
+<meta property="article:author" content="Chant Mee">
+<meta property="article:tag" content="gcc,效率,编译器">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>gcc的基本使用</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" "Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">主页</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇 " href="/2021/09/18/vim%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇 " href="/2021/08/28/ACM%E7%AE%97%E6%B3%95%E6%A8%A1%E7%89%88/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部 " href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章 " href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://chantmee.github.io/2021/09/08/gcc%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://chantmee.github.io/2021/09/08/gcc%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/&text=gcc的基本使用"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://chantmee.github.io/2021/09/08/gcc%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/&title=gcc的基本使用"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://chantmee.github.io/2021/09/08/gcc%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/&is_video=false&description=gcc的基本使用"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=gcc的基本使用&body=Check out this article: http://chantmee.github.io/2021/09/08/gcc%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://chantmee.github.io/2021/09/08/gcc%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/&title=gcc的基本使用"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://chantmee.github.io/2021/09/08/gcc%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/&title=gcc的基本使用"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://chantmee.github.io/2021/09/08/gcc%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/&title=gcc的基本使用"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://chantmee.github.io/2021/09/08/gcc%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/&title=gcc的基本使用"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://chantmee.github.io/2021/09/08/gcc%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/&name=gcc的基本使用&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://chantmee.github.io/2021/09/08/gcc%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/&t=gcc的基本使用"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%96%E8%AF%91gcc%E6%96%87%E4%BB%B6"><span class="toc-number">1.</span> <span class="toc-text">编译gcc文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%A9gcc%E8%BE%93%E5%87%BA%E8%AD%A6%E5%91%8A"><span class="toc-number">2.</span> <span class="toc-text">让gcc输出警告</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A8%8B%E5%BA%8F%E4%BC%98%E5%8C%96"><span class="toc-number">3.</span> <span class="toc-text">程序优化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#O2%E4%BC%98%E5%8C%96"><span class="toc-number">3.1.</span> <span class="toc-text">-O2优化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Os%E4%BC%98%E5%8C%96"><span class="toc-number">3.2.</span> <span class="toc-text">-Os优化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Og%E4%BC%98%E5%8C%96"><span class="toc-number">3.3.</span> <span class="toc-text">-Og优化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#O0%E4%BC%98%E5%8C%96"><span class="toc-number">3.4.</span> <span class="toc-text">-O0优化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B"><span class="toc-number">3.5.</span> <span class="toc-text">示例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8Bgcc%E7%89%88%E6%9C%AC"><span class="toc-number">4.</span> <span class="toc-text">查看gcc版本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Gcov%E2%80%94%E2%80%94%E4%BB%A3%E7%A0%81%E8%A6%86%E7%9B%96%E7%8E%87%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7"><span class="toc-number">5.</span> <span class="toc-text">Gcov——代码覆盖率分析工具</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95"><span class="toc-number">5.1.</span> <span class="toc-text">软件测试</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E4%BC%98%E5%8C%96"><span class="toc-number">5.2.</span> <span class="toc-text">代码优化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Gcov%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="toc-number">5.3.</span> <span class="toc-text">Gcov的使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%BD%E8%B1%A1"><span class="toc-number">5.4.</span> <span class="toc-text">抽象</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%9A%E8%BF%87%E6%B1%87%E7%BC%96%E4%BA%86%E8%A7%A3%E7%BC%96%E8%AF%91%E5%99%A8%E7%9A%84%E4%BC%98%E5%8C%96"><span class="toc-number">6.</span> <span class="toc-text">通过汇编了解编译器的优化</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        gcc的基本使用
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Chant Mee</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2021-09-08T03:58:20.000Z" itemprop="datePublished">2021-09-08</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/gcc-%E6%95%88%E7%8E%87-%E7%BC%96%E8%AF%91%E5%99%A8/" rel="tag">gcc,效率,编译器</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="编译gcc文件"><a href="#编译gcc文件" class="headerlink" title="编译gcc文件"></a>编译gcc文件</h2><p>在<code>hello_world.c</code>文件中有如下代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Hello world!\n&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在终端中输入：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc hello_world.c</span><br></pre></td></tr></table></figure>
+<p>这样<code>hello_world.c</code>文件所在的文件夹中编译出了叫做<code>a.out</code>的可执行程序，但是如果我们不想让编译出来的可执行程序叫做<code>a.out</code>，我们可以通过<code>-o</code>选项来指定编译出来的可执行文件的名字：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc hello_world.c -o hello_world</span><br></pre></td></tr></table></figure>
+<p>这样我们编译出来得到的可执行文件名就是<code>hello_world</code>，我们可以通过<code>./hello_world</code>来执行它。</p>
+<h2 id="让gcc输出警告"><a href="#让gcc输出警告" class="headerlink" title="让gcc输出警告"></a>让gcc输出警告</h2><p>在默认情况下gcc会忽略一些低等级的警告，但这些警告往往能帮助我们找到程序中的问题。通过在编译的时候添加<code>-Wall</code>就可以让gcc输出全部的警告信息，按实际情况对程序进行修改。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -Wall hello_world.c -o hello_world</span><br></pre></td></tr></table></figure>
+<p>这时程序会报warning：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">hello_world.c: In function ‘main’:</span><br><span class="line">hello_world.c:6:9: warning: unused variable ‘i’ [-Wunused-variable]</span><br><span class="line">     int i;</span><br><span class="line">         ^</span><br></pre></td></tr></table></figure>
+<p>这个警告是说，我们声明了变量<code>i</code>但是却没有使用它。</p>
+<h2 id="程序优化"><a href="#程序优化" class="headerlink" title="程序优化"></a>程序优化</h2><p>在gcc中有一个<code>-O</code>选项，后面会跟一个字符，例如<code>-O2</code>,<code>-Os</code>,<code>-O0</code>,<code>-Og</code>等代表不同的优化等级。不同的优化等级有不同的侧重点。对于<code>-O0</code>,<code>-O1</code>,<code>-O2</code>,<code>-O3</code>这四种优化大家可以这样认为，在大部分情况下，数字越大优化等级越高，程序运行效率越高，但是编译出来的文件大小也会越大，可以理解为用空间换时间。</p>
+<h3 id="O2优化"><a href="#O2优化" class="headerlink" title="-O2优化"></a><code>-O2</code>优化</h3><p><code>-O2</code>优化非常好的平衡了程序的性能与程序最后的大小；</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -Wall -O2 hello_world.c -o hello_world</span><br></pre></td></tr></table></figure>
+<h3 id="Os优化"><a href="#Os优化" class="headerlink" title="-Os优化"></a><code>-Os</code>优化</h3><p><code>-Os</code>优化与<code>-O2</code>相似，它只是把一些通过增大程序大小从而提高程序运行速度的优化手段给禁用了；</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -Wall -Os hello_world.c -o hello_world</span><br></pre></td></tr></table></figure>
+<h3 id="Og优化"><a href="#Og优化" class="headerlink" title="-Og优化"></a><code>-Og</code>优化</h3><p>通常在在开启优化之后，源码中的一些代码可能被编译器优化掉了，那么这些代码在最终的程序中并不存在。但有时程序就是在开启优化后才出问题，而不开优化程序运行的非常正常，那么这时候我们想使用一些工具来对程序进行debug，但是源代码与最终的程序却对应不起来，这就给debug造成极大的困扰。</p>
+<p>使用<code>-Og</code>优化就可以解决这个问题，这会告诉编译器仅仅优化那些不会导致源码中的代码被优化掉的内容从而为debug提供便利。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -Wall -g -Og hello_world.c -o hello_world</span><br></pre></td></tr></table></figure>
+<h3 id="O0优化"><a href="#O0优化" class="headerlink" title="-O0优化"></a><code>-O0</code>优化</h3><p><code>-O0</code>优化的优化程度比<code>-Og</code>还要低，它几乎不对代码进行任何的优化，这也是编译器默认的优化等级，就是说如果没有标注用什么优化方式的话，编译器会默认使用这个等级的优化。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -Wall -g -O0 hello_world.c -o hello_world</span><br></pre></td></tr></table></figure>
+<h3 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h3><p>我们在<code>test.c</code>文件中写下如下代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N = <span class="number">100000</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; N; i++) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; N; j++) &#123;</span><br><span class="line">            sum += j;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>, sum);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在终端中不开优化，编译运行该代码：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(base) chant@mouxiangyus-MacBook-Pro ~ % gcc a.c -o a</span><br><span class="line">(base) chant@mouxiangyus-MacBook-Pro ~ % time ./a</span><br><span class="line">-1614091392./a  6.49s user 0.01s system 99% cpu 6.514 total</span><br></pre></td></tr></table></figure>
+<p>在终端中开<code>-O2</code>优化，编译运行该代码：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(base) chant@mouxiangyus-MacBook-Pro ~ % gcc -O2 a.c -o a</span><br><span class="line">(base) chant@mouxiangyus-MacBook-Pro ~ % time ./a</span><br><span class="line">-1614091392./a  0.00s user 0.00s system 58% cpu 0.006 total</span><br></pre></td></tr></table></figure>
+<p>可以看到第一份代码没开优化运行了6.49s而第二份代码开了<code>-O2</code>优化的程序因为跑的太快显示只用了0.00s，可以说是巨幅优化。后面我们会查看编译器优化过后该代码的汇编代码，那时候就知道为什么会有如此大幅度的优化。</p>
+<h2 id="查看gcc版本"><a href="#查看gcc版本" class="headerlink" title="查看gcc版本"></a>查看gcc版本</h2><p>当查阅gcc的官方文档的时候，我们必须知道我们用的gcc是哪一个版本才能正确的查看，因为不同版本的gcc可能会有不同的特性。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -v</span><br></pre></td></tr></table></figure>
+<p>例如我的电脑中输出：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Using built-in specs.</span><br><span class="line">COLLECT_GCC=gcc</span><br><span class="line">COLLECT_LTO_WRAPPER=/usr/libexec/gcc/x86_64-redhat-linux/8/lto-wrapper</span><br><span class="line">OFFLOAD_TARGET_NAMES=nvptx-none</span><br><span class="line">OFFLOAD_TARGET_DEFAULT=1</span><br><span class="line">Target: x86_64-redhat-linux</span><br><span class="line">Configured with: ../configure --enable-bootstrap --enable-languages=c,c++,fortran,lto --prefix=/usr --mandir=/usr/share/man --infodir=/usr/share/info --with-bugurl=http://bugzilla.redhat.com/bugzilla --enable-shared --enable-threads=posix --enable-checking=release --enable-multilib --with-system-zlib --enable-__cxa_atexit --disable-libunwind-exceptions --enable-gnu-unique-object --enable-linker-build-id --with-gcc-major-version-only --with-linker-hash-style=gnu --enable-plugin --enable-initfini-array --with-isl --disable-libmpx --enable-offload-targets=nvptx-none --without-cuda-driver --enable-gnu-indirect-function --enable-cet --with-tune=generic --with-arch_32=x86-64 --build=x86_64-redhat-linux</span><br><span class="line">Thread model: posix</span><br><span class="line">gcc version 8.4.1 20200928 (Red Hat 8.4.1-1) (GCC) </span><br></pre></td></tr></table></figure>
+<p>那么就知道我电脑上的gcc版本为<code>8.4.1</code>，那么就可以去官网上查找关于该版本的文档。</p>
+<p><a target="_blank" rel="noopener" href="https://gcc.gnu.org">gcc官方文档</a></p>
+<h2 id="Gcov——代码覆盖率分析工具"><a href="#Gcov——代码覆盖率分析工具" class="headerlink" title="Gcov——代码覆盖率分析工具"></a>Gcov——代码覆盖率分析工具</h2><p>这个工具可以让我们知道源码中每一行代码、每一个分支都执行了多少次。这个功能应用的场景主要是软件测试和代码优化。</p>
+<h3 id="软件测试"><a href="#软件测试" class="headerlink" title="软件测试"></a>软件测试</h3><p>所谓代码测试就是，我们写了一个函数，它有一定的功能，我们想象这个函数的各个应用场景，从而根据这些场景设计一些数据测试这个函数在各个场景下能否正常运行并返回我们想要的值，这个时候不得不提软件测试中的一个笑话：</p>
+<blockquote>
+<p>一个测试工程师走进一家酒吧，要了一杯啤酒<br>一个测试工程师走进一家酒吧，要了一杯咖啡<br>一个测试工程师走进一家酒吧，要了0.7杯啤酒<br>一个测试工程师走进一家酒吧，要了-1杯啤酒<br>一个测试工程师走进一家酒吧，要了2^32杯啤酒<br>一个测试工程师走进一家酒吧，要了一杯洗脚水<br>一个测试工程师走进一家酒吧，要了一杯蜥蜴<br>一个测试工程师走进一家酒吧，要了一份asdfQwer@24dg!&amp;*(@<br>一个测试工程师走进一家酒吧，什么也没要<br>一个测试工程师走进一家酒吧，又走出去又从窗户进来又从后门出去从下水道钻进来<br>一个测试工程师走进一家酒吧，又走出去又进来又出去又进来又出去，最后在外面把老板打了一顿<br>一个测试工程师走进一<br>一个测试工程师走进一家酒吧，要了一杯烫烫烫的锟斤拷<br>一个测试工程师走进一家酒吧，要了NaN杯Null<br>1T测试工程师冲进一家酒吧，要了500T啤酒咖啡洗脚水野猫狼牙棒奶茶<br>1T测试工程师把酒吧拆了<br>一个测试工程师化装成老板走进一家酒吧，要了500杯啤酒并且不付钱<br>一万个测试工程师在酒吧门外呼啸而过<br>一个测试工程师走进一家酒吧，要了一杯啤酒’;DROP TABLE 酒吧<br>测试工程师们满意地离开了酒吧。然后一名顾客点了一份炒饭，酒吧炸了</p>
+</blockquote>
+<p>那么Gcov工具在软件测试中有什么用处呢？</p>
+<p>我们写一个简单的功能可能在一个函数中就能实现， 那么软件测试就只需要对这个函数直接测试就可以。但在大多数情况下一个函数的功能并不是一个简单的函数就能实现，他需要把多个小功能组合成一个大功能从而实现抽象，这时候就可以使用这个工具，他可以很直观的让我们看到当前这组测试数据是否覆盖了全部的代码，如果没有，那么有哪些代码没有被覆盖，这样就可以针对这些没有被覆盖的代码再设计出一组数据从而进行测试。</p>
+<h3 id="代码优化"><a href="#代码优化" class="headerlink" title="代码优化"></a>代码优化</h3><p>我们可以通过gcov工具查看代码中哪些代码被执行的次数非常多，这样对这些代码进行优化可以提高程序运行的效率。</p>
+<h3 id="Gcov的使用"><a href="#Gcov的使用" class="headerlink" title="Gcov的使用"></a>Gcov的使用</h3><p>如果要使用gcov工具，那么在使用gcc工具对代码进行编译的时候需要加上一下两个选项<code>-fprofile-arcs</code>以及<code>-ftest-coverage</code>，这两个选项会分别产生<code>gcon</code>文件和以及运行程序后的<code>gcda</code>文件，原理不详…</p>
+<p>现在在<code>test.c</code>文件下写下一下代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;time.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">f1</span><span class="params">()</span> </span>&#123; sum += <span class="number">1</span>; &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">f2</span><span class="params">()</span> </span>&#123; sum += <span class="number">2</span>; &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	srand(time(<span class="number">0</span>));</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">1000</span>; i++) &#123;</span><br><span class="line">		<span class="keyword">if</span> (rand() &amp; <span class="number">1</span>) f1();</span><br><span class="line">		<span class="keyword">else</span> f2();</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>, sum);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这段代码的意思是说我们循环1000次，每次随机一个数字，如果这个数字是奇数那么就调用函数<code>f1</code>否则如果是偶数就调用函数<code>f2</code>。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -fprofile-arcs -ftest-coverage test.c -o test</span><br></pre></td></tr></table></figure>
+<p>可以使用<code>ls</code>命令查看当前目录下的内容：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(base) chant@mouxiangyus-MacBook-Pro test % gcc -fprofile-arcs -ftest-coverage test.c -o test</span><br><span class="line">(base) chant@mouxiangyus-MacBook-Pro test % ls   </span><br><span class="line">test		test.c		test.gcno</span><br></pre></td></tr></table></figure>
+<p>会发现多了一个<code>test.gcno</code>文件，之后运行<code>test</code>，再使用<code>ls</code>命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(base) chant@mouxiangyus-MacBook-Pro test % ./test</span><br><span class="line"><span class="meta">1492%</span><span class="bash"></span></span><br><span class="line"><span class="bash">(base) chant@mouxiangyus-MacBook-Pro <span class="built_in">test</span> % ls</span> </span><br><span class="line">test		test.c		test.gcda	test.gcno</span><br></pre></td></tr></table></figure>
+<p>会发现又多了一个文件<code>test.gcda</code>，这样以上准备工作就完毕了。</p>
+<p>再执行下面命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcov test.c</span><br></pre></td></tr></table></figure>
+<p>这样就在当前目录下生成了一个<code>test.c.gcov</code>文件，使用vim或者cat等就可以看到每行代码被执行的次数：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">    -:    <span class="number">0</span>:Source:test.c</span><br><span class="line">    -:    <span class="number">0</span>:Graph:test.gcno</span><br><span class="line">    -:    <span class="number">0</span>:Data:test.gcda</span><br><span class="line">    -:    <span class="number">0</span>:Runs:<span class="number">1</span></span><br><span class="line">    -:    <span class="number">1</span>:<span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line">    -:    <span class="number">2</span>:<span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line">    -:    <span class="number">3</span>:<span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;time.h&gt;</span></span></span><br><span class="line">    -:    <span class="number">4</span>:</span><br><span class="line">    -:    <span class="number">5</span>:<span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">    -:    <span class="number">6</span>:</span><br><span class="line">  <span class="number">508</span>:    <span class="number">7</span>:<span class="function"><span class="keyword">int</span> <span class="title">f1</span><span class="params">()</span> </span>&#123; sum += <span class="number">1</span>; &#125;</span><br><span class="line">    -:    <span class="number">8</span>:</span><br><span class="line">  <span class="number">492</span>:    <span class="number">9</span>:<span class="function"><span class="keyword">int</span> <span class="title">f2</span><span class="params">()</span> </span>&#123; sum += <span class="number">2</span>; &#125;</span><br><span class="line">    -:   <span class="number">10</span>:</span><br><span class="line">    <span class="number">1</span>:   <span class="number">11</span>:<span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="number">1</span>:   <span class="number">12</span>:	srand(time(<span class="number">0</span>));</span><br><span class="line">  <span class="number">508</span>:   <span class="number">13</span>:	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">1000</span>; i++) &#123;</span><br><span class="line"> <span class="number">1000</span>:   <span class="number">14</span>:		<span class="keyword">if</span> (rand() &amp; <span class="number">1</span>) f1();</span><br><span class="line">#####:   <span class="number">15</span>:		<span class="keyword">else</span> f2();</span><br><span class="line">    -:   <span class="number">16</span>:	&#125;</span><br><span class="line">    <span class="number">1</span>:   <span class="number">17</span>:    <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>, sum);</span><br><span class="line">    <span class="number">1</span>:   <span class="number">18</span>:	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    -:   <span class="number">19</span>:&#125;</span><br></pre></td></tr></table></figure>
+<p>最前面的数字就是每行代码被执行的次数，<code>-</code>表示为空代码不执行，#####代表代码没有被执行。</p>
+<p>需要注意的是这个代码执行次数是会累加的，也就是说如果你没有删除<code>gcda</code>文件就重新运行了程序并用了<code>gcov</code>命令，那么每一行代码的执行次数是这两次程序运行时该行代码运行次数的累加，而不是单独的第二次运行时的次数：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line">(base) chant@mouxiangyus-MacBook-Pro test % ./test  </span><br><span class="line"><span class="meta">1490%</span><span class="bash">                                                                           (base) chant@mouxiangyus-MacBook-Pro <span class="built_in">test</span> % gcov test.c</span></span><br><span class="line">File &#x27;test.c&#x27;</span><br><span class="line">Lines executed:88.89% of 9</span><br><span class="line">Creating &#x27;test.c.gcov&#x27;</span><br><span class="line"></span><br><span class="line">(base) chant@mouxiangyus-MacBook-Pro test % cat test.c.gcov </span><br><span class="line">        -:    0:Source:test.c</span><br><span class="line">        -:    0:Graph:test.gcno</span><br><span class="line">        -:    0:Data:test.gcda</span><br><span class="line">        -:    0:Runs:3</span><br><span class="line">        -:    1:#include &lt;stdio.h&gt;</span><br><span class="line">        -:    2:#include &lt;stdlib.h&gt;</span><br><span class="line">        -:    3:#include &lt;time.h&gt;</span><br><span class="line">        -:    4:</span><br><span class="line">        -:    5:int sum = 0;</span><br><span class="line">        -:    6:</span><br><span class="line">     1525:    7:int f1() &#123; sum += 1; &#125;</span><br><span class="line">        -:    8:</span><br><span class="line">     1475:    9:int f2() &#123; sum += 2; &#125;</span><br><span class="line">        -:   10:</span><br><span class="line">        3:   11:int main() &#123;</span><br><span class="line">        3:   12:	srand(time(0));</span><br><span class="line">     1525:   13:	for (int i = 0; i &lt; 1000; i++) &#123;</span><br><span class="line">     3000:   14:		if (rand() &amp; 1) f1();</span><br><span class="line">    #####:   15:		else f2();</span><br><span class="line">        -:   16:	&#125;</span><br><span class="line">        3:   17:    printf(&quot;%d&quot;, sum);</span><br><span class="line">        3:   18:	return 0;</span><br><span class="line">        -:   19:&#125;</span><br><span class="line">(base) chant@mouxiangyus-MacBook-Pro test % ./test         </span><br><span class="line"><span class="meta">1508%</span><span class="bash"> </span>                                                                          </span><br><span class="line">(base) chant@mouxiangyus-MacBook-Pro test % gcov test.c    </span><br><span class="line">File &#x27;test.c&#x27;</span><br><span class="line">Lines executed:88.89% of 9</span><br><span class="line">Creating &#x27;test.c.gcov&#x27;</span><br><span class="line"></span><br><span class="line">(base) chant@mouxiangyus-MacBook-Pro test % cat test.c.gcov</span><br><span class="line">        -:    0:Source:test.c</span><br><span class="line">        -:    0:Graph:test.gcno</span><br><span class="line">        -:    0:Data:test.gcda</span><br><span class="line">        -:    0:Runs:4</span><br><span class="line">        -:    1:#include &lt;stdio.h&gt;</span><br><span class="line">        -:    2:#include &lt;stdlib.h&gt;</span><br><span class="line">        -:    3:#include &lt;time.h&gt;</span><br><span class="line">        -:    4:</span><br><span class="line">        -:    5:int sum = 0;</span><br><span class="line">        -:    6:</span><br><span class="line">     2017:    7:int f1() &#123; sum += 1; &#125;</span><br><span class="line">        -:    8:</span><br><span class="line">     1983:    9:int f2() &#123; sum += 2; &#125;</span><br><span class="line">        -:   10:</span><br><span class="line">        4:   11:int main() &#123;</span><br><span class="line">        4:   12:	srand(time(0));</span><br><span class="line">     2017:   13:	for (int i = 0; i &lt; 1000; i++) &#123;</span><br><span class="line">     4000:   14:		if (rand() &amp; 1) f1();</span><br><span class="line">    #####:   15:		else f2();</span><br><span class="line">        -:   16:	&#125;</span><br><span class="line">        4:   17:    printf(&quot;%d&quot;, sum);</span><br><span class="line">        4:   18:	return 0;</span><br><span class="line">        -:   19:&#125;</span><br></pre></td></tr></table></figure>
+<p>会发现第二次执行上面一套命令，if语句那里被执行了2017次，原因就是该代码运行次数做了累加。</p>
+<h3 id="抽象"><a href="#抽象" class="headerlink" title="抽象"></a>抽象</h3><p>这里我非常想和大家分享一下在计算机科学中<strong>“抽象”</strong>这一概念，我感觉这个概念将计算机中的优雅和优美体现的淋漓尽致！！！！</p>
+<p>这里借用维基百科上对抽象的定义：</p>
+<blockquote>
+<p>在计算机科学中，抽象化是将数据与程序，以它的语义来呈现出它的外观，但是隐藏起它的实现细节。</p>
+</blockquote>
+<p>这个定义非常的死板，这里可以给大家举一个例子：</p>
+<p>这个例子是关于Hello world的。我们知道晶体管，对晶体管进行抽象得到了门电路；对门电路抽象实现了CPU并得到了机器语言；对机器语言进行抽象得到了汇编语言；对汇编语言抽象得到了高级语言；对高级语言进行抽象得到了一些常用的函数，当然在实际中它抽象的层数要比我刚刚说的要多得多。那么现在我们打下<code>printf(&quot;Hello world!\n&quot;);</code>这一行代码，运行并在终端中显示出<code>Hello world!</code>，支持这一个简单的操作进行的是从晶体管到高级语言语言了一整套抽象。</p>
+<p>那这里美体现在哪里呢？我们打印出这一行字可能需要调用几万个晶体管，几千个门电路，几百条机器语言，几十条汇编语言最终抽象成这简简单单的一个函数，大家可以想象一下这个过程，这是一个非常壮丽的过程！</p>
+<p>这种例子在计算机科学中非常多，再比如说TCP/IP协议，它有四层模型，最底层是数据链路层，之后每一层都是对上一层的抽象得到的；再比如说mysql数据库执行sql语句，其实mysql数据库是支持并发执行sql语句的，但是它通过各种抽象最终抽象出一个<code>execute</code>函数，我们可以不断的去执行sql语句而不必去理会它在底层是如何实现并发的。</p>
+<h2 id="通过汇编了解编译器的优化"><a href="#通过汇编了解编译器的优化" class="headerlink" title="通过汇编了解编译器的优化"></a>通过汇编了解编译器的优化</h2><p>我们在<code>test.c</code>文件中写下以下代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">int</span> j = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++) &#123;</span><br><span class="line">		j = i + <span class="number">1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>观察上面的代码会发现，我们这段代码计算了一个值，最终这个值被存储在变量j中。但是，由于在计算到计算结束的过程中没有外部的函数使用该变量，也没有将值赋给其他变量供其他地方使用，所以四舍五入我们可以认为这段代码和下面这段代码是等价的：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>但是编译器最终编译出来的代码是什么样子的呢？</p>
+<p>我们可以通过-S选项让编译器生成汇编代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -O0 -S test.c</span><br></pre></td></tr></table></figure>
+<p>上面我打开了最低等级的编译器优化。</p>
+<p><code>ls</code>会发现在当前目录下生成了一个<code>test.S</code>的文件，我们可以通过vim打开它：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line">	.text</span><br><span class="line">	.globl _main</span><br><span class="line">_main:</span><br><span class="line">LFB0:</span><br><span class="line">	pushq	%rbp</span><br><span class="line">LCFI0:</span><br><span class="line">	movq	%rsp, %rbp</span><br><span class="line">LCFI1:</span><br><span class="line">	movl	$0, -4(%rbp)</span><br><span class="line">	movl	$0, -8(%rbp)</span><br><span class="line">	movl	$0, -4(%rbp)</span><br><span class="line">	jmp	L2</span><br><span class="line">L3:</span><br><span class="line">	movl	-4(%rbp), %eax</span><br><span class="line">	addl	$1, %eax</span><br><span class="line">	movl	%eax, -8(%rbp)</span><br><span class="line">	addl	$1, -4(%rbp)</span><br><span class="line">L2:</span><br><span class="line">	cmpl	$4, -4(%rbp)</span><br><span class="line">	jle	L3</span><br><span class="line">	movl	$0, %eax</span><br><span class="line">	popq	%rbp</span><br><span class="line">LCFI2:</span><br><span class="line">	ret</span><br><span class="line">LFE0:</span><br><span class="line">	.section __TEXT,__eh_frame,coalesced,no_toc+strip_static_syms+live_support</span><br><span class="line">EH_frame1:</span><br><span class="line">	.set L$set$0,LECIE1-LSCIE1</span><br><span class="line">	.long L$set$0</span><br><span class="line">LSCIE1:</span><br><span class="line">	.long	0</span><br><span class="line">	.byte	0x1</span><br><span class="line">	.ascii &quot;zR\0&quot;</span><br><span class="line">	.uleb128 0x1</span><br><span class="line">	.sleb128 -8</span><br><span class="line">	.byte	0x10</span><br><span class="line">	.uleb128 0x1</span><br><span class="line">	.byte	0x10</span><br><span class="line">	.byte	0xc</span><br><span class="line">	.uleb128 0x7</span><br><span class="line">	.uleb128 0x8</span><br><span class="line">	.byte	0x90</span><br><span class="line">	.uleb128 0x1</span><br><span class="line">	.align 3</span><br><span class="line">LECIE1:</span><br><span class="line">LSFDE1:</span><br><span class="line">	.set L$set$1,LEFDE1-LASFDE1</span><br><span class="line">	.long L$set$1</span><br><span class="line">LASFDE1:</span><br><span class="line">	.long	LASFDE1-EH_frame1</span><br><span class="line">	.quad	LFB0-.</span><br><span class="line">	.set L$set$2,LFE0-LFB0</span><br><span class="line">	.quad L$set$2</span><br><span class="line">	.uleb128 0</span><br><span class="line">	.byte	0x4</span><br><span class="line">	.set L$set$3,LCFI0-LFB0</span><br><span class="line">	.long L$set$3</span><br><span class="line">	.byte	0xe</span><br><span class="line">	.uleb128 0x10</span><br><span class="line">	.byte	0x86</span><br><span class="line">	.uleb128 0x2</span><br><span class="line">	.byte	0x4</span><br><span class="line">	.set L$set$4,LCFI1-LCFI0</span><br><span class="line">	.long L$set$4</span><br><span class="line">	.byte	0xd</span><br><span class="line">	.uleb128 0x6</span><br><span class="line">	.byte	0x4</span><br><span class="line">	.set L$set$5,LCFI2-LCFI1</span><br><span class="line">	.long L$set$5</span><br><span class="line">	.byte	0xc</span><br><span class="line">	.uleb128 0x7</span><br><span class="line">	.uleb128 0x8</span><br><span class="line">	.align 3</span><br><span class="line">LEFDE1:</span><br><span class="line">	.ident	&quot;GCC: (Homebrew GCC 11.2.0) 11.2.0&quot;</span><br><span class="line">	.subsections_via_symbols</span><br></pre></td></tr></table></figure>
+<p>这里我们重点关注的是从<code>_main:</code>到<code>LCFI2:</code>这之间的代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">_main:</span><br><span class="line">LFB0:</span><br><span class="line">	pushq	%rbp</span><br><span class="line">LCFI0:</span><br><span class="line">	movq	%rsp, %rbp</span><br><span class="line">LCFI1:</span><br><span class="line">	movl	$0, -4(%rbp)	# -4(%rbp)为变量i在内存中的存储地址，这里表示 i=0</span><br><span class="line">	movl	$0, -8(%rbp)	# -8(%rbp)为变量j在内存中的存储地址，这里表示 j=0</span><br><span class="line">	movl	$0, -4(%rbp)</span><br><span class="line">	jmp	L2					# 跳转到标签L2</span><br><span class="line">L3:</span><br><span class="line">	movl	-4(%rbp), %eax	# 将i的值赋给累加器eax</span><br><span class="line">	addl	$1, %eax		# 给累加器eax + 1</span><br><span class="line">	movl	%eax, -8(%rbp)	# 将累加器的值赋给变量j, 上面三行相当于t = i; t = t + 1; j = t;</span><br><span class="line">	addl	$1, -4(%rbp)	# 循环体结束，给变量i + 1</span><br><span class="line">L2:</span><br><span class="line">	cmpl	$4, -4(%rbp)	# 比较变量i与4的大小关系</span><br><span class="line">	jle	L3					# 如果 i &lt;= 4 则跳转到标签L3</span><br><span class="line">	movl	$0, %eax		# 给累加器清零</span><br><span class="line">	popq	%rbp</span><br><span class="line">LCFI2:</span><br><span class="line">	ret</span><br></pre></td></tr></table></figure>
+<p>这部分代码就实现了我们在for循环内所做的事情。也就是说在开启最低优化的情况下，编译器完全按照我们写的代码一步一步的将他们翻译成了汇编语言，即使这段代码不起任何作用。</p>
+<p>那么我们可以试着打开<code>-O2</code>优化，看看编译器会对这段不起作用的代码有怎样的行为。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">	.text</span><br><span class="line">	.section __TEXT,__text_startup,regular,pure_instructions</span><br><span class="line">	.p2align 4</span><br><span class="line">	.globl _main</span><br><span class="line">_main:</span><br><span class="line">LFB0:</span><br><span class="line">	xorl	%eax, %eax</span><br><span class="line">	ret</span><br><span class="line">LFE0:</span><br><span class="line">	.section __TEXT,__eh_frame,coalesced,no_toc+strip_static_syms+live_support</span><br><span class="line">EH_frame1:</span><br><span class="line">	.set L$set$0,LECIE1-LSCIE1</span><br><span class="line">	.long L$set$0</span><br><span class="line">LSCIE1:</span><br><span class="line">	.long	0</span><br><span class="line">	.byte	0x1</span><br><span class="line">	.ascii &quot;zR\0&quot;</span><br><span class="line">	.uleb128 0x1</span><br><span class="line">	.sleb128 -8</span><br><span class="line">	.byte	0x10</span><br><span class="line">	.uleb128 0x1</span><br><span class="line">	.byte	0x10</span><br><span class="line">	.byte	0xc</span><br><span class="line">	.uleb128 0x7</span><br><span class="line">	.uleb128 0x8</span><br><span class="line">	.byte	0x90</span><br><span class="line">	.uleb128 0x1</span><br><span class="line">	.align 3</span><br><span class="line">LECIE1:</span><br><span class="line">LSFDE1:</span><br><span class="line">	.set L$set$1,LEFDE1-LASFDE1</span><br><span class="line">	.long L$set$1</span><br><span class="line">LASFDE1:</span><br><span class="line">	.long	LASFDE1-EH_frame1</span><br><span class="line">	.quad	LFB0-.</span><br><span class="line">	.set L$set$2,LFE0-LFB0</span><br><span class="line">	.quad L$set$2</span><br><span class="line">	.uleb128 0</span><br><span class="line">	.align 3</span><br><span class="line">LEFDE1:</span><br><span class="line">	.ident	&quot;GCC: (Homebrew GCC 11.2.0) 11.2.0&quot;</span><br><span class="line">	.subsections_via_symbols</span><br></pre></td></tr></table></figure>
+<p>我们神奇的发现，那段关于for循环的代码已经被编译器优化掉的！！！</p>
+<p>我们用同样的方法再测试一下下面这段代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N = <span class="number">1000000000</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">long</span> <span class="keyword">long</span> sum = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (; i &lt; N; i++) &#123;</span><br><span class="line">        sum += i;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%lld\n&quot;</span>, sum);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里只截取汇编代码中的核心部分：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">_main:</span><br><span class="line">LFB1:</span><br><span class="line">	pushq	%rbp</span><br><span class="line">LCFI0:</span><br><span class="line">	movq	%rsp, %rbp</span><br><span class="line">LCFI1:</span><br><span class="line">	subq	$16, %rsp</span><br><span class="line">	movq	$0, -8(%rbp)</span><br><span class="line">	movl	$0, -12(%rbp)</span><br><span class="line">	jmp	L2</span><br><span class="line">L3:</span><br><span class="line">	movl	-12(%rbp), %eax</span><br><span class="line">	cltq</span><br><span class="line">	addq	%rax, -8(%rbp)</span><br><span class="line">	addl	$1, -12(%rbp)</span><br><span class="line">L2:</span><br><span class="line">	movl	$1000000000, %eax</span><br><span class="line">	cmpl	%eax, -12(%rbp)</span><br><span class="line">	jl	L3</span><br><span class="line">	movq	-8(%rbp), %rax</span><br><span class="line">	movq	%rax, %rsi</span><br><span class="line">	leaq	lC0(%rip), %rax</span><br><span class="line">	movq	%rax, %rdi</span><br><span class="line">	movl	$0, %eax</span><br><span class="line">	call	_printf</span><br><span class="line">	movl	$0, %eax</span><br><span class="line">	leave</span><br></pre></td></tr></table></figure>
+<p>这段汇编代码与上一个例子的汇编代码非常相似，这段代码将for循环足足跑了$10^{9}$次，如果大家在自己的电脑上把这段代码编译运行出来，他应该需要跑个几秒钟才能出来，在我的电脑他的运行时间：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(base) chant@mouxiangyus-MacBook-Pro test % time ./test</span><br><span class="line">499999999500000000</span><br><span class="line">./test  2.66s user 0.00s system 99% cpu 2.664 total</span><br></pre></td></tr></table></figure>
+<p>这次开启<code>-O2</code>优化之后，我们再看看编译器会对这段代码又怎样的行为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">_main:</span><br><span class="line">LFB1:</span><br><span class="line">	movabsq	$499999999500000000, %rsi</span><br><span class="line">	subq	$8, %rsp</span><br><span class="line">LCFI0:</span><br><span class="line">	xorl	%eax, %eax</span><br><span class="line">	leaq	lC0(%rip), %rdi</span><br><span class="line">	call	_printf</span><br><span class="line">	xorl	%eax, %eax</span><br><span class="line">	addq	$8, %rsp</span><br><span class="line">LCFI1:</span><br><span class="line">	ret</span><br></pre></td></tr></table></figure>
+<p>！！！！编译器直接把这段for循环优化掉了，取而代之的是直接用高斯求和得到结果赋值给变量！</p>
+<p>这样的例子有很多，很多我们感觉写的没有什么逻辑的循环、运算，编译器早就已经看透了，随手就给优化掉了。~_~</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">主页</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%96%E8%AF%91gcc%E6%96%87%E4%BB%B6"><span class="toc-number">1.</span> <span class="toc-text">编译gcc文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%A9gcc%E8%BE%93%E5%87%BA%E8%AD%A6%E5%91%8A"><span class="toc-number">2.</span> <span class="toc-text">让gcc输出警告</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A8%8B%E5%BA%8F%E4%BC%98%E5%8C%96"><span class="toc-number">3.</span> <span class="toc-text">程序优化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#O2%E4%BC%98%E5%8C%96"><span class="toc-number">3.1.</span> <span class="toc-text">-O2优化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Os%E4%BC%98%E5%8C%96"><span class="toc-number">3.2.</span> <span class="toc-text">-Os优化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Og%E4%BC%98%E5%8C%96"><span class="toc-number">3.3.</span> <span class="toc-text">-Og优化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#O0%E4%BC%98%E5%8C%96"><span class="toc-number">3.4.</span> <span class="toc-text">-O0优化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B"><span class="toc-number">3.5.</span> <span class="toc-text">示例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8Bgcc%E7%89%88%E6%9C%AC"><span class="toc-number">4.</span> <span class="toc-text">查看gcc版本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Gcov%E2%80%94%E2%80%94%E4%BB%A3%E7%A0%81%E8%A6%86%E7%9B%96%E7%8E%87%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7"><span class="toc-number">5.</span> <span class="toc-text">Gcov——代码覆盖率分析工具</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95"><span class="toc-number">5.1.</span> <span class="toc-text">软件测试</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E4%BC%98%E5%8C%96"><span class="toc-number">5.2.</span> <span class="toc-text">代码优化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Gcov%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="toc-number">5.3.</span> <span class="toc-text">Gcov的使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%BD%E8%B1%A1"><span class="toc-number">5.4.</span> <span class="toc-text">抽象</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%9A%E8%BF%87%E6%B1%87%E7%BC%96%E4%BA%86%E8%A7%A3%E7%BC%96%E8%AF%91%E5%99%A8%E7%9A%84%E4%BC%98%E5%8C%96"><span class="toc-number">6.</span> <span class="toc-text">通过汇编了解编译器的优化</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://chantmee.github.io/2021/09/08/gcc%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://chantmee.github.io/2021/09/08/gcc%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/&text=gcc的基本使用"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://chantmee.github.io/2021/09/08/gcc%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/&title=gcc的基本使用"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://chantmee.github.io/2021/09/08/gcc%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/&is_video=false&description=gcc的基本使用"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=gcc的基本使用&body=Check out this article: http://chantmee.github.io/2021/09/08/gcc%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://chantmee.github.io/2021/09/08/gcc%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/&title=gcc的基本使用"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://chantmee.github.io/2021/09/08/gcc%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/&title=gcc的基本使用"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://chantmee.github.io/2021/09/08/gcc%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/&title=gcc的基本使用"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://chantmee.github.io/2021/09/08/gcc%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/&title=gcc的基本使用"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://chantmee.github.io/2021/09/08/gcc%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/&name=gcc的基本使用&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://chantmee.github.io/2021/09/08/gcc%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/&t=gcc的基本使用"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2019-2021
+    Chant Mee
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">主页</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>
