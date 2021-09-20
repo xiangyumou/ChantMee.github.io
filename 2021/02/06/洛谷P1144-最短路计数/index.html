@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="题目描述：给出一个$N$个顶点$M$条边的无向无权图，顶点编号为$1-N$。问从顶点$1$开始，到其他每个点的最短路有几条。  思路：$Dijkstra$的一个变形题目。 在跑$Dijkstra$松弛的时候，若dis[v] &gt; dis[u] + 1那么res[v]&#x3D;res[u]，若dis[v] &#x3D;&#x3D; dis[u] + 1那么res[v] +&#x3D; res[u]，其中res[v]存储的是点$1$到">
+<meta property="og:type" content="article">
+<meta property="og:title" content="洛谷P1144-最短路计数">
+<meta property="og:url" content="http://chantmee.github.io/2021/02/06/%E6%B4%9B%E8%B0%B7P1144-%E6%9C%80%E7%9F%AD%E8%B7%AF%E8%AE%A1%E6%95%B0/index.html">
+<meta property="og:site_name" content="Chant&#39;s Blog">
+<meta property="og:description" content="题目描述：给出一个$N$个顶点$M$条边的无向无权图，顶点编号为$1-N$。问从顶点$1$开始，到其他每个点的最短路有几条。  思路：$Dijkstra$的一个变形题目。 在跑$Dijkstra$松弛的时候，若dis[v] &gt; dis[u] + 1那么res[v]&#x3D;res[u]，若dis[v] &#x3D;&#x3D; dis[u] + 1那么res[v] +&#x3D; res[u]，其中res[v]存储的是点$1$到">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-02-06T09:59:21.000Z">
+<meta property="article:modified_time" content="2021-09-18T07:27:40.000Z">
+<meta property="article:author" content="Chant Mee">
+<meta property="article:tag" content="ACM">
+<meta property="article:tag" content="算法">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>洛谷P1144-最短路计数</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body class="max-width mx-auto px3 ltr">    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" "Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">主页</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇 " href="/2021/02/07/%E6%B4%9B%E8%B0%B7P1119-%E7%81%BE%E5%90%8E%E9%87%8D%E5%BB%BA-floyd%E7%AE%97%E6%B3%95/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇 " href="/2021/02/06/%E6%B4%9B%E8%B0%B7P1629-%E9%82%AE%E9%80%92%E5%91%98%E9%80%81%E4%BF%A1-%E5%8F%8D%E5%90%91%E5%BB%BA%E8%BE%B9/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部 " href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章 " href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://chantmee.github.io/2021/02/06/%E6%B4%9B%E8%B0%B7P1144-%E6%9C%80%E7%9F%AD%E8%B7%AF%E8%AE%A1%E6%95%B0/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://chantmee.github.io/2021/02/06/%E6%B4%9B%E8%B0%B7P1144-%E6%9C%80%E7%9F%AD%E8%B7%AF%E8%AE%A1%E6%95%B0/&text=洛谷P1144-最短路计数"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://chantmee.github.io/2021/02/06/%E6%B4%9B%E8%B0%B7P1144-%E6%9C%80%E7%9F%AD%E8%B7%AF%E8%AE%A1%E6%95%B0/&title=洛谷P1144-最短路计数"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://chantmee.github.io/2021/02/06/%E6%B4%9B%E8%B0%B7P1144-%E6%9C%80%E7%9F%AD%E8%B7%AF%E8%AE%A1%E6%95%B0/&is_video=false&description=洛谷P1144-最短路计数"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=洛谷P1144-最短路计数&body=Check out this article: http://chantmee.github.io/2021/02/06/%E6%B4%9B%E8%B0%B7P1144-%E6%9C%80%E7%9F%AD%E8%B7%AF%E8%AE%A1%E6%95%B0/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://chantmee.github.io/2021/02/06/%E6%B4%9B%E8%B0%B7P1144-%E6%9C%80%E7%9F%AD%E8%B7%AF%E8%AE%A1%E6%95%B0/&title=洛谷P1144-最短路计数"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://chantmee.github.io/2021/02/06/%E6%B4%9B%E8%B0%B7P1144-%E6%9C%80%E7%9F%AD%E8%B7%AF%E8%AE%A1%E6%95%B0/&title=洛谷P1144-最短路计数"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://chantmee.github.io/2021/02/06/%E6%B4%9B%E8%B0%B7P1144-%E6%9C%80%E7%9F%AD%E8%B7%AF%E8%AE%A1%E6%95%B0/&title=洛谷P1144-最短路计数"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://chantmee.github.io/2021/02/06/%E6%B4%9B%E8%B0%B7P1144-%E6%9C%80%E7%9F%AD%E8%B7%AF%E8%AE%A1%E6%95%B0/&title=洛谷P1144-最短路计数"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://chantmee.github.io/2021/02/06/%E6%B4%9B%E8%B0%B7P1144-%E6%9C%80%E7%9F%AD%E8%B7%AF%E8%AE%A1%E6%95%B0/&name=洛谷P1144-最短路计数&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://chantmee.github.io/2021/02/06/%E6%B4%9B%E8%B0%B7P1144-%E6%9C%80%E7%9F%AD%E8%B7%AF%E8%AE%A1%E6%95%B0/&t=洛谷P1144-最短路计数"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0%EF%BC%9A"><span class="toc-number">1.</span> <span class="toc-text">题目描述：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF%EF%BC%9A"><span class="toc-number">2.</span> <span class="toc-text">思路：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AC%E4%BB%A3%E7%A0%81%EF%BC%9A"><span class="toc-number">3.</span> <span class="toc-text">AC代码：</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        洛谷P1144-最短路计数
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Chant Mee</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2021-02-06T09:59:21.000Z" itemprop="datePublished">2021-02-06</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/%E9%A2%98%E8%A7%A3/">题解</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/ACM/" rel="tag">ACM</a>, <a class="tag-link-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="题目描述："><a href="#题目描述：" class="headerlink" title="题目描述："></a>题目描述：</h2><p>给出一个$N$个顶点$M$条边的无向无权图，顶点编号为$1-N$。问从顶点$1$开始，到其他每个点的最短路有几条。</p>
+<hr>
+<h2 id="思路："><a href="#思路：" class="headerlink" title="思路："></a>思路：</h2><p>$Dijkstra$的一个变形题目。</p>
+<p>在跑$Dijkstra$松弛的时候，若<code>dis[v] &gt; dis[u] + 1</code>那么<code>res[v]=res[u]</code>，若<code>dis[v] == dis[u] + 1</code>那么<code>res[v] += res[u]</code>，其中<code>res[v]</code>存储的是点$1$到点$v$的最短路的数量。这里用到了$dp$的思想。</p>
+<hr>
+<h2 id="AC代码："><a href="#AC代码：" class="headerlink" title="AC代码："></a>AC代码：</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;queue&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> Maxn = <span class="number">2000005</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> MOD = <span class="number">100003</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> INF = <span class="number">0x3f3f3f3f</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">EDGE</span> &#123;</span></span><br><span class="line">	<span class="keyword">int</span> v, next;</span><br><span class="line">&#125; e[Maxn &lt;&lt; <span class="number">1</span>];</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Node</span> &#123;</span></span><br><span class="line">	<span class="keyword">int</span> pos, dis;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">Node</span>()&#123;&#125;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">Node</span>(<span class="keyword">int</span> pos, <span class="keyword">int</span> dis):<span class="built_in">pos</span>(pos), <span class="built_in">dis</span>(dis)&#123;&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">bool</span> <span class="keyword">operator</span> &lt; (<span class="keyword">const</span> Node &amp;x) <span class="keyword">const</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> dis &gt; x.dis;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> head[Maxn], tot = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">int</span> res[Maxn], dis[Maxn], vis[Maxn];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> u, <span class="keyword">int</span> v)</span> </span>&#123;</span><br><span class="line">	e[tot].v = v;</span><br><span class="line">	e[tot].next = head[u];</span><br><span class="line">	head[u] = tot++;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dijkstra</span><span class="params">(<span class="keyword">int</span> s)</span> </span>&#123;</span><br><span class="line">	<span class="built_in">memset</span>(dis, INF, <span class="keyword">sizeof</span> dis);</span><br><span class="line">	<span class="built_in">memset</span>(vis, <span class="number">0</span>, <span class="keyword">sizeof</span> vis);</span><br><span class="line">	<span class="built_in">memset</span>(res, <span class="number">0</span>, <span class="keyword">sizeof</span> res);</span><br><span class="line">	res[s] = <span class="number">1</span>;</span><br><span class="line">	dis[s] = <span class="number">0</span>;</span><br><span class="line">	std::priority_queue&lt;Node&gt;q;</span><br><span class="line">	q.<span class="built_in">push</span>(<span class="built_in">Node</span>(s, <span class="number">0</span>));</span><br><span class="line">	<span class="keyword">for</span> (; !q.<span class="built_in">empty</span>();) &#123;</span><br><span class="line">		<span class="keyword">int</span> u = q.<span class="built_in">top</span>().pos;</span><br><span class="line">		q.<span class="built_in">pop</span>();</span><br><span class="line">		<span class="keyword">if</span> (vis[u]) &#123;</span><br><span class="line">			<span class="keyword">continue</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		vis[u] = <span class="literal">true</span>;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = head[u]; i; i = e[i].next) &#123;</span><br><span class="line">			<span class="keyword">int</span> v = e[i].v;</span><br><span class="line">			<span class="keyword">if</span> (dis[v] &gt; dis[u] + <span class="number">1</span>) &#123;</span><br><span class="line">				dis[v] = dis[u] + <span class="number">1</span>;</span><br><span class="line">				res[v] = res[u];</span><br><span class="line">				q.<span class="built_in">push</span>(<span class="built_in">Node</span>(v, dis[v]));</span><br><span class="line">			&#125; <span class="keyword">else</span> <span class="keyword">if</span> (dis[v] == dis[u] + <span class="number">1</span>) &#123;</span><br><span class="line">				res[v] += res[u];</span><br><span class="line">				res[v] %= MOD;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">solve</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> nv, ne;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d %d&quot;</span>, &amp;nv, &amp;ne);</span><br><span class="line">	<span class="keyword">int</span> u, v;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; ne; i++) &#123;</span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%d %d&quot;</span>, &amp;u, &amp;v);</span><br><span class="line">		<span class="built_in">add</span>(u, v);</span><br><span class="line">		<span class="built_in">add</span>(v, u);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">dijkstra</span>(<span class="number">1</span>);</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= nv; i++) &#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, res[i] % MOD);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="built_in">solve</span>();</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">主页</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0%EF%BC%9A"><span class="toc-number">1.</span> <span class="toc-text">题目描述：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF%EF%BC%9A"><span class="toc-number">2.</span> <span class="toc-text">思路：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AC%E4%BB%A3%E7%A0%81%EF%BC%9A"><span class="toc-number">3.</span> <span class="toc-text">AC代码：</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://chantmee.github.io/2021/02/06/%E6%B4%9B%E8%B0%B7P1144-%E6%9C%80%E7%9F%AD%E8%B7%AF%E8%AE%A1%E6%95%B0/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://chantmee.github.io/2021/02/06/%E6%B4%9B%E8%B0%B7P1144-%E6%9C%80%E7%9F%AD%E8%B7%AF%E8%AE%A1%E6%95%B0/&text=洛谷P1144-最短路计数"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://chantmee.github.io/2021/02/06/%E6%B4%9B%E8%B0%B7P1144-%E6%9C%80%E7%9F%AD%E8%B7%AF%E8%AE%A1%E6%95%B0/&title=洛谷P1144-最短路计数"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://chantmee.github.io/2021/02/06/%E6%B4%9B%E8%B0%B7P1144-%E6%9C%80%E7%9F%AD%E8%B7%AF%E8%AE%A1%E6%95%B0/&is_video=false&description=洛谷P1144-最短路计数"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=洛谷P1144-最短路计数&body=Check out this article: http://chantmee.github.io/2021/02/06/%E6%B4%9B%E8%B0%B7P1144-%E6%9C%80%E7%9F%AD%E8%B7%AF%E8%AE%A1%E6%95%B0/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://chantmee.github.io/2021/02/06/%E6%B4%9B%E8%B0%B7P1144-%E6%9C%80%E7%9F%AD%E8%B7%AF%E8%AE%A1%E6%95%B0/&title=洛谷P1144-最短路计数"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://chantmee.github.io/2021/02/06/%E6%B4%9B%E8%B0%B7P1144-%E6%9C%80%E7%9F%AD%E8%B7%AF%E8%AE%A1%E6%95%B0/&title=洛谷P1144-最短路计数"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://chantmee.github.io/2021/02/06/%E6%B4%9B%E8%B0%B7P1144-%E6%9C%80%E7%9F%AD%E8%B7%AF%E8%AE%A1%E6%95%B0/&title=洛谷P1144-最短路计数"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://chantmee.github.io/2021/02/06/%E6%B4%9B%E8%B0%B7P1144-%E6%9C%80%E7%9F%AD%E8%B7%AF%E8%AE%A1%E6%95%B0/&title=洛谷P1144-最短路计数"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://chantmee.github.io/2021/02/06/%E6%B4%9B%E8%B0%B7P1144-%E6%9C%80%E7%9F%AD%E8%B7%AF%E8%AE%A1%E6%95%B0/&name=洛谷P1144-最短路计数&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://chantmee.github.io/2021/02/06/%E6%B4%9B%E8%B0%B7P1144-%E6%9C%80%E7%9F%AD%E8%B7%AF%E8%AE%A1%E6%95%B0/&t=洛谷P1144-最短路计数"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<footer id="footer">
+  <div class="visit-num">
+    文章阅读量<span id="busuanzi_value_page_pv"></span>次
+  </div>
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2019-2021
+    Chant Mee
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">主页</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+</body>
+</html>

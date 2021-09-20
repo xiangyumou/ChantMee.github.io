@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="题意：给出一个由$n$个点构成的树，每个点都有一个权值。现在你可以用$k,k\subset$$[1, n]$个颜色来给这棵树上的边涂色（这$k$种颜色不一定都要用上）。对于每种颜色都有一个权重，权值是这样定义的： 将除了当前颜色$col_i$其他颜色的边删掉，剩余的边构成了一个个联通分量。对于任意一个联通分量我们设它的权重是$w_i$，那么$w_i$就等于该联通分量中所有点的权值之和，则对于当前颜">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CF1466-D. 13th Labour of Heracles">
+<meta property="og:url" content="http://chantmee.github.io/2021/01/18/CF1466-D.%2013th%20Labour%20of%20Heracles/index.html">
+<meta property="og:site_name" content="Chant&#39;s Blog">
+<meta property="og:description" content="题意：给出一个由$n$个点构成的树，每个点都有一个权值。现在你可以用$k,k\subset$$[1, n]$个颜色来给这棵树上的边涂色（这$k$种颜色不一定都要用上）。对于每种颜色都有一个权重，权值是这样定义的： 将除了当前颜色$col_i$其他颜色的边删掉，剩余的边构成了一个个联通分量。对于任意一个联通分量我们设它的权重是$w_i$，那么$w_i$就等于该联通分量中所有点的权值之和，则对于当前颜">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-01-18T08:18:51.000Z">
+<meta property="article:modified_time" content="2021-09-18T07:27:40.000Z">
+<meta property="article:author" content="Chant Mee">
+<meta property="article:tag" content="ACM">
+<meta property="article:tag" content="算法">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>CF1466-D. 13th Labour of Heracles</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body class="max-width mx-auto px3 ltr">    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" "Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">主页</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇 " href="/2021/01/19/CF1465-C.%20Peaceful%20Rooks/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇 " href="/2021/01/18/CF1466-C.%20Canine%20poetry/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部 " href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章 " href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://chantmee.github.io/2021/01/18/CF1466-D.%2013th%20Labour%20of%20Heracles/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://chantmee.github.io/2021/01/18/CF1466-D.%2013th%20Labour%20of%20Heracles/&text=CF1466-D. 13th Labour of Heracles"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://chantmee.github.io/2021/01/18/CF1466-D.%2013th%20Labour%20of%20Heracles/&title=CF1466-D. 13th Labour of Heracles"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://chantmee.github.io/2021/01/18/CF1466-D.%2013th%20Labour%20of%20Heracles/&is_video=false&description=CF1466-D. 13th Labour of Heracles"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=CF1466-D. 13th Labour of Heracles&body=Check out this article: http://chantmee.github.io/2021/01/18/CF1466-D.%2013th%20Labour%20of%20Heracles/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://chantmee.github.io/2021/01/18/CF1466-D.%2013th%20Labour%20of%20Heracles/&title=CF1466-D. 13th Labour of Heracles"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://chantmee.github.io/2021/01/18/CF1466-D.%2013th%20Labour%20of%20Heracles/&title=CF1466-D. 13th Labour of Heracles"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://chantmee.github.io/2021/01/18/CF1466-D.%2013th%20Labour%20of%20Heracles/&title=CF1466-D. 13th Labour of Heracles"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://chantmee.github.io/2021/01/18/CF1466-D.%2013th%20Labour%20of%20Heracles/&title=CF1466-D. 13th Labour of Heracles"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://chantmee.github.io/2021/01/18/CF1466-D.%2013th%20Labour%20of%20Heracles/&name=CF1466-D. 13th Labour of Heracles&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://chantmee.github.io/2021/01/18/CF1466-D.%2013th%20Labour%20of%20Heracles/&t=CF1466-D. 13th Labour of Heracles"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E6%84%8F%EF%BC%9A"><span class="toc-number">1.</span> <span class="toc-text">题意：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%99%E5%87%BA%E4%B8%80%E4%B8%AA%E7%94%B1-n-%E4%B8%AA%E7%82%B9%E6%9E%84%E6%88%90%E7%9A%84%E6%A0%91%EF%BC%8C%E6%AF%8F%E4%B8%AA%E7%82%B9%E9%83%BD%E6%9C%89%E4%B8%80%E4%B8%AA%E6%9D%83%E5%80%BC%E3%80%82%E7%8E%B0%E5%9C%A8%E4%BD%A0%E5%8F%AF%E4%BB%A5%E7%94%A8-k-k-subset-1-n-%E4%B8%AA%E9%A2%9C%E8%89%B2%E6%9D%A5%E7%BB%99%E8%BF%99%E6%A3%B5%E6%A0%91%E4%B8%8A%E7%9A%84%E8%BE%B9%E6%B6%82%E8%89%B2%EF%BC%88%E8%BF%99-k-%E7%A7%8D%E9%A2%9C%E8%89%B2%E4%B8%8D%E4%B8%80%E5%AE%9A%E9%83%BD%E8%A6%81%E7%94%A8%E4%B8%8A%EF%BC%89%E3%80%82%E5%AF%B9%E4%BA%8E%E6%AF%8F%E7%A7%8D%E9%A2%9C%E8%89%B2%E9%83%BD%E6%9C%89%E4%B8%80%E4%B8%AA%E6%9D%83%E9%87%8D%EF%BC%8C%E6%9D%83%E5%80%BC%E6%98%AF%E8%BF%99%E6%A0%B7%E5%AE%9A%E4%B9%89%E7%9A%84%EF%BC%9A"><span class="toc-number">1.1.</span> <span class="toc-text">给出一个由$n$个点构成的树，每个点都有一个权值。现在你可以用$k,k\subset$$[1, n]$个颜色来给这棵树上的边涂色（这$k$种颜色不一定都要用上）。对于每种颜色都有一个权重，权值是这样定义的：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%86%E9%99%A4%E4%BA%86%E5%BD%93%E5%89%8D%E9%A2%9C%E8%89%B2-col-i-%E5%85%B6%E4%BB%96%E9%A2%9C%E8%89%B2%E7%9A%84%E8%BE%B9%E5%88%A0%E6%8E%89%EF%BC%8C%E5%89%A9%E4%BD%99%E7%9A%84%E8%BE%B9%E6%9E%84%E6%88%90%E4%BA%86%E4%B8%80%E4%B8%AA%E4%B8%AA%E8%81%94%E9%80%9A%E5%88%86%E9%87%8F%E3%80%82%E5%AF%B9%E4%BA%8E%E4%BB%BB%E6%84%8F%E4%B8%80%E4%B8%AA%E8%81%94%E9%80%9A%E5%88%86%E9%87%8F%E6%88%91%E4%BB%AC%E8%AE%BE%E5%AE%83%E7%9A%84%E6%9D%83%E9%87%8D%E6%98%AF-w-i-%EF%BC%8C%E9%82%A3%E4%B9%88-w-i-%E5%B0%B1%E7%AD%89%E4%BA%8E%E8%AF%A5%E8%81%94%E9%80%9A%E5%88%86%E9%87%8F%E4%B8%AD%E6%89%80%E6%9C%89%E7%82%B9%E7%9A%84%E6%9D%83%E5%80%BC%E4%B9%8B%E5%92%8C%EF%BC%8C%E5%88%99%E5%AF%B9%E4%BA%8E%E5%BD%93%E5%89%8D%E9%A2%9C%E8%89%B2%EF%BC%8C%E5%AE%83%E7%9A%84%E6%9D%83%E5%80%BC%E5%B0%B1%E6%98%AF-w-col-i-max-w-1-w-2-cdots-w-n"><span class="toc-number">1.2.</span> <span class="toc-text">将除了当前颜色$col_i$其他颜色的边删掉，剩余的边构成了一个个联通分量。对于任意一个联通分量我们设它的权重是$w_i$，那么$w_i$就等于该联通分量中所有点的权值之和，则对于当前颜色，它的权值就是$w_{col_i}&#x3D;max\{w_1, w_2,\cdots,w_n\}$</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9C%80%E8%A6%81%E6%B3%A8%E6%84%8F%E7%9A%84%E6%98%AF%EF%BC%8C%E8%BF%99%E4%B8%AA%E8%81%94%E9%80%9A%E5%88%86%E9%87%8F%E6%98%AF%E9%80%9A%E8%BF%87%E5%88%A0%E8%BE%B9%E5%BE%97%E5%88%B0%E7%9A%84%EF%BC%8C%E6%89%80%E4%BB%A5%E4%B8%8D%E4%BC%9A%E5%87%BA%E7%8E%B0%E8%81%94%E9%80%9A%E5%88%86%E9%87%8F%E4%B8%AD%E5%8F%AA%E6%9C%89%E4%B8%80%E4%B8%AA%E7%82%B9%E7%9A%84%E6%83%85%E5%86%B5%E3%80%82%E5%AF%B9%E4%BA%8E%E4%B8%80%E4%B8%AA%E7%A9%BA%E7%9A%84%E8%81%94%E9%80%9A%E5%88%86%E9%87%8F%EF%BC%8C%E6%88%91%E4%BB%AC%E8%AE%A4%E4%B8%BA%E5%AE%83%E7%9A%84%E6%9D%83%E9%87%8D%E4%B8%BA0%E3%80%82"><span class="toc-number">1.3.</span> <span class="toc-text">需要注意的是，这个联通分量是通过删边得到的，所以不会出现联通分量中只有一个点的情况。对于一个空的联通分量，我们认为它的权重为0。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%8E%B0%E5%9C%A8%E5%8F%88%E5%AE%9A%E4%B9%89%E5%AF%B9%E4%BA%8E%E6%AF%8F%E4%B8%AA-k-%E4%B9%9F%E6%9C%89%E4%B8%80%E4%B8%AA%E6%9D%83%E5%80%BC%EF%BC%8C%E5%AE%83%E7%AD%89%E4%BA%8E%E5%AE%83%E5%8C%85%E5%90%AB%E7%9A%84%E6%89%80%E6%9C%89%E9%A2%9C%E8%89%B2%E7%9A%84%E6%9D%83%E5%80%BC%E4%B9%8B%E5%92%8C%EF%BC%8C%E5%8D%B3-w-k-sum-i-1-kw-col-i"><span class="toc-number">1.4.</span> <span class="toc-text">现在又定义对于每个$k$也有一个权值，它等于它包含的所有颜色的权值之和，即$w_k&#x3D;\sum_{i&#x3D;1}^kw_{col_i}$.</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%8E%B0%E5%9C%A8%E8%AE%A9%E4%BD%A0%E6%B1%82%E5%87%BA%E5%AF%B9%E4%BA%8E%E6%AF%8F%E4%B8%AA-k-%EF%BC%8C%E5%AE%83%E7%9A%84%E6%9D%83%E5%80%BC-w-k-%E7%9A%84%E6%9C%80%E5%A4%A7%E5%80%BC%E6%98%AF%E5%A4%9A%E5%B0%91%E3%80%82"><span class="toc-number">1.5.</span> <span class="toc-text">现在让你求出对于每个$k$，它的权值$w_k$的最大值是多少。</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF%EF%BC%9A"><span class="toc-number">2.</span> <span class="toc-text">思路：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A6%96%E5%85%88%E9%9D%9E%E5%B8%B8%E6%98%BE%E7%84%B6%E7%9A%84%E4%B8%80%E4%B8%AA%E9%81%93%E7%90%86%EF%BC%8C%E6%88%91%E4%BB%AC%E4%B8%8D%E8%83%BD%E6%B6%82%E5%AE%8C%E9%A2%9C%E8%89%B2%E5%90%8E%E8%AE%A9%E4%B8%80%E4%B8%AA%E6%88%96%E5%A4%9A%E4%B8%AA%E9%A2%9C%E8%89%B2%E8%A2%AB%E5%88%86%E5%89%B2%E6%88%90%E5%A4%9A%E4%B8%AA%E8%81%94%E9%80%9A%E5%88%86%E9%87%8F%E7%84%B6%E5%90%8E%E5%8F%96-max-%EF%BC%8C%E8%BF%99%E6%A0%B7%E6%97%A0%E8%AE%BA%E5%A6%82%E4%BD%95%E9%83%BD%E4%B8%8D%E5%8F%AF%E8%83%BD%E6%AF%94%E5%8D%95%E4%B8%80%E7%9A%84%E8%81%94%E9%80%9A%E5%88%86%E9%87%8F%E7%9A%84%E6%9D%83%E5%80%BC%E5%A4%A7%E3%80%82"><span class="toc-number">2.1.</span> <span class="toc-text">首先非常显然的一个道理，我们不能涂完颜色后让一个或多个颜色被分割成多个联通分量然后取$max$，这样无论如何都不可能比单一的联通分量的权值大。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%88%91%E4%BB%AC%E5%8F%AF%E4%BB%A5%E8%AF%95%E7%9D%80%E6%A8%A1%E6%8B%9F%E4%BB%8E%E6%B6%82%E4%B8%80%E4%B8%AA%E9%A2%9C%E8%89%B2%E5%88%B0%E6%B6%82%E4%B8%A4%E4%B8%AA%E9%A2%9C%E8%89%B2%E7%9A%84%E8%BF%87%E7%A8%8B%EF%BC%8C-%E5%8F%98%E5%8C%96%E7%9A%84%E5%B0%B1%E6%98%AF%E8%AE%A9%E5%85%B6%E4%B8%AD%E4%B8%80%E4%B8%AA%E7%82%B9%E4%BB%8E%E5%8F%AA%E8%A2%AB%E8%AE%A1%E7%AE%97%E4%B8%80%E6%AC%A1%E5%8F%98%E6%88%90%E8%A2%AB%E8%AE%A1%E7%AE%97%E4%B8%A4%E6%AC%A1%EF%BC%8C%E5%AF%B9%E4%BA%8E%E4%BB%8E%E4%B8%A4%E4%B8%AA%E9%A2%9C%E8%89%B2%E5%88%B0%E4%B8%89%E4%B8%AA%EF%BC%8C%E4%B8%89%E4%B8%AA%E5%88%B0%E5%9B%9B%E4%B8%AA%E2%80%A6%E9%83%BD%E5%8F%AF%E4%BB%A5%E4%BE%9D%E6%AC%A1%E6%8E%A8%E5%B9%BF%E5%BE%97%E5%88%B0%E7%9B%B8%E5%90%8C%E7%9A%84%E7%BB%93%E8%AE%BA%E3%80%82%E6%89%80%E4%BB%A5%E8%BF%99%E9%87%8C%E5%88%A9%E7%94%A8%E8%B4%AA%E5%BF%83%E7%9A%84%E6%80%9D%E6%83%B3%E4%BC%98%E5%85%88%E8%AE%A9%E6%9D%83%E5%80%BC%E5%A4%A7%E7%9A%84%E7%82%B9%E5%85%88%E8%A2%AB%E8%AE%A1%E7%AE%97%E5%A4%9A%E6%AC%A1%EF%BC%8C%E5%86%8D%E4%BE%9D%E6%AC%A1%E5%87%8F%E5%B0%91%E3%80%82"><span class="toc-number">2.2.</span> <span class="toc-text">我们可以试着模拟从涂一个颜色到涂两个颜色的过程， 变化的就是让其中一个点从只被计算一次变成被计算两次，对于从两个颜色到三个，三个到四个…都可以依次推广得到相同的结论。所以这里利用贪心的思想优先让权值大的点先被计算多次，再依次减少。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%B9%E4%BA%8E%E6%AF%8F%E4%B8%80%E4%B8%AA%E7%82%B9%EF%BC%8C%E4%BB%96%E8%83%BD%E5%A4%9F%E8%A2%AB%E8%AE%A1%E7%AE%97%E7%9A%84%E6%9C%80%E5%A4%9A%E7%9A%84%E6%AC%A1%E6%95%B0%E5%B0%B1%E6%98%AF%E5%AE%83%E7%9A%84%E5%BA%A6-%EF%BC%88degree-%E3%80%82%E5%BD%93-k-1-%E7%9A%84%E6%97%B6%E5%80%99%EF%BC%8C%E5%AE%83%E7%9A%84%E6%9C%80%E5%A4%A7%E5%80%BC%E5%8F%AA%E6%9C%89%E4%B8%80%E4%B8%AA%E5%B0%B1%E6%98%AF%E6%AF%8F%E4%B8%AA%E7%82%B9%E7%9A%84%E6%9D%83%E5%80%BC%E4%B9%8B%E5%92%8C%E3%80%82%E8%BF%99%E6%97%B6%E5%80%99%E6%AF%8F%E4%B8%AA%E8%BE%B9%E9%83%BD%E4%BC%9A%E8%A2%AB%E8%AE%A1%E7%AE%97%E4%B8%80%E6%AC%A1%EF%BC%8C%E6%89%80%E6%9C%89%E7%9A%84%E8%BE%B9%E5%BA%A6%E9%83%BD%E5%87%8F%E5%8E%BB%E4%B8%80%EF%BC%8C%E5%AF%B9%E4%BA%8E%E5%89%A9%E4%B8%8B%E7%9A%84%E6%89%80%E6%9C%89%E5%BA%A6%E8%BF%98%E5%A4%A7%E4%BA%8E1%E7%9A%84%E7%82%B9%EF%BC%8C%E6%88%91%E4%BB%AC%E5%B0%B1%E6%8C%89%E7%85%A7%E4%B8%8A%E9%9D%A2%E8%AF%B4%E5%88%B0%E7%9A%84%E8%B4%AA%E5%BF%83%E6%96%B9%E6%B3%95%E8%BF%9B%E8%A1%8C%E8%AE%A1%E7%AE%97%E5%B0%B1%E5%8F%AF%E4%BB%A5%E5%BE%97%E5%88%B0%E6%9C%80%E7%BB%88%E7%BB%93%E6%9E%9C%E3%80%82"><span class="toc-number">2.3.</span> <span class="toc-text">对于每一个点，他能够被计算的最多的次数就是它的度$（degree)$。当$k&#x3D;1$的时候，它的最大值只有一个就是每个点的权值之和。这时候每个边都会被计算一次，所有的边度都减去一，对于剩下的所有度还大于1的点，我们就按照上面说到的贪心方法进行计算就可以得到最终结果。</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AC%E4%BB%A3%E7%A0%81%EF%BC%9A"><span class="toc-number">3.</span> <span class="toc-text">AC代码：</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        CF1466-D. 13th Labour of Heracles
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Chant Mee</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2021-01-18T08:18:51.000Z" itemprop="datePublished">2021-01-18</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/%E9%A2%98%E8%A7%A3/">题解</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/ACM/" rel="tag">ACM</a>, <a class="tag-link-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="题意："><a href="#题意：" class="headerlink" title="题意："></a>题意：</h2><h3 id="给出一个由-n-个点构成的树，每个点都有一个权值。现在你可以用-k-k-subset-1-n-个颜色来给这棵树上的边涂色（这-k-种颜色不一定都要用上）。对于每种颜色都有一个权重，权值是这样定义的："><a href="#给出一个由-n-个点构成的树，每个点都有一个权值。现在你可以用-k-k-subset-1-n-个颜色来给这棵树上的边涂色（这-k-种颜色不一定都要用上）。对于每种颜色都有一个权重，权值是这样定义的：" class="headerlink" title="给出一个由$n$个点构成的树，每个点都有一个权值。现在你可以用$k,k\subset$$[1, n]$个颜色来给这棵树上的边涂色（这$k$种颜色不一定都要用上）。对于每种颜色都有一个权重，权值是这样定义的："></a>给出一个由$n$个点构成的树，每个点都有一个权值。现在你可以用$k,k\subset$$[1, n]$个颜色来给这棵树上的边涂色（这$k$种颜色不一定都要用上）。对于每种颜色都有一个权重，权值是这样定义的：</h3><blockquote>
+<h3 id="将除了当前颜色-col-i-其他颜色的边删掉，剩余的边构成了一个个联通分量。对于任意一个联通分量我们设它的权重是-w-i-，那么-w-i-就等于该联通分量中所有点的权值之和，则对于当前颜色，它的权值就是-w-col-i-max-w-1-w-2-cdots-w-n"><a href="#将除了当前颜色-col-i-其他颜色的边删掉，剩余的边构成了一个个联通分量。对于任意一个联通分量我们设它的权重是-w-i-，那么-w-i-就等于该联通分量中所有点的权值之和，则对于当前颜色，它的权值就是-w-col-i-max-w-1-w-2-cdots-w-n" class="headerlink" title="将除了当前颜色$col_i$其他颜色的边删掉，剩余的边构成了一个个联通分量。对于任意一个联通分量我们设它的权重是$w_i$，那么$w_i$就等于该联通分量中所有点的权值之和，则对于当前颜色，它的权值就是$w_{col_i}=max\{w_1, w_2,\cdots,w_n\}$"></a>将除了当前颜色$col_i$其他颜色的边删掉，剩余的边构成了一个个联通分量。对于任意一个联通分量我们设它的权重是$w_i$，那么$w_i$就等于该联通分量中所有点的权值之和，则对于当前颜色，它的权值就是$w_{col_i}=max\{w_1, w_2,\cdots,w_n\}$</h3><h3 id="需要注意的是，这个联通分量是通过删边得到的，所以不会出现联通分量中只有一个点的情况。对于一个空的联通分量，我们认为它的权重为0。"><a href="#需要注意的是，这个联通分量是通过删边得到的，所以不会出现联通分量中只有一个点的情况。对于一个空的联通分量，我们认为它的权重为0。" class="headerlink" title="需要注意的是，这个联通分量是通过删边得到的，所以不会出现联通分量中只有一个点的情况。对于一个空的联通分量，我们认为它的权重为0。"></a>需要注意的是，这个联通分量是通过删边得到的，所以不会出现联通分量中只有一个点的情况。对于一个空的联通分量，我们认为它的权重为0。</h3></blockquote>
+<h3 id="现在又定义对于每个-k-也有一个权值，它等于它包含的所有颜色的权值之和，即-w-k-sum-i-1-kw-col-i"><a href="#现在又定义对于每个-k-也有一个权值，它等于它包含的所有颜色的权值之和，即-w-k-sum-i-1-kw-col-i" class="headerlink" title="现在又定义对于每个$k$也有一个权值，它等于它包含的所有颜色的权值之和，即$w_k=\sum_{i=1}^kw_{col_i}$."></a>现在又定义对于每个$k$也有一个权值，它等于它包含的所有颜色的权值之和，即$w_k=\sum_{i=1}^kw_{col_i}$.</h3><h3 id="现在让你求出对于每个-k-，它的权值-w-k-的最大值是多少。"><a href="#现在让你求出对于每个-k-，它的权值-w-k-的最大值是多少。" class="headerlink" title="现在让你求出对于每个$k$，它的权值$w_k$的最大值是多少。"></a>现在让你求出对于每个$k$，它的权值$w_k$的最大值是多少。</h3><hr>
+<h2 id="思路："><a href="#思路：" class="headerlink" title="思路："></a>思路：</h2><h3 id="首先非常显然的一个道理，我们不能涂完颜色后让一个或多个颜色被分割成多个联通分量然后取-max-，这样无论如何都不可能比单一的联通分量的权值大。"><a href="#首先非常显然的一个道理，我们不能涂完颜色后让一个或多个颜色被分割成多个联通分量然后取-max-，这样无论如何都不可能比单一的联通分量的权值大。" class="headerlink" title="首先非常显然的一个道理，我们不能涂完颜色后让一个或多个颜色被分割成多个联通分量然后取$max$，这样无论如何都不可能比单一的联通分量的权值大。"></a>首先非常显然的一个道理，我们不能涂完颜色后让一个或多个颜色被分割成多个联通分量然后取$max$，这样无论如何都不可能比单一的联通分量的权值大。</h3><h3 id="我们可以试着模拟从涂一个颜色到涂两个颜色的过程，-变化的就是让其中一个点从只被计算一次变成被计算两次，对于从两个颜色到三个，三个到四个…都可以依次推广得到相同的结论。所以这里利用贪心的思想优先让权值大的点先被计算多次，再依次减少。"><a href="#我们可以试着模拟从涂一个颜色到涂两个颜色的过程，-变化的就是让其中一个点从只被计算一次变成被计算两次，对于从两个颜色到三个，三个到四个…都可以依次推广得到相同的结论。所以这里利用贪心的思想优先让权值大的点先被计算多次，再依次减少。" class="headerlink" title="我们可以试着模拟从涂一个颜色到涂两个颜色的过程， 变化的就是让其中一个点从只被计算一次变成被计算两次，对于从两个颜色到三个，三个到四个…都可以依次推广得到相同的结论。所以这里利用贪心的思想优先让权值大的点先被计算多次，再依次减少。"></a>我们可以试着模拟从涂一个颜色到涂两个颜色的过程， 变化的就是让其中一个点从只被计算一次变成被计算两次，对于从两个颜色到三个，三个到四个…都可以依次推广得到相同的结论。所以这里利用贪心的思想优先让权值大的点先被计算多次，再依次减少。</h3><h3 id="对于每一个点，他能够被计算的最多的次数就是它的度-（degree-。当-k-1-的时候，它的最大值只有一个就是每个点的权值之和。这时候每个边都会被计算一次，所有的边度都减去一，对于剩下的所有度还大于1的点，我们就按照上面说到的贪心方法进行计算就可以得到最终结果。"><a href="#对于每一个点，他能够被计算的最多的次数就是它的度-（degree-。当-k-1-的时候，它的最大值只有一个就是每个点的权值之和。这时候每个边都会被计算一次，所有的边度都减去一，对于剩下的所有度还大于1的点，我们就按照上面说到的贪心方法进行计算就可以得到最终结果。" class="headerlink" title="对于每一个点，他能够被计算的最多的次数就是它的度$（degree)$。当$k=1$的时候，它的最大值只有一个就是每个点的权值之和。这时候每个边都会被计算一次，所有的边度都减去一，对于剩下的所有度还大于1的点，我们就按照上面说到的贪心方法进行计算就可以得到最终结果。"></a>对于每一个点，他能够被计算的最多的次数就是它的度$（degree)$。当$k=1$的时候，它的最大值只有一个就是每个点的权值之和。这时候每个边都会被计算一次，所有的边度都减去一，对于剩下的所有度还大于1的点，我们就按照上面说到的贪心方法进行计算就可以得到最终结果。</h3><hr>
+<h2 id="AC代码："><a href="#AC代码：" class="headerlink" title="AC代码："></a>AC代码：</h2><p>这段代码我借鉴了一些大佬的数据处理方法。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">long</span> <span class="keyword">long</span> ll;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> maxn = <span class="number">200005</span>;</span><br><span class="line"></span><br><span class="line">ll w[maxn], a[maxn &lt;&lt; <span class="number">1</span>];</span><br><span class="line"><span class="keyword">int</span> deg[maxn], tot = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> cases, n;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;cases);</span><br><span class="line">	<span class="keyword">while</span>(cases--) &#123;</span><br><span class="line">		tot = <span class="number">0</span>;</span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;n);</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">			deg[i + <span class="number">1</span>] = <span class="number">0</span>;</span><br><span class="line">			<span class="built_in">scanf</span>(<span class="string">&quot;%lld&quot;</span>, &amp;w[i + <span class="number">1</span>]);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">int</span> u, v;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; n; i++) &#123;</span><br><span class="line">			<span class="built_in">scanf</span>(<span class="string">&quot;%d %d&quot;</span>, &amp;u, &amp;v);</span><br><span class="line">			deg[u]++; deg[v]++;</span><br><span class="line">		&#125;</span><br><span class="line">		ll ans = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) &#123;</span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt; deg[i]; j++) &#123;</span><br><span class="line">				a[tot++] = w[i];</span><br><span class="line">			&#125;</span><br><span class="line">			ans += w[i];</span><br><span class="line">		&#125;</span><br><span class="line">		std::<span class="built_in">sort</span>(a, a + tot, std::greater&lt;<span class="keyword">int</span>&gt;());</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; tot; i++) &#123;</span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">&quot;%lld &quot;</span>, ans);</span><br><span class="line">			ans += a[i];</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%lld\n&quot;</span>, ans);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">主页</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E6%84%8F%EF%BC%9A"><span class="toc-number">1.</span> <span class="toc-text">题意：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%99%E5%87%BA%E4%B8%80%E4%B8%AA%E7%94%B1-n-%E4%B8%AA%E7%82%B9%E6%9E%84%E6%88%90%E7%9A%84%E6%A0%91%EF%BC%8C%E6%AF%8F%E4%B8%AA%E7%82%B9%E9%83%BD%E6%9C%89%E4%B8%80%E4%B8%AA%E6%9D%83%E5%80%BC%E3%80%82%E7%8E%B0%E5%9C%A8%E4%BD%A0%E5%8F%AF%E4%BB%A5%E7%94%A8-k-k-subset-1-n-%E4%B8%AA%E9%A2%9C%E8%89%B2%E6%9D%A5%E7%BB%99%E8%BF%99%E6%A3%B5%E6%A0%91%E4%B8%8A%E7%9A%84%E8%BE%B9%E6%B6%82%E8%89%B2%EF%BC%88%E8%BF%99-k-%E7%A7%8D%E9%A2%9C%E8%89%B2%E4%B8%8D%E4%B8%80%E5%AE%9A%E9%83%BD%E8%A6%81%E7%94%A8%E4%B8%8A%EF%BC%89%E3%80%82%E5%AF%B9%E4%BA%8E%E6%AF%8F%E7%A7%8D%E9%A2%9C%E8%89%B2%E9%83%BD%E6%9C%89%E4%B8%80%E4%B8%AA%E6%9D%83%E9%87%8D%EF%BC%8C%E6%9D%83%E5%80%BC%E6%98%AF%E8%BF%99%E6%A0%B7%E5%AE%9A%E4%B9%89%E7%9A%84%EF%BC%9A"><span class="toc-number">1.1.</span> <span class="toc-text">给出一个由$n$个点构成的树，每个点都有一个权值。现在你可以用$k,k\subset$$[1, n]$个颜色来给这棵树上的边涂色（这$k$种颜色不一定都要用上）。对于每种颜色都有一个权重，权值是这样定义的：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%86%E9%99%A4%E4%BA%86%E5%BD%93%E5%89%8D%E9%A2%9C%E8%89%B2-col-i-%E5%85%B6%E4%BB%96%E9%A2%9C%E8%89%B2%E7%9A%84%E8%BE%B9%E5%88%A0%E6%8E%89%EF%BC%8C%E5%89%A9%E4%BD%99%E7%9A%84%E8%BE%B9%E6%9E%84%E6%88%90%E4%BA%86%E4%B8%80%E4%B8%AA%E4%B8%AA%E8%81%94%E9%80%9A%E5%88%86%E9%87%8F%E3%80%82%E5%AF%B9%E4%BA%8E%E4%BB%BB%E6%84%8F%E4%B8%80%E4%B8%AA%E8%81%94%E9%80%9A%E5%88%86%E9%87%8F%E6%88%91%E4%BB%AC%E8%AE%BE%E5%AE%83%E7%9A%84%E6%9D%83%E9%87%8D%E6%98%AF-w-i-%EF%BC%8C%E9%82%A3%E4%B9%88-w-i-%E5%B0%B1%E7%AD%89%E4%BA%8E%E8%AF%A5%E8%81%94%E9%80%9A%E5%88%86%E9%87%8F%E4%B8%AD%E6%89%80%E6%9C%89%E7%82%B9%E7%9A%84%E6%9D%83%E5%80%BC%E4%B9%8B%E5%92%8C%EF%BC%8C%E5%88%99%E5%AF%B9%E4%BA%8E%E5%BD%93%E5%89%8D%E9%A2%9C%E8%89%B2%EF%BC%8C%E5%AE%83%E7%9A%84%E6%9D%83%E5%80%BC%E5%B0%B1%E6%98%AF-w-col-i-max-w-1-w-2-cdots-w-n"><span class="toc-number">1.2.</span> <span class="toc-text">将除了当前颜色$col_i$其他颜色的边删掉，剩余的边构成了一个个联通分量。对于任意一个联通分量我们设它的权重是$w_i$，那么$w_i$就等于该联通分量中所有点的权值之和，则对于当前颜色，它的权值就是$w_{col_i}&#x3D;max\{w_1, w_2,\cdots,w_n\}$</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9C%80%E8%A6%81%E6%B3%A8%E6%84%8F%E7%9A%84%E6%98%AF%EF%BC%8C%E8%BF%99%E4%B8%AA%E8%81%94%E9%80%9A%E5%88%86%E9%87%8F%E6%98%AF%E9%80%9A%E8%BF%87%E5%88%A0%E8%BE%B9%E5%BE%97%E5%88%B0%E7%9A%84%EF%BC%8C%E6%89%80%E4%BB%A5%E4%B8%8D%E4%BC%9A%E5%87%BA%E7%8E%B0%E8%81%94%E9%80%9A%E5%88%86%E9%87%8F%E4%B8%AD%E5%8F%AA%E6%9C%89%E4%B8%80%E4%B8%AA%E7%82%B9%E7%9A%84%E6%83%85%E5%86%B5%E3%80%82%E5%AF%B9%E4%BA%8E%E4%B8%80%E4%B8%AA%E7%A9%BA%E7%9A%84%E8%81%94%E9%80%9A%E5%88%86%E9%87%8F%EF%BC%8C%E6%88%91%E4%BB%AC%E8%AE%A4%E4%B8%BA%E5%AE%83%E7%9A%84%E6%9D%83%E9%87%8D%E4%B8%BA0%E3%80%82"><span class="toc-number">1.3.</span> <span class="toc-text">需要注意的是，这个联通分量是通过删边得到的，所以不会出现联通分量中只有一个点的情况。对于一个空的联通分量，我们认为它的权重为0。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%8E%B0%E5%9C%A8%E5%8F%88%E5%AE%9A%E4%B9%89%E5%AF%B9%E4%BA%8E%E6%AF%8F%E4%B8%AA-k-%E4%B9%9F%E6%9C%89%E4%B8%80%E4%B8%AA%E6%9D%83%E5%80%BC%EF%BC%8C%E5%AE%83%E7%AD%89%E4%BA%8E%E5%AE%83%E5%8C%85%E5%90%AB%E7%9A%84%E6%89%80%E6%9C%89%E9%A2%9C%E8%89%B2%E7%9A%84%E6%9D%83%E5%80%BC%E4%B9%8B%E5%92%8C%EF%BC%8C%E5%8D%B3-w-k-sum-i-1-kw-col-i"><span class="toc-number">1.4.</span> <span class="toc-text">现在又定义对于每个$k$也有一个权值，它等于它包含的所有颜色的权值之和，即$w_k&#x3D;\sum_{i&#x3D;1}^kw_{col_i}$.</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%8E%B0%E5%9C%A8%E8%AE%A9%E4%BD%A0%E6%B1%82%E5%87%BA%E5%AF%B9%E4%BA%8E%E6%AF%8F%E4%B8%AA-k-%EF%BC%8C%E5%AE%83%E7%9A%84%E6%9D%83%E5%80%BC-w-k-%E7%9A%84%E6%9C%80%E5%A4%A7%E5%80%BC%E6%98%AF%E5%A4%9A%E5%B0%91%E3%80%82"><span class="toc-number">1.5.</span> <span class="toc-text">现在让你求出对于每个$k$，它的权值$w_k$的最大值是多少。</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF%EF%BC%9A"><span class="toc-number">2.</span> <span class="toc-text">思路：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A6%96%E5%85%88%E9%9D%9E%E5%B8%B8%E6%98%BE%E7%84%B6%E7%9A%84%E4%B8%80%E4%B8%AA%E9%81%93%E7%90%86%EF%BC%8C%E6%88%91%E4%BB%AC%E4%B8%8D%E8%83%BD%E6%B6%82%E5%AE%8C%E9%A2%9C%E8%89%B2%E5%90%8E%E8%AE%A9%E4%B8%80%E4%B8%AA%E6%88%96%E5%A4%9A%E4%B8%AA%E9%A2%9C%E8%89%B2%E8%A2%AB%E5%88%86%E5%89%B2%E6%88%90%E5%A4%9A%E4%B8%AA%E8%81%94%E9%80%9A%E5%88%86%E9%87%8F%E7%84%B6%E5%90%8E%E5%8F%96-max-%EF%BC%8C%E8%BF%99%E6%A0%B7%E6%97%A0%E8%AE%BA%E5%A6%82%E4%BD%95%E9%83%BD%E4%B8%8D%E5%8F%AF%E8%83%BD%E6%AF%94%E5%8D%95%E4%B8%80%E7%9A%84%E8%81%94%E9%80%9A%E5%88%86%E9%87%8F%E7%9A%84%E6%9D%83%E5%80%BC%E5%A4%A7%E3%80%82"><span class="toc-number">2.1.</span> <span class="toc-text">首先非常显然的一个道理，我们不能涂完颜色后让一个或多个颜色被分割成多个联通分量然后取$max$，这样无论如何都不可能比单一的联通分量的权值大。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%88%91%E4%BB%AC%E5%8F%AF%E4%BB%A5%E8%AF%95%E7%9D%80%E6%A8%A1%E6%8B%9F%E4%BB%8E%E6%B6%82%E4%B8%80%E4%B8%AA%E9%A2%9C%E8%89%B2%E5%88%B0%E6%B6%82%E4%B8%A4%E4%B8%AA%E9%A2%9C%E8%89%B2%E7%9A%84%E8%BF%87%E7%A8%8B%EF%BC%8C-%E5%8F%98%E5%8C%96%E7%9A%84%E5%B0%B1%E6%98%AF%E8%AE%A9%E5%85%B6%E4%B8%AD%E4%B8%80%E4%B8%AA%E7%82%B9%E4%BB%8E%E5%8F%AA%E8%A2%AB%E8%AE%A1%E7%AE%97%E4%B8%80%E6%AC%A1%E5%8F%98%E6%88%90%E8%A2%AB%E8%AE%A1%E7%AE%97%E4%B8%A4%E6%AC%A1%EF%BC%8C%E5%AF%B9%E4%BA%8E%E4%BB%8E%E4%B8%A4%E4%B8%AA%E9%A2%9C%E8%89%B2%E5%88%B0%E4%B8%89%E4%B8%AA%EF%BC%8C%E4%B8%89%E4%B8%AA%E5%88%B0%E5%9B%9B%E4%B8%AA%E2%80%A6%E9%83%BD%E5%8F%AF%E4%BB%A5%E4%BE%9D%E6%AC%A1%E6%8E%A8%E5%B9%BF%E5%BE%97%E5%88%B0%E7%9B%B8%E5%90%8C%E7%9A%84%E7%BB%93%E8%AE%BA%E3%80%82%E6%89%80%E4%BB%A5%E8%BF%99%E9%87%8C%E5%88%A9%E7%94%A8%E8%B4%AA%E5%BF%83%E7%9A%84%E6%80%9D%E6%83%B3%E4%BC%98%E5%85%88%E8%AE%A9%E6%9D%83%E5%80%BC%E5%A4%A7%E7%9A%84%E7%82%B9%E5%85%88%E8%A2%AB%E8%AE%A1%E7%AE%97%E5%A4%9A%E6%AC%A1%EF%BC%8C%E5%86%8D%E4%BE%9D%E6%AC%A1%E5%87%8F%E5%B0%91%E3%80%82"><span class="toc-number">2.2.</span> <span class="toc-text">我们可以试着模拟从涂一个颜色到涂两个颜色的过程， 变化的就是让其中一个点从只被计算一次变成被计算两次，对于从两个颜色到三个，三个到四个…都可以依次推广得到相同的结论。所以这里利用贪心的思想优先让权值大的点先被计算多次，再依次减少。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%B9%E4%BA%8E%E6%AF%8F%E4%B8%80%E4%B8%AA%E7%82%B9%EF%BC%8C%E4%BB%96%E8%83%BD%E5%A4%9F%E8%A2%AB%E8%AE%A1%E7%AE%97%E7%9A%84%E6%9C%80%E5%A4%9A%E7%9A%84%E6%AC%A1%E6%95%B0%E5%B0%B1%E6%98%AF%E5%AE%83%E7%9A%84%E5%BA%A6-%EF%BC%88degree-%E3%80%82%E5%BD%93-k-1-%E7%9A%84%E6%97%B6%E5%80%99%EF%BC%8C%E5%AE%83%E7%9A%84%E6%9C%80%E5%A4%A7%E5%80%BC%E5%8F%AA%E6%9C%89%E4%B8%80%E4%B8%AA%E5%B0%B1%E6%98%AF%E6%AF%8F%E4%B8%AA%E7%82%B9%E7%9A%84%E6%9D%83%E5%80%BC%E4%B9%8B%E5%92%8C%E3%80%82%E8%BF%99%E6%97%B6%E5%80%99%E6%AF%8F%E4%B8%AA%E8%BE%B9%E9%83%BD%E4%BC%9A%E8%A2%AB%E8%AE%A1%E7%AE%97%E4%B8%80%E6%AC%A1%EF%BC%8C%E6%89%80%E6%9C%89%E7%9A%84%E8%BE%B9%E5%BA%A6%E9%83%BD%E5%87%8F%E5%8E%BB%E4%B8%80%EF%BC%8C%E5%AF%B9%E4%BA%8E%E5%89%A9%E4%B8%8B%E7%9A%84%E6%89%80%E6%9C%89%E5%BA%A6%E8%BF%98%E5%A4%A7%E4%BA%8E1%E7%9A%84%E7%82%B9%EF%BC%8C%E6%88%91%E4%BB%AC%E5%B0%B1%E6%8C%89%E7%85%A7%E4%B8%8A%E9%9D%A2%E8%AF%B4%E5%88%B0%E7%9A%84%E8%B4%AA%E5%BF%83%E6%96%B9%E6%B3%95%E8%BF%9B%E8%A1%8C%E8%AE%A1%E7%AE%97%E5%B0%B1%E5%8F%AF%E4%BB%A5%E5%BE%97%E5%88%B0%E6%9C%80%E7%BB%88%E7%BB%93%E6%9E%9C%E3%80%82"><span class="toc-number">2.3.</span> <span class="toc-text">对于每一个点，他能够被计算的最多的次数就是它的度$（degree)$。当$k&#x3D;1$的时候，它的最大值只有一个就是每个点的权值之和。这时候每个边都会被计算一次，所有的边度都减去一，对于剩下的所有度还大于1的点，我们就按照上面说到的贪心方法进行计算就可以得到最终结果。</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AC%E4%BB%A3%E7%A0%81%EF%BC%9A"><span class="toc-number">3.</span> <span class="toc-text">AC代码：</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://chantmee.github.io/2021/01/18/CF1466-D.%2013th%20Labour%20of%20Heracles/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://chantmee.github.io/2021/01/18/CF1466-D.%2013th%20Labour%20of%20Heracles/&text=CF1466-D. 13th Labour of Heracles"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://chantmee.github.io/2021/01/18/CF1466-D.%2013th%20Labour%20of%20Heracles/&title=CF1466-D. 13th Labour of Heracles"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://chantmee.github.io/2021/01/18/CF1466-D.%2013th%20Labour%20of%20Heracles/&is_video=false&description=CF1466-D. 13th Labour of Heracles"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=CF1466-D. 13th Labour of Heracles&body=Check out this article: http://chantmee.github.io/2021/01/18/CF1466-D.%2013th%20Labour%20of%20Heracles/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://chantmee.github.io/2021/01/18/CF1466-D.%2013th%20Labour%20of%20Heracles/&title=CF1466-D. 13th Labour of Heracles"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://chantmee.github.io/2021/01/18/CF1466-D.%2013th%20Labour%20of%20Heracles/&title=CF1466-D. 13th Labour of Heracles"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://chantmee.github.io/2021/01/18/CF1466-D.%2013th%20Labour%20of%20Heracles/&title=CF1466-D. 13th Labour of Heracles"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://chantmee.github.io/2021/01/18/CF1466-D.%2013th%20Labour%20of%20Heracles/&title=CF1466-D. 13th Labour of Heracles"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://chantmee.github.io/2021/01/18/CF1466-D.%2013th%20Labour%20of%20Heracles/&name=CF1466-D. 13th Labour of Heracles&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://chantmee.github.io/2021/01/18/CF1466-D.%2013th%20Labour%20of%20Heracles/&t=CF1466-D. 13th Labour of Heracles"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<footer id="footer">
+  <div class="visit-num">
+    文章阅读量<span id="busuanzi_value_page_pv"></span>次
+  </div>
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2019-2021
+    Chant Mee
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">主页</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+</body>
+</html>

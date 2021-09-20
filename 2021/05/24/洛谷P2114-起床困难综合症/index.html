@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="题目21 世纪，许多人得了一种奇怪的病：起床困难综合症，其临床表现为：起床难，起床后精神不佳。作为一名青春阳光好少年，atm 一直坚持与起床困难综合症作斗争。通过研究相关文献，他找到了该病的发病原因：在深邃的太平洋海底中，出现了一条名为 drd 的巨龙，它掌握着睡眠之精髓，能随意延长大家的睡眠时间。正是由于 drd 的活动，起床困难综合症愈演愈烈，以惊人的速度在世界上传播。为了彻底消灭这种病，at">
+<meta property="og:type" content="article">
+<meta property="og:title" content="洛谷P2114-起床困难综合症">
+<meta property="og:url" content="http://chantmee.github.io/2021/05/24/%E6%B4%9B%E8%B0%B7P2114-%E8%B5%B7%E5%BA%8A%E5%9B%B0%E9%9A%BE%E7%BB%BC%E5%90%88%E7%97%87/index.html">
+<meta property="og:site_name" content="Chant&#39;s Blog">
+<meta property="og:description" content="题目21 世纪，许多人得了一种奇怪的病：起床困难综合症，其临床表现为：起床难，起床后精神不佳。作为一名青春阳光好少年，atm 一直坚持与起床困难综合症作斗争。通过研究相关文献，他找到了该病的发病原因：在深邃的太平洋海底中，出现了一条名为 drd 的巨龙，它掌握着睡眠之精髓，能随意延长大家的睡眠时间。正是由于 drd 的活动，起床困难综合症愈演愈烈，以惊人的速度在世界上传播。为了彻底消灭这种病，at">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-05-24T13:59:38.000Z">
+<meta property="article:modified_time" content="2021-09-18T07:27:40.000Z">
+<meta property="article:author" content="Chant Mee">
+<meta property="article:tag" content="ACM">
+<meta property="article:tag" content="算法">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>洛谷P2114-起床困难综合症</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body class="max-width mx-auto px3 ltr">    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" "Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">主页</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇 " href="/2021/05/25/CF1529-A.%20Eshag%20Loves%20Big%20Arrays/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇 " href="/2021/05/23/CF1498-B.Box%20Fitting/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部 " href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章 " href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://chantmee.github.io/2021/05/24/%E6%B4%9B%E8%B0%B7P2114-%E8%B5%B7%E5%BA%8A%E5%9B%B0%E9%9A%BE%E7%BB%BC%E5%90%88%E7%97%87/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://chantmee.github.io/2021/05/24/%E6%B4%9B%E8%B0%B7P2114-%E8%B5%B7%E5%BA%8A%E5%9B%B0%E9%9A%BE%E7%BB%BC%E5%90%88%E7%97%87/&text=洛谷P2114-起床困难综合症"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://chantmee.github.io/2021/05/24/%E6%B4%9B%E8%B0%B7P2114-%E8%B5%B7%E5%BA%8A%E5%9B%B0%E9%9A%BE%E7%BB%BC%E5%90%88%E7%97%87/&title=洛谷P2114-起床困难综合症"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://chantmee.github.io/2021/05/24/%E6%B4%9B%E8%B0%B7P2114-%E8%B5%B7%E5%BA%8A%E5%9B%B0%E9%9A%BE%E7%BB%BC%E5%90%88%E7%97%87/&is_video=false&description=洛谷P2114-起床困难综合症"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=洛谷P2114-起床困难综合症&body=Check out this article: http://chantmee.github.io/2021/05/24/%E6%B4%9B%E8%B0%B7P2114-%E8%B5%B7%E5%BA%8A%E5%9B%B0%E9%9A%BE%E7%BB%BC%E5%90%88%E7%97%87/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://chantmee.github.io/2021/05/24/%E6%B4%9B%E8%B0%B7P2114-%E8%B5%B7%E5%BA%8A%E5%9B%B0%E9%9A%BE%E7%BB%BC%E5%90%88%E7%97%87/&title=洛谷P2114-起床困难综合症"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://chantmee.github.io/2021/05/24/%E6%B4%9B%E8%B0%B7P2114-%E8%B5%B7%E5%BA%8A%E5%9B%B0%E9%9A%BE%E7%BB%BC%E5%90%88%E7%97%87/&title=洛谷P2114-起床困难综合症"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://chantmee.github.io/2021/05/24/%E6%B4%9B%E8%B0%B7P2114-%E8%B5%B7%E5%BA%8A%E5%9B%B0%E9%9A%BE%E7%BB%BC%E5%90%88%E7%97%87/&title=洛谷P2114-起床困难综合症"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://chantmee.github.io/2021/05/24/%E6%B4%9B%E8%B0%B7P2114-%E8%B5%B7%E5%BA%8A%E5%9B%B0%E9%9A%BE%E7%BB%BC%E5%90%88%E7%97%87/&title=洛谷P2114-起床困难综合症"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://chantmee.github.io/2021/05/24/%E6%B4%9B%E8%B0%B7P2114-%E8%B5%B7%E5%BA%8A%E5%9B%B0%E9%9A%BE%E7%BB%BC%E5%90%88%E7%97%87/&name=洛谷P2114-起床困难综合症&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://chantmee.github.io/2021/05/24/%E6%B4%9B%E8%B0%B7P2114-%E8%B5%B7%E5%BA%8A%E5%9B%B0%E9%9A%BE%E7%BB%BC%E5%90%88%E7%97%87/&t=洛谷P2114-起床困难综合症"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE"><span class="toc-number">1.</span> <span class="toc-text">题目</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF"><span class="toc-number">2.</span> <span class="toc-text">思路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81"><span class="toc-number">3.</span> <span class="toc-text">代码</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        洛谷P2114-起床困难综合症
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Chant Mee</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2021-05-24T13:59:38.000Z" itemprop="datePublished">2021-05-24</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/%E9%A2%98%E8%A7%A3/">题解</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/ACM/" rel="tag">ACM</a>, <a class="tag-link-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>21 世纪，许多人得了一种奇怪的病：起床困难综合症，其临床表现为：起床难，起床后精神不佳。作为一名青春阳光好少年，atm 一直坚持与起床困难综合症作斗争。通过研究相关文献，他找到了该病的发病原因：在深邃的太平洋海底中，出现了一条名为 drd 的巨龙，它掌握着睡眠之精髓，能随意延长大家的睡眠时间。正是由于 drd 的活动，起床困难综合症愈演愈烈，以惊人的速度在世界上传播。为了彻底消灭这种病，atm 决定前往海底，消灭这条恶龙。历经千辛万苦，atm 终于来到了 drd 所在的地方，准备与其展开艰苦卓绝的战斗。drd 有着十分特殊的技能，他的防御战线能够使用一定的运算来改变他受到的伤害。具体说来，drd 的防御战线由 <em>n</em> 扇防御门组成。每扇防御门包括一个运算 <em>op</em> 和一个参数 <em>t</em>，其中运算一定是 $OR$,$XOR$,$AND$中的一种，参数则一定为非负整数。如果还未通过防御门时攻击力为 <em>x</em>，则其通过这扇防御门后攻击力将变为 $x\space op\space t$。最终 drd 受到的伤害为对方初始攻击力 <em>x</em> 依次经过所有 <em>n</em> 扇防御门后转变得到的攻击力。</p>
+<p>由于 atm 水平有限，他的初始攻击力只能为 0 到 <em>m</em> 之间的一个整数（即他的初始攻击力只能在 $0,1,…,m$ 中任选，但在通过防御门之后的攻击力不受 <em>m</em> 的限制）。为了节省体力，他希望通过选择合适的初始攻击力使得他的攻击能让 drd 受到最大的伤害，请你帮他计算一下，他的一次攻击最多能使 drd 受到多少伤害。</p>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>最一开始设定两个数字$0xFFFFFFFF$（这个数字大于$1e9$并且二进制下全部为$1$即可）和$0$，对于这两个数字分别进行一次题目中描述的操作，这样就得到了真值表。</p>
+<p>按照贪心的思想从最高位开始看：</p>
+<p>如果当前位$n$可以把$0$变成$1$，那肯定是最好的，不占用$m$还能提高攻击力；否则如果把$0$变成$0$那么不必理他即可。</p>
+<p>如果当前位$n$可以把$1$变成$0$，那这一位设置为$0$就行了，因为变成$1$不仅占用$m$还减小攻击力；但如果$1$变成$1$，那么当$1&lt;&lt;i$不超过当前剩余$m$的前提下可以选择。</p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">long</span> <span class="keyword">long</span> LL;</span><br><span class="line"></span><br><span class="line">std::string s;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">solve</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    LL n, m, t;</span><br><span class="line">    std::cin &gt;&gt; n &gt;&gt; m;</span><br><span class="line">    LL zeros = <span class="number">0</span>, ones = <span class="number">1LL</span> * <span class="number">0xffffffff</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">        std::cin &gt;&gt; s &gt;&gt; t;</span><br><span class="line">        <span class="keyword">if</span> (s == <span class="string">&quot;AND&quot;</span>) &#123;</span><br><span class="line">            zeros &amp;= t;</span><br><span class="line">            ones &amp;= t;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (s == <span class="string">&quot;OR&quot;</span>) &#123;</span><br><span class="line">            zeros |= t;</span><br><span class="line">            ones |= t;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            zeros ^= t;</span><br><span class="line">            ones ^= t;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    LL ans = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">30</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">        t = <span class="number">1LL</span> &lt;&lt; i;</span><br><span class="line">        <span class="keyword">if</span> (zeros &amp; t) &#123;</span><br><span class="line">            ans += t;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (m &gt;= t &amp;&amp; (ones &amp; t)) &#123;</span><br><span class="line">            ans += t;</span><br><span class="line">            m -= t;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    std::cout &lt;&lt; ans &lt;&lt; std::endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">solve</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">主页</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE"><span class="toc-number">1.</span> <span class="toc-text">题目</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF"><span class="toc-number">2.</span> <span class="toc-text">思路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81"><span class="toc-number">3.</span> <span class="toc-text">代码</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://chantmee.github.io/2021/05/24/%E6%B4%9B%E8%B0%B7P2114-%E8%B5%B7%E5%BA%8A%E5%9B%B0%E9%9A%BE%E7%BB%BC%E5%90%88%E7%97%87/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://chantmee.github.io/2021/05/24/%E6%B4%9B%E8%B0%B7P2114-%E8%B5%B7%E5%BA%8A%E5%9B%B0%E9%9A%BE%E7%BB%BC%E5%90%88%E7%97%87/&text=洛谷P2114-起床困难综合症"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://chantmee.github.io/2021/05/24/%E6%B4%9B%E8%B0%B7P2114-%E8%B5%B7%E5%BA%8A%E5%9B%B0%E9%9A%BE%E7%BB%BC%E5%90%88%E7%97%87/&title=洛谷P2114-起床困难综合症"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://chantmee.github.io/2021/05/24/%E6%B4%9B%E8%B0%B7P2114-%E8%B5%B7%E5%BA%8A%E5%9B%B0%E9%9A%BE%E7%BB%BC%E5%90%88%E7%97%87/&is_video=false&description=洛谷P2114-起床困难综合症"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=洛谷P2114-起床困难综合症&body=Check out this article: http://chantmee.github.io/2021/05/24/%E6%B4%9B%E8%B0%B7P2114-%E8%B5%B7%E5%BA%8A%E5%9B%B0%E9%9A%BE%E7%BB%BC%E5%90%88%E7%97%87/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://chantmee.github.io/2021/05/24/%E6%B4%9B%E8%B0%B7P2114-%E8%B5%B7%E5%BA%8A%E5%9B%B0%E9%9A%BE%E7%BB%BC%E5%90%88%E7%97%87/&title=洛谷P2114-起床困难综合症"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://chantmee.github.io/2021/05/24/%E6%B4%9B%E8%B0%B7P2114-%E8%B5%B7%E5%BA%8A%E5%9B%B0%E9%9A%BE%E7%BB%BC%E5%90%88%E7%97%87/&title=洛谷P2114-起床困难综合症"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://chantmee.github.io/2021/05/24/%E6%B4%9B%E8%B0%B7P2114-%E8%B5%B7%E5%BA%8A%E5%9B%B0%E9%9A%BE%E7%BB%BC%E5%90%88%E7%97%87/&title=洛谷P2114-起床困难综合症"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://chantmee.github.io/2021/05/24/%E6%B4%9B%E8%B0%B7P2114-%E8%B5%B7%E5%BA%8A%E5%9B%B0%E9%9A%BE%E7%BB%BC%E5%90%88%E7%97%87/&title=洛谷P2114-起床困难综合症"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://chantmee.github.io/2021/05/24/%E6%B4%9B%E8%B0%B7P2114-%E8%B5%B7%E5%BA%8A%E5%9B%B0%E9%9A%BE%E7%BB%BC%E5%90%88%E7%97%87/&name=洛谷P2114-起床困难综合症&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://chantmee.github.io/2021/05/24/%E6%B4%9B%E8%B0%B7P2114-%E8%B5%B7%E5%BA%8A%E5%9B%B0%E9%9A%BE%E7%BB%BC%E5%90%88%E7%97%87/&t=洛谷P2114-起床困难综合症"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<footer id="footer">
+  <div class="visit-num">
+    文章阅读量<span id="busuanzi_value_page_pv"></span>次
+  </div>
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2019-2021
+    Chant Mee
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">主页</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+</body>
+</html>
