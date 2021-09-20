@@ -259,6 +259,35 @@
     
     
     <entry>
+      <title>mac下在vscode搭建python虚拟环境</title>
+      <link href="/2021/04/22/mac%E4%B8%8B%E5%9C%A8vscode%E6%90%AD%E5%BB%BApython%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83/"/>
+      <url>/2021/04/22/mac%E4%B8%8B%E5%9C%A8vscode%E6%90%AD%E5%BB%BApython%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83/</url>
+      
+        <content type="html"><![CDATA[<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>在<a href="https://docs.conda.io/en/latest/miniconda.html">conda官网</a>下载安装<strong>conda</strong>.</p><p>打开terminal输入<code>conda -V</code>，回车显示conda的版本说明安装成功。</p><hr><h2 id="将conda更新到最新版本"><a href="#将conda更新到最新版本" class="headerlink" title="将conda更新到最新版本"></a>将conda更新到最新版本</h2><p><code>conda update conda</code>可将conda更新到最新版本。</p><hr><h2 id="查看已存在的虚拟环境"><a href="#查看已存在的虚拟环境" class="headerlink" title="查看已存在的虚拟环境"></a>查看已存在的虚拟环境</h2><p><code>conda env list</code>可查看已存在的虚拟环境。</p><p>这些虚拟环境都存储在Anaconda根目录下的env文件夹中。</p><hr><h2 id="创建一个虚拟环境"><a href="#创建一个虚拟环境" class="headerlink" title="创建一个虚拟环境"></a>创建一个虚拟环境</h2><p><code>conda create -n env_name python=python_version</code>，其中<strong>env_name</strong>是你想创建的虚拟环境的名称，<strong>pythpn_version</strong>是要搭建的虚拟环境的python版本。</p><p>例如：<code>conda create -n my_station python=3.8</code>，这样就建立了一个pythpn版本为3.8，名称为<strong>my_station</strong>的虚拟环境，然后存储在Anaconda的根目录下。</p><p>搭建之后就可以使用<code>conda env list</code>查看到新创建的虚拟环境。</p><hr><h2 id="激活一个虚拟环境"><a href="#激活一个虚拟环境" class="headerlink" title="激活一个虚拟环境"></a>激活一个虚拟环境</h2><p><code>conda env list</code>查看已经存在的虚拟环境。假设现在要激活一个名叫<code>my_station</code>的虚拟环境，则<code>conda activate my_station</code>. </p><p>激活之后所有的与python的操作都是在这个虚拟环境中进行的。</p><p>这里的激活是指在terminal下激活的，当退出terminal后在打开激活的虚拟环境就失效了。</p><hr><h2 id="关闭虚拟环境"><a href="#关闭虚拟环境" class="headerlink" title="关闭虚拟环境"></a>关闭虚拟环境</h2><p><code>conda deactivate</code>即可关闭虚拟环境，这里不需要指定具体的虚拟环境名称。</p><hr><h2 id="在conda中查看已安装的库以及库的安装-删除"><a href="#在conda中查看已安装的库以及库的安装-删除" class="headerlink" title="在conda中查看已安装的库以及库的安装/删除"></a>在conda中查看已安装的库以及库的安装/删除</h2><h3 id="查看在conda中已安装的库："><a href="#查看在conda中已安装的库：" class="headerlink" title="查看在conda中已安装的库："></a>查看在conda中已安装的库：</h3><p><code>conda list</code> 即可查看在conda中已经安装的库</p><h3 id="安装-删除库："><a href="#安装-删除库：" class="headerlink" title="安装/删除库："></a>安装/删除库：</h3><p>安装：<code>conda install [package]</code></p><p>删除：<code>conda uninstall [package]</code></p><hr><h2 id="在虚拟环境中安装-删除库"><a href="#在虚拟环境中安装-删除库" class="headerlink" title="在虚拟环境中安装/删除库"></a>在虚拟环境中安装/删除库</h2><h3 id="conda安装-删除库"><a href="#conda安装-删除库" class="headerlink" title="conda安装/删除库"></a>conda安装/删除库</h3><p>安装：<code>conda install -n env_name [package]</code>，其中 <strong>[package]</strong>是要安装的库的名称。</p><p>例如：一个虚拟环境叫做<strong>my_station</strong>，则<code>conda install -n my_station pymysql</code>就在<strong>my_station</strong>这个虚拟环境中安装了一个叫做<code>pymysql</code>的库。</p><p>删除：<code>conda remove --name env_name package_name</code><br>例如：<br>要删除<strong>my_station</strong>中的pyqt5库，则执行<code>conda remove --name my_station pymysql</code></p><h3 id="pip安装-删除库"><a href="#pip安装-删除库" class="headerlink" title="pip安装/删除库"></a>pip安装/删除库</h3><p>首先激活要安装库的虚拟环境，<code>conda activate env_name</code></p><p>安装：<code>pip install [package]</code></p><p>删除：<code>pip uninstall [package]</code></p><h3 id="这两种安装方式的区别"><a href="#这两种安装方式的区别" class="headerlink" title="这两种安装方式的区别"></a>这两种安装方式的区别</h3><p>conda是一种通用包管理系统。</p><p>pip是Python包的通用管理器；</p><p>换句话说就是：这两个包的区别就是包的管理方式不同。</p><hr><h2 id="在conda中安装包和在虚拟环境中安装包的区别"><a href="#在conda中安装包和在虚拟环境中安装包的区别" class="headerlink" title="在conda中安装包和在虚拟环境中安装包的区别"></a>在conda中安装包和在虚拟环境中安装包的区别</h2><p>在conda中安装，安装的包并没有安装在具体的某一个虚拟环境中。</p><p>当创建虚拟环境或者用conda向某一个虚拟环境安装包的时候，首先检查的就是conda中是否已经安装这个包了，如果conda中已经安装了这个包，就不必再次通过网络下载了。</p><p>通过向conda中安装一些非常常用的包可以节省一些时间。</p><hr><h2 id="删除一个虚拟环境"><a href="#删除一个虚拟环境" class="headerlink" title="删除一个虚拟环境"></a>删除一个虚拟环境</h2><p><code>conda remove -n env_name --all</code>，例如要将一个名叫<strong>my_station</strong>的虚拟环境删除，则执行<code>conda remove -n my_station --all</code></p><hr><h2 id="与他人分享虚拟环境的配置"><a href="#与他人分享虚拟环境的配置" class="headerlink" title="与他人分享虚拟环境的配置"></a>与他人分享虚拟环境的配置</h2><p>例如现在要与他人分享<strong>my_station</strong>这个虚拟环境。</p><p>首先激活这个虚拟环境<code>conda activate my_station</code>，之后执行<code>conda env export</code>命令即可看到环境的相关配置。这里可以重定向输出流，例如<code>conda env export &gt; my_station_config.yml</code>即可在当前目录下创建一个名叫<code>my_station_config.yml</code>的文件。</p><p>当他人获得这个文件之后，执行<code>conda env create -f my_station_config.yml</code>就可以得到一模一样的环境了。</p><hr><h2 id="切换conda源"><a href="#切换conda源" class="headerlink" title="切换conda源"></a>切换conda源</h2><h3 id="清华源："><a href="#清华源：" class="headerlink" title="清华源："></a>清华源：</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/</span><br><span class="line">conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/conda-forge </span><br><span class="line">conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/msys2/</span><br></pre></td></tr></table></figure><h3 id="中科大源"><a href="#中科大源" class="headerlink" title="中科大源:"></a>中科大源:</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">conda config --add channels https://mirrors.ustc.edu.cn/anaconda/pkgs/main/</span><br><span class="line">conda config --add channels https://mirrors.ustc.edu.cn/anaconda/pkgs/free/</span><br><span class="line">conda config --add channels https://mirrors.ustc.edu.cn/anaconda/cloud/conda-forge/</span><br><span class="line">conda config --add channels https://mirrors.ustc.edu.cn/anaconda/cloud/msys2/</span><br><span class="line">conda config --add channels https://mirrors.ustc.edu.cn/anaconda/cloud/bioconda/</span><br><span class="line">conda config --add channels https://mirrors.ustc.edu.cn/anaconda/cloud/menpo/</span><br></pre></td></tr></table></figure><h3 id="切换回默认源"><a href="#切换回默认源" class="headerlink" title="切换回默认源"></a>切换回默认源</h3><p><code>conda config --remove-key channels</code></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> python </tag>
+            
+            <tag> vscode </tag>
+            
+            <tag> 环境 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>mac下conda的安装、使用</title>
       <link href="/2021/04/22/mac%E4%B8%8Bconda%E7%9A%84%E5%AE%89%E8%A3%85%E3%80%81%E4%BD%BF%E7%94%A8/"/>
       <url>/2021/04/22/mac%E4%B8%8Bconda%E7%9A%84%E5%AE%89%E8%A3%85%E3%80%81%E4%BD%BF%E7%94%A8/</url>
@@ -324,7 +353,7 @@
       
       <categories>
           
-          <category> 思考 </category>
+          <category> 想法 </category>
           
       </categories>
       
@@ -440,6 +469,33 @@
         <tags>
             
             <tag> vim </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>任务安排问题</title>
+      <link href="/2021/01/26/%E4%BB%BB%E5%8A%A1%E5%AE%89%E6%8E%92%E9%97%AE%E9%A2%98/"/>
+      <url>/2021/01/26/%E4%BB%BB%E5%8A%A1%E5%AE%89%E6%8E%92%E9%97%AE%E9%A2%98/</url>
+      
+        <content type="html"><![CDATA[<p>​平时有很多需要长期做的任务，而这些任务中的某些任务会对其他任务又要求，比如你不可能在不会写字的情况下去练习书法。为了提高每天的工作效率合理的安排做事的先后顺序就尤为重要。</p><p>​但在安排任务的先后顺序时，经常碰到这样的麻烦：由于每个任务耗时不同，可能需要一天，可能需要两天三天，并且任务之间有比较复杂的拓扑关系，导致安排完之后发现某一天的工作量非常小，而某一天的工作量又非常大，不能比较平均的分配这些任务。</p><p>​那么就想到用计算机强大的计算能力去帮助我们更好的规划每一天的安排。</p><h2 id="题目："><a href="#题目：" class="headerlink" title="题目："></a>题目：</h2><p>给出$n(n&lt;1000)$个任务，分别编号为$1,2,…,n$，完成每个任务需要花费$t_i(t_i&lt;T)$天的时间来完成，任务不可拆分。此外这$n$个任务有$m(m&lt;10000)$个要求，每个要求为描述为：要想开始做任务$b$，必须先完成任务$a$。这里注意对于一个任务$b$可能会有多个任务$a$。</p><p>现在给你$T(T&lt;100000)$天时间，每天的任务的数量为$N_i$，要求你给出一个任务完成任务的方案，使得$max\{N_1, N_2,…,N_n\}$最小。</p><p>题目保证所有任务一定都能完成。</p><hr><h2 id="输入格式："><a href="#输入格式：" class="headerlink" title="输入格式："></a>输入格式：</h2><p>第一行有三个整数分别为$n,m,T$，表示共有$n$个任务，$m$个要求，$T$天的时间。</p><p>第二行有$n$个数字，代表完成每个任务所需要的时间。</p><p>接下来有$m$行，每行有两个整数$a_i,b_i$，要想开始做任务$b_i$，必须先完成任务$a_i$。</p><hr><h2 id="输出格式："><a href="#输出格式：" class="headerlink" title="输出格式："></a>输出格式：</h2><p>$1$行整数包括$n$个数字，表示每个任务的开始时间。</p><hr><h2 id="假的样例（主要看看输入格式）："><a href="#假的样例（主要看看输入格式）：" class="headerlink" title="假的样例（主要看看输入格式）："></a>假的样例（主要看看输入格式）：</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">14 3 16</span><br><span class="line">7 3 3 4 3 4 0 6 3 6 6 3 4 4</span><br><span class="line">2 1</span><br><span class="line">4 3</span><br><span class="line">14 12</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> 工具 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 工作 </tag>
+            
+            <tag> 安排， 拓扑排序 </tag>
             
         </tags>
       

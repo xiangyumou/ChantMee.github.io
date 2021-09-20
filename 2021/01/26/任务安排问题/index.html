@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="​平时有很多需要长期做的任务，而这些任务中的某些任务会对其他任务又要求，比如你不可能在不会写字的情况下去练习书法。为了提高每天的工作效率合理的安排做事的先后顺序就尤为重要。 ​但在安排任务的先后顺序时，经常碰到这样的麻烦：由于每个任务耗时不同，可能需要一天，可能需要两天三天，并且任务之间有比较复杂的拓扑关系，导致安排完之后发现某一天的工作量非常小，而某一天的工作量又非常大，不能比较平均的分配这些任">
+<meta property="og:type" content="article">
+<meta property="og:title" content="任务安排问题">
+<meta property="og:url" content="http://chantmee.github.io/2021/01/26/%E4%BB%BB%E5%8A%A1%E5%AE%89%E6%8E%92%E9%97%AE%E9%A2%98/index.html">
+<meta property="og:site_name" content="Chant&#39;s Blog">
+<meta property="og:description" content="​平时有很多需要长期做的任务，而这些任务中的某些任务会对其他任务又要求，比如你不可能在不会写字的情况下去练习书法。为了提高每天的工作效率合理的安排做事的先后顺序就尤为重要。 ​但在安排任务的先后顺序时，经常碰到这样的麻烦：由于每个任务耗时不同，可能需要一天，可能需要两天三天，并且任务之间有比较复杂的拓扑关系，导致安排完之后发现某一天的工作量非常小，而某一天的工作量又非常大，不能比较平均的分配这些任">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-01-26T04:27:49.000Z">
+<meta property="article:modified_time" content="2021-09-18T13:41:11.203Z">
+<meta property="article:author" content="Chant Mee">
+<meta property="article:tag" content="工作">
+<meta property="article:tag" content="安排， 拓扑排序">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>任务安排问题</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" "Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">主页</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇 " href="/2021/01/27/%E4%B8%AA%E4%BA%BAvim%E9%85%8D%E7%BD%AE/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="返回顶部 " href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章 " href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://chantmee.github.io/2021/01/26/%E4%BB%BB%E5%8A%A1%E5%AE%89%E6%8E%92%E9%97%AE%E9%A2%98/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://chantmee.github.io/2021/01/26/%E4%BB%BB%E5%8A%A1%E5%AE%89%E6%8E%92%E9%97%AE%E9%A2%98/&text=任务安排问题"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://chantmee.github.io/2021/01/26/%E4%BB%BB%E5%8A%A1%E5%AE%89%E6%8E%92%E9%97%AE%E9%A2%98/&title=任务安排问题"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://chantmee.github.io/2021/01/26/%E4%BB%BB%E5%8A%A1%E5%AE%89%E6%8E%92%E9%97%AE%E9%A2%98/&is_video=false&description=任务安排问题"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=任务安排问题&body=Check out this article: http://chantmee.github.io/2021/01/26/%E4%BB%BB%E5%8A%A1%E5%AE%89%E6%8E%92%E9%97%AE%E9%A2%98/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://chantmee.github.io/2021/01/26/%E4%BB%BB%E5%8A%A1%E5%AE%89%E6%8E%92%E9%97%AE%E9%A2%98/&title=任务安排问题"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://chantmee.github.io/2021/01/26/%E4%BB%BB%E5%8A%A1%E5%AE%89%E6%8E%92%E9%97%AE%E9%A2%98/&title=任务安排问题"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://chantmee.github.io/2021/01/26/%E4%BB%BB%E5%8A%A1%E5%AE%89%E6%8E%92%E9%97%AE%E9%A2%98/&title=任务安排问题"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://chantmee.github.io/2021/01/26/%E4%BB%BB%E5%8A%A1%E5%AE%89%E6%8E%92%E9%97%AE%E9%A2%98/&title=任务安排问题"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://chantmee.github.io/2021/01/26/%E4%BB%BB%E5%8A%A1%E5%AE%89%E6%8E%92%E9%97%AE%E9%A2%98/&name=任务安排问题&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://chantmee.github.io/2021/01/26/%E4%BB%BB%E5%8A%A1%E5%AE%89%E6%8E%92%E9%97%AE%E9%A2%98/&t=任务安排问题"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%EF%BC%9A"><span class="toc-number">1.</span> <span class="toc-text">题目：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BE%93%E5%85%A5%E6%A0%BC%E5%BC%8F%EF%BC%9A"><span class="toc-number">2.</span> <span class="toc-text">输入格式：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BE%93%E5%87%BA%E6%A0%BC%E5%BC%8F%EF%BC%9A"><span class="toc-number">3.</span> <span class="toc-text">输出格式：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%81%87%E7%9A%84%E6%A0%B7%E4%BE%8B%EF%BC%88%E4%B8%BB%E8%A6%81%E7%9C%8B%E7%9C%8B%E8%BE%93%E5%85%A5%E6%A0%BC%E5%BC%8F%EF%BC%89%EF%BC%9A"><span class="toc-number">4.</span> <span class="toc-text">假的样例（主要看看输入格式）：</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        任务安排问题
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Chant Mee</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2021-01-26T04:27:49.000Z" itemprop="datePublished">2021-01-26</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/%E5%B7%A5%E5%85%B7/">工具</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/%E5%AE%89%E6%8E%92%EF%BC%8C-%E6%8B%93%E6%89%91%E6%8E%92%E5%BA%8F/" rel="tag">安排， 拓扑排序</a>, <a class="tag-link-link" href="/tags/%E5%B7%A5%E4%BD%9C/" rel="tag">工作</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>​平时有很多需要长期做的任务，而这些任务中的某些任务会对其他任务又要求，比如你不可能在不会写字的情况下去练习书法。为了提高每天的工作效率合理的安排做事的先后顺序就尤为重要。</p>
+<p>​但在安排任务的先后顺序时，经常碰到这样的麻烦：由于每个任务耗时不同，可能需要一天，可能需要两天三天，并且任务之间有比较复杂的拓扑关系，导致安排完之后发现某一天的工作量非常小，而某一天的工作量又非常大，不能比较平均的分配这些任务。</p>
+<p>​那么就想到用计算机强大的计算能力去帮助我们更好的规划每一天的安排。</p>
+<h2 id="题目："><a href="#题目：" class="headerlink" title="题目："></a>题目：</h2><p>给出$n(n&lt;1000)$个任务，分别编号为$1,2,…,n$，完成每个任务需要花费$t_i(t_i&lt;T)$天的时间来完成，任务不可拆分。此外这$n$个任务有$m(m&lt;10000)$个要求，每个要求为描述为：要想开始做任务$b$，必须先完成任务$a$。这里注意对于一个任务$b$可能会有多个任务$a$。</p>
+<p>现在给你$T(T&lt;100000)$天时间，每天的任务的数量为$N_i$，要求你给出一个任务完成任务的方案，使得$max\{N_1, N_2,…,N_n\}$最小。</p>
+<p>题目保证所有任务一定都能完成。</p>
+<hr>
+<h2 id="输入格式："><a href="#输入格式：" class="headerlink" title="输入格式："></a>输入格式：</h2><p>第一行有三个整数分别为$n,m,T$，表示共有$n$个任务，$m$个要求，$T$天的时间。</p>
+<p>第二行有$n$个数字，代表完成每个任务所需要的时间。</p>
+<p>接下来有$m$行，每行有两个整数$a_i,b_i$，要想开始做任务$b_i$，必须先完成任务$a_i$。</p>
+<hr>
+<h2 id="输出格式："><a href="#输出格式：" class="headerlink" title="输出格式："></a>输出格式：</h2><p>$1$行整数包括$n$个数字，表示每个任务的开始时间。</p>
+<hr>
+<h2 id="假的样例（主要看看输入格式）："><a href="#假的样例（主要看看输入格式）：" class="headerlink" title="假的样例（主要看看输入格式）："></a>假的样例（主要看看输入格式）：</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">14 3 16</span><br><span class="line">7 3 3 4 3 4 0 6 3 6 6 3 4 4</span><br><span class="line">2 1</span><br><span class="line">4 3</span><br><span class="line">14 12</span><br></pre></td></tr></table></figure>
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">主页</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%EF%BC%9A"><span class="toc-number">1.</span> <span class="toc-text">题目：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BE%93%E5%85%A5%E6%A0%BC%E5%BC%8F%EF%BC%9A"><span class="toc-number">2.</span> <span class="toc-text">输入格式：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BE%93%E5%87%BA%E6%A0%BC%E5%BC%8F%EF%BC%9A"><span class="toc-number">3.</span> <span class="toc-text">输出格式：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%81%87%E7%9A%84%E6%A0%B7%E4%BE%8B%EF%BC%88%E4%B8%BB%E8%A6%81%E7%9C%8B%E7%9C%8B%E8%BE%93%E5%85%A5%E6%A0%BC%E5%BC%8F%EF%BC%89%EF%BC%9A"><span class="toc-number">4.</span> <span class="toc-text">假的样例（主要看看输入格式）：</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://chantmee.github.io/2021/01/26/%E4%BB%BB%E5%8A%A1%E5%AE%89%E6%8E%92%E9%97%AE%E9%A2%98/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://chantmee.github.io/2021/01/26/%E4%BB%BB%E5%8A%A1%E5%AE%89%E6%8E%92%E9%97%AE%E9%A2%98/&text=任务安排问题"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://chantmee.github.io/2021/01/26/%E4%BB%BB%E5%8A%A1%E5%AE%89%E6%8E%92%E9%97%AE%E9%A2%98/&title=任务安排问题"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://chantmee.github.io/2021/01/26/%E4%BB%BB%E5%8A%A1%E5%AE%89%E6%8E%92%E9%97%AE%E9%A2%98/&is_video=false&description=任务安排问题"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=任务安排问题&body=Check out this article: http://chantmee.github.io/2021/01/26/%E4%BB%BB%E5%8A%A1%E5%AE%89%E6%8E%92%E9%97%AE%E9%A2%98/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://chantmee.github.io/2021/01/26/%E4%BB%BB%E5%8A%A1%E5%AE%89%E6%8E%92%E9%97%AE%E9%A2%98/&title=任务安排问题"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://chantmee.github.io/2021/01/26/%E4%BB%BB%E5%8A%A1%E5%AE%89%E6%8E%92%E9%97%AE%E9%A2%98/&title=任务安排问题"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://chantmee.github.io/2021/01/26/%E4%BB%BB%E5%8A%A1%E5%AE%89%E6%8E%92%E9%97%AE%E9%A2%98/&title=任务安排问题"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://chantmee.github.io/2021/01/26/%E4%BB%BB%E5%8A%A1%E5%AE%89%E6%8E%92%E9%97%AE%E9%A2%98/&title=任务安排问题"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://chantmee.github.io/2021/01/26/%E4%BB%BB%E5%8A%A1%E5%AE%89%E6%8E%92%E9%97%AE%E9%A2%98/&name=任务安排问题&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://chantmee.github.io/2021/01/26/%E4%BB%BB%E5%8A%A1%E5%AE%89%E6%8E%92%E9%97%AE%E9%A2%98/&t=任务安排问题"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<footer id="footer">
+  <span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+  </span>
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2019-2021
+    Chant Mee
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">主页</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>
