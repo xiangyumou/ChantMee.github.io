@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="思想在互联网中，如果一个网页被很多其他网页所链接，说明它受到了普遍的承认和信赖，那么它的排名就会比较高，即它的pagerank比较高。 对于每个网页自身而言，它的重要程度由所有链接到它的网页贡献而来。对于一个网页，它的pagerank越大，那么它“说话”的“分量”也会越大，因此如果它链接到了一个其他网页，那么它对这个网页pagerank的贡献也会越大；相对的如果一个网页的pagerank较低，那么">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pagerank算法">
+<meta property="og:url" content="http://chantmee.github.io/2021/05/01/pagerank%E7%AE%97%E6%B3%95/index.html">
+<meta property="og:site_name" content="Chant&#39;s Blog">
+<meta property="og:description" content="思想在互联网中，如果一个网页被很多其他网页所链接，说明它受到了普遍的承认和信赖，那么它的排名就会比较高，即它的pagerank比较高。 对于每个网页自身而言，它的重要程度由所有链接到它的网页贡献而来。对于一个网页，它的pagerank越大，那么它“说话”的“分量”也会越大，因此如果它链接到了一个其他网页，那么它对这个网页pagerank的贡献也会越大；相对的如果一个网页的pagerank较低，那么">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-05-01T07:59:09.000Z">
+<meta property="article:modified_time" content="2021-09-21T04:40:44.301Z">
+<meta property="article:author" content="Chant Mee">
+<meta property="article:tag" content="算法">
+<meta property="article:tag" content="图论">
+<meta property="article:tag" content="线性代数">
+<meta property="article:tag" content="谷歌">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>pagerank算法</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body class="max-width mx-auto px3 ltr">    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" "Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">主页</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇 " href="/2021/05/07/%E5%88%A9%E7%94%A8dijkstra%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0%E8%AF%8D%E8%AF%AD%E5%88%B0%E8%AF%8D%E8%AF%AD%E7%9A%84%E6%8E%A5%E9%BE%99/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇 " href="/2021/04/28/CF1471-B.%20Strange%20List/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部 " href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章 " href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://chantmee.github.io/2021/05/01/pagerank%E7%AE%97%E6%B3%95/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://chantmee.github.io/2021/05/01/pagerank%E7%AE%97%E6%B3%95/&text=pagerank算法"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://chantmee.github.io/2021/05/01/pagerank%E7%AE%97%E6%B3%95/&title=pagerank算法"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://chantmee.github.io/2021/05/01/pagerank%E7%AE%97%E6%B3%95/&is_video=false&description=pagerank算法"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=pagerank算法&body=Check out this article: http://chantmee.github.io/2021/05/01/pagerank%E7%AE%97%E6%B3%95/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://chantmee.github.io/2021/05/01/pagerank%E7%AE%97%E6%B3%95/&title=pagerank算法"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://chantmee.github.io/2021/05/01/pagerank%E7%AE%97%E6%B3%95/&title=pagerank算法"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://chantmee.github.io/2021/05/01/pagerank%E7%AE%97%E6%B3%95/&title=pagerank算法"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://chantmee.github.io/2021/05/01/pagerank%E7%AE%97%E6%B3%95/&title=pagerank算法"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://chantmee.github.io/2021/05/01/pagerank%E7%AE%97%E6%B3%95/&name=pagerank算法&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://chantmee.github.io/2021/05/01/pagerank%E7%AE%97%E6%B3%95/&t=pagerank算法"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%9D%E6%83%B3"><span class="toc-number">1.</span> <span class="toc-text">思想</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A4"><span class="toc-number">2.</span> <span class="toc-text">步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81"><span class="toc-number">3.</span> <span class="toc-text">代码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C%E7%BB%93%E6%9E%9C"><span class="toc-number">4.</span> <span class="toc-text">运行结果</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Test1-input"><span class="toc-number">4.1.</span> <span class="toc-text">Test1 input</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Test1-output"><span class="toc-number">4.2.</span> <span class="toc-text">Test1 output</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Test2-input"><span class="toc-number">4.3.</span> <span class="toc-text">Test2 input</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Test2-output"><span class="toc-number">4.4.</span> <span class="toc-text">Test2 output</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        pagerank算法
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Chant Mee</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2021-05-01T07:59:09.000Z" itemprop="datePublished">2021-05-01</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/%E5%9B%BE%E8%AE%BA/" rel="tag">图论</a>, <a class="tag-link-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a>, <a class="tag-link-link" href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" rel="tag">线性代数</a>, <a class="tag-link-link" href="/tags/%E8%B0%B7%E6%AD%8C/" rel="tag">谷歌</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="思想"><a href="#思想" class="headerlink" title="思想"></a>思想</h2><p>在互联网中，如果一个网页被很多其他网页所链接，说明它受到了普遍的承认和信赖，那么它的排名就会比较高，即它的<strong>pagerank</strong>比较高。</p>
+<p>对于每个网页自身而言，它的重要程度由所有链接到它的网页贡献而来。对于一个网页，它的pagerank越大，那么它“说话”的“分量”也会越大，因此如果它链接到了一个其他网页，那么它对这个网页pagerank的贡献也会越大；相对的如果一个网页的pagerank较低，那么它能够给它链接到的网页贡献的pagerank就会比较小。</p>
+<p>在整个互联网中会出现悬挂点以及排他水槽，如果不加以解决的话它们就会消耗掉整个网络中的pagerank。因此对于每个节点，都让其有一定的概率跳转到整个网络中任意的一个点中，这样就避免了悬挂点和排他水槽消耗掉整个网络的pagerank。</p>
+<h2 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h2><ol>
+<li>根据各个网页之间的链接关系，得到该网络对应图，之后根据图中每个点的出度得到该网络的超链矩阵H；</li>
+<li>选择适合的阻尼系数$\alpha$，通常取$\alpha = 0.85$，将超链矩阵转化为谷歌矩阵，公式为$G=\alpha H + \frac{(1 - \alpha)}{n} J$，其中<strong>j</strong>为大小为<strong>n</strong>的全<strong>1</strong>矩阵，$n$为图中点的个数；</li>
+<li>选择合适的$n$维向量$I$，该向量需要满足向量中所有数相加的和为$1$，即$\sum _{j=1}^n I[j]=1$；</li>
+<li>不断进行$I=GI$的矩阵相乘迭代，直到迭代前后向量$I$几乎不发生变化，即$Max_{j=1}^{n}\{\Delta I[j]\}&lt;\epsilon$时停止迭代，其中$\epsilon$为设置的允许的前后变化的最大值；</li>
+</ol>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy</span><br><span class="line"><span class="keyword">from</span> operator <span class="keyword">import</span> itemgetter</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">readLineInt</span>():</span></span><br><span class="line">    line = <span class="built_in">input</span>()</span><br><span class="line">    line = line.split()</span><br><span class="line">    length = <span class="built_in">len</span>(line)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(length):</span><br><span class="line">        line[i] = <span class="built_in">int</span>(line[i])</span><br><span class="line">    <span class="keyword">return</span> line</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">isSmallEnough</span>(<span class="params">S, T</span>):</span></span><br><span class="line">    esp = <span class="number">1e-5</span></span><br><span class="line">    length = <span class="built_in">len</span>(S)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(length):</span><br><span class="line">        <span class="keyword">if</span> numpy.<span class="built_in">abs</span>(S[i] - T[i]) &gt; esp:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Print</span>(<span class="params">nv, I</span>):</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;The importance of each page is:&quot;</span>)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(nv):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;%d: %.5f&quot;</span> % (i + <span class="number">1</span>, I[i][<span class="number">0</span>]), end=<span class="string">&quot;\t\n&quot;</span>[i == nv - <span class="number">1</span>])</span><br><span class="line"></span><br><span class="line">    res = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(nv):</span><br><span class="line">        res.append(&#123;<span class="string">&quot;pageNum&quot;</span>:i+<span class="number">1</span>, <span class="string">&quot;pageImportance&quot;</span>:I[i][<span class="number">0</span>]&#125;)</span><br><span class="line">    res = <span class="built_in">sorted</span>(res, key=<span class="keyword">lambda</span> x: x[<span class="string">&quot;pageImportance&quot;</span>])</span><br><span class="line">    res.reverse()</span><br><span class="line"></span><br><span class="line">    <span class="built_in">print</span>()</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;The pages are ranked by importance as follows:&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Rank\tNum&quot;</span>)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(nv):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;%d\t\t%d&quot;</span> %(i+<span class="number">1</span>, res[i][<span class="string">&quot;pageNum&quot;</span>]))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">solve</span>():</span></span><br><span class="line">    line = readLineInt()</span><br><span class="line">    nv = line[<span class="number">0</span>]</span><br><span class="line">    ne = line[<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line">    graph = [[<span class="number">0</span> <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(nv)] <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(nv)]</span><br><span class="line">    inDegree = [<span class="number">0</span> <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(nv + <span class="number">1</span>)]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(ne):</span><br><span class="line">        line = readLineInt()</span><br><span class="line">        u = line[<span class="number">0</span>] - <span class="number">1</span></span><br><span class="line">        v = line[<span class="number">1</span>] - <span class="number">1</span></span><br><span class="line"></span><br><span class="line">        graph[v][u] = <span class="number">1</span></span><br><span class="line"></span><br><span class="line">        inDegree[u] = inDegree[u] + <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    S = numpy.zeros((<span class="number">1</span>, nv, nv))[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27; vertex从0开始标号！！！！ &#x27;&#x27;&#x27;</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(nv):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(nv):</span><br><span class="line">            <span class="keyword">if</span> graph[j][i]:</span><br><span class="line">                S[j][i] = <span class="number">1.0</span> / inDegree[i]</span><br><span class="line"></span><br><span class="line">    J = numpy.ones((<span class="number">1</span>, nv, nv))</span><br><span class="line">    alpha = <span class="number">0.85</span></span><br><span class="line"></span><br><span class="line">    G = S * alpha + J * ((<span class="number">1</span> - alpha) / nv)</span><br><span class="line">    G = G[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">    I = numpy.zeros((<span class="number">1</span>, nv, <span class="number">1</span>))</span><br><span class="line">    I = I[<span class="number">0</span>]</span><br><span class="line">    I[<span class="number">0</span>][<span class="number">0</span>] = <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        I1 = I</span><br><span class="line">        I = numpy.dot(G, I)</span><br><span class="line">        <span class="keyword">if</span>(isSmallEnough(I1, I)):</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">    Print(nv, I)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__==<span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    solve()</span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27; test case 1 &#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">6 12</span></span><br><span class="line"><span class="string">1 2</span></span><br><span class="line"><span class="string">1 3</span></span><br><span class="line"><span class="string">1 4</span></span><br><span class="line"><span class="string">2 3</span></span><br><span class="line"><span class="string">2 4</span></span><br><span class="line"><span class="string">2 6</span></span><br><span class="line"><span class="string">3 4</span></span><br><span class="line"><span class="string">4 3</span></span><br><span class="line"><span class="string">4 6</span></span><br><span class="line"><span class="string">5 6</span></span><br><span class="line"><span class="string">6 2</span></span><br><span class="line"><span class="string">6 4</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27; test case 2 &#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">8 16</span></span><br><span class="line"><span class="string">1 2</span></span><br><span class="line"><span class="string">1 3</span></span><br><span class="line"><span class="string">3 2</span></span><br><span class="line"><span class="string">2 4</span></span><br><span class="line"><span class="string">4 2</span></span><br><span class="line"><span class="string">3 5</span></span><br><span class="line"><span class="string">4 5</span></span><br><span class="line"><span class="string">4 6</span></span><br><span class="line"><span class="string">5 6</span></span><br><span class="line"><span class="string">5 7</span></span><br><span class="line"><span class="string">7 5</span></span><br><span class="line"><span class="string">5 8</span></span><br><span class="line"><span class="string">6 8</span></span><br><span class="line"><span class="string">8 6</span></span><br><span class="line"><span class="string">7 8</span></span><br><span class="line"><span class="string">8 7</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+<h2 id="运行结果"><a href="#运行结果" class="headerlink" title="运行结果"></a>运行结果</h2><h3 id="Test1-input"><a href="#Test1-input" class="headerlink" title="Test1 input"></a>Test1 input</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">6 12</span><br><span class="line">1 2</span><br><span class="line">1 3</span><br><span class="line">1 4</span><br><span class="line">2 3</span><br><span class="line">2 4</span><br><span class="line">2 6</span><br><span class="line">3 4</span><br><span class="line">4 3</span><br><span class="line">4 6</span><br><span class="line">5 6</span><br><span class="line">6 2</span><br><span class="line">6 4</span><br></pre></td></tr></table></figure>
+<h3 id="Test1-output"><a href="#Test1-output" class="headerlink" title="Test1 output"></a>Test1 output</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">The importance of each page is:</span><br><span class="line">1: 0.02500      2: 0.13253      3: 0.22218      4: 0.35894      5: 0.02500      6: 0.23635</span><br><span class="line"></span><br><span class="line">The pages are ranked by importance as follows:</span><br><span class="line">Rank    Num</span><br><span class="line">1               4</span><br><span class="line">2               6</span><br><span class="line">3               3</span><br><span class="line">4               2</span><br><span class="line">5               5</span><br><span class="line">6               1</span><br></pre></td></tr></table></figure>
+<h3 id="Test2-input"><a href="#Test2-input" class="headerlink" title="Test2 input"></a>Test2 input</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">8 16</span><br><span class="line">1 2</span><br><span class="line">1 3</span><br><span class="line">3 2</span><br><span class="line">2 4</span><br><span class="line">4 2</span><br><span class="line">3 5</span><br><span class="line">4 5</span><br><span class="line">4 6</span><br><span class="line">5 6</span><br><span class="line">5 7</span><br><span class="line">7 5</span><br><span class="line">5 8</span><br><span class="line">6 8</span><br><span class="line">8 6</span><br><span class="line">7 8</span><br><span class="line">8 7</span><br></pre></td></tr></table></figure>
+<h3 id="Test2-output"><a href="#Test2-output" class="headerlink" title="Test2 output"></a>Test2 output</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">The importance of each page is:</span><br><span class="line">1: 0.01875      2: 0.05715      3: 0.02672      4: 0.06733      5: 0.12849      6: 0.20568      7: 0.18660      8: 0.30928</span><br><span class="line"></span><br><span class="line">The pages are ranked by importance as follows:</span><br><span class="line">Rank    Num</span><br><span class="line">1               8</span><br><span class="line">2               6</span><br><span class="line">3               7</span><br><span class="line">4               5</span><br><span class="line">5               4</span><br><span class="line">6               2</span><br><span class="line">7               3</span><br><span class="line">8               1</span><br></pre></td></tr></table></figure>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">主页</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%9D%E6%83%B3"><span class="toc-number">1.</span> <span class="toc-text">思想</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A4"><span class="toc-number">2.</span> <span class="toc-text">步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81"><span class="toc-number">3.</span> <span class="toc-text">代码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C%E7%BB%93%E6%9E%9C"><span class="toc-number">4.</span> <span class="toc-text">运行结果</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Test1-input"><span class="toc-number">4.1.</span> <span class="toc-text">Test1 input</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Test1-output"><span class="toc-number">4.2.</span> <span class="toc-text">Test1 output</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Test2-input"><span class="toc-number">4.3.</span> <span class="toc-text">Test2 input</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Test2-output"><span class="toc-number">4.4.</span> <span class="toc-text">Test2 output</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://chantmee.github.io/2021/05/01/pagerank%E7%AE%97%E6%B3%95/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://chantmee.github.io/2021/05/01/pagerank%E7%AE%97%E6%B3%95/&text=pagerank算法"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://chantmee.github.io/2021/05/01/pagerank%E7%AE%97%E6%B3%95/&title=pagerank算法"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://chantmee.github.io/2021/05/01/pagerank%E7%AE%97%E6%B3%95/&is_video=false&description=pagerank算法"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=pagerank算法&body=Check out this article: http://chantmee.github.io/2021/05/01/pagerank%E7%AE%97%E6%B3%95/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://chantmee.github.io/2021/05/01/pagerank%E7%AE%97%E6%B3%95/&title=pagerank算法"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://chantmee.github.io/2021/05/01/pagerank%E7%AE%97%E6%B3%95/&title=pagerank算法"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://chantmee.github.io/2021/05/01/pagerank%E7%AE%97%E6%B3%95/&title=pagerank算法"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://chantmee.github.io/2021/05/01/pagerank%E7%AE%97%E6%B3%95/&title=pagerank算法"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://chantmee.github.io/2021/05/01/pagerank%E7%AE%97%E6%B3%95/&name=pagerank算法&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://chantmee.github.io/2021/05/01/pagerank%E7%AE%97%E6%B3%95/&t=pagerank算法"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<footer id="footer">
+  <div class="visit-num">
+    文章阅读量<span id="busuanzi_value_page_pv"></span>次
+  </div>
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2019-2021
+    Chant Mee
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">主页</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+</body>
+</html>

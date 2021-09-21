@@ -14,10 +14,11 @@
 <meta property="og:description" content="题意：给出一个由n个数组成的数组a，这个数组的元素和为S，要求你找出一个由n个数字组成数组b，这个数组满足：  数组中的每个数可以将他两边的数字整除或者被他两边的数字整除  数组b中每个位置的数字减去数组a中相应位置的数字的绝对值和的二倍小于等于S   输出任意一个满足的数组b 思路：考虑到1可以整除任何数字，那么可以让1作为桥梁，两边可以放置任意数字就可以构造出一个符合第一个要求的数组b，之后也">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-12-28T12:38:05.000Z">
-<meta property="article:modified_time" content="2021-09-20T03:45:10.033Z">
+<meta property="article:modified_time" content="2021-09-20T04:05:06.394Z">
 <meta property="article:author" content="Chant Mee">
 <meta property="article:tag" content="ACM">
 <meta property="article:tag" content="算法">
+<meta property="article:tag" content="构造">
 <meta name="twitter:card" content="summary">
     
     
@@ -62,8 +63,7 @@
 	
 <meta name="generator" content="Hexo 5.4.0"></head>
 
-<body class="max-width mx-auto px3 ltr">
-    
+<body class="max-width mx-auto px3 ltr">    
       <div id="header-post">
   <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
   <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
@@ -161,7 +161,7 @@
       
     <div class="article-tag">
         <i class="fas fa-tag"></i>
-        <a class="tag-link-link" href="/tags/ACM/" rel="tag">ACM</a>, <a class="tag-link-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a>
+        <a class="tag-link-link" href="/tags/ACM/" rel="tag">ACM</a>, <a class="tag-link-link" href="/tags/%E6%9E%84%E9%80%A0/" rel="tag">构造</a>, <a class="tag-link-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a>
     </div>
 
 
@@ -328,6 +328,23 @@
 <!-- Umami Analytics -->
 
 <!-- Disqus Comments -->
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 
 
 </body>

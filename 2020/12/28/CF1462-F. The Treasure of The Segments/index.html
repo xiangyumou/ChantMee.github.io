@@ -14,10 +14,11 @@
 <meta property="og:description" content="题意：给出n个线段组成的集合，第i个线段用 $\{l_i, r_i\}$ 表示线段从坐标轴的点$l_i$横跨到点$r_i$。现在你可以删除其中的一些线段，使得剩下的线段组成的集合中至少存在一个线段满足：这个线段与所有其他线段都相交。现在问你最少需要删除几条边可以得到满足要求的线段集合。 思路：我们枚举每个线段，让这个线段能够与所有其他线段相交，这时候我们只需要算出不和这个边相交的线段的个数。算这个">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-12-28T12:38:02.000Z">
-<meta property="article:modified_time" content="2021-09-20T03:44:32.511Z">
+<meta property="article:modified_time" content="2021-09-20T04:05:25.359Z">
 <meta property="article:author" content="Chant Mee">
 <meta property="article:tag" content="ACM">
 <meta property="article:tag" content="算法">
+<meta property="article:tag" content="二分">
 <meta name="twitter:card" content="summary">
     
     
@@ -62,8 +63,7 @@
 	
 <meta name="generator" content="Hexo 5.4.0"></head>
 
-<body class="max-width mx-auto px3 ltr">
-    
+<body class="max-width mx-auto px3 ltr">    
       <div id="header-post">
   <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
   <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
@@ -161,7 +161,7 @@
       
     <div class="article-tag">
         <i class="fas fa-tag"></i>
-        <a class="tag-link-link" href="/tags/ACM/" rel="tag">ACM</a>, <a class="tag-link-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a>
+        <a class="tag-link-link" href="/tags/ACM/" rel="tag">ACM</a>, <a class="tag-link-link" href="/tags/%E4%BA%8C%E5%88%86/" rel="tag">二分</a>, <a class="tag-link-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a>
     </div>
 
 
@@ -321,6 +321,23 @@
 <!-- Umami Analytics -->
 
 <!-- Disqus Comments -->
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 
 
 </body>

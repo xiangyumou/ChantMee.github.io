@@ -14,10 +14,13 @@
 <meta property="og:description" content="题意：给出两个整数序列$a、b$，他们的长度分别为$n,m$。对于数组$b$中的每个数字，让你求出$gcd(a_1+b_j,a_2+b_j,…,a_n+b_j)$。  思路：本题用到了$gcd$的两个性质：  $gcd(a_1,a_2,…,a_n) &#x3D; gcd(a_1,gcd(a_2,..,a_n))$  $gcd(a_1,a_2,…,a_{n-1},a_n)&#x3D;gcd(a_1,\vert a_2-">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-01-24T11:28:07.000Z">
-<meta property="article:modified_time" content="2021-09-20T03:43:14.575Z">
+<meta property="article:modified_time" content="2021-09-20T04:01:18.449Z">
 <meta property="article:author" content="Chant Mee">
 <meta property="article:tag" content="ACM">
 <meta property="article:tag" content="算法">
+<meta property="article:tag" content="GCD">
+<meta property="article:tag" content="数学">
+<meta property="article:tag" content="数论">
 <meta name="twitter:card" content="summary">
     
     
@@ -62,8 +65,7 @@
 	
 <meta name="generator" content="Hexo 5.4.0"></head>
 
-<body class="max-width mx-auto px3 ltr">
-    
+<body class="max-width mx-auto px3 ltr">    
       <div id="header-post">
   <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
   <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
@@ -161,7 +163,7 @@
       
     <div class="article-tag">
         <i class="fas fa-tag"></i>
-        <a class="tag-link-link" href="/tags/ACM/" rel="tag">ACM</a>, <a class="tag-link-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a>
+        <a class="tag-link-link" href="/tags/ACM/" rel="tag">ACM</a>, <a class="tag-link-link" href="/tags/GCD/" rel="tag">GCD</a>, <a class="tag-link-link" href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag">数学</a>, <a class="tag-link-link" href="/tags/%E6%95%B0%E8%AE%BA/" rel="tag">数论</a>, <a class="tag-link-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a>
     </div>
 
 
@@ -328,6 +330,23 @@
 <!-- Umami Analytics -->
 
 <!-- Disqus Comments -->
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 
 
 </body>

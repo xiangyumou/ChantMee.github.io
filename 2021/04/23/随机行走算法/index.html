@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="Random Walk（随机行走）前言本人对随机行走算法理解并不是非常透彻（甚至可以说是不理解），仅仅根据定义用python将随机行走进行实现出来，因此本文章一定漏洞百出，仅仅只能参考。 该程序是青岛科技大学PCB设计老师布置的作业，如果学弟学妹需要可以将本文写的程序作为参考。 我理解的定义给定一张图，图中包含$nv$个点和$ne$条无向边，给出一个起始点$s$，目的地$t$以及一个随机跳跃概率$">
+<meta property="og:type" content="article">
+<meta property="og:title" content="随机行走算法">
+<meta property="og:url" content="http://chantmee.github.io/2021/04/23/%E9%9A%8F%E6%9C%BA%E8%A1%8C%E8%B5%B0%E7%AE%97%E6%B3%95/index.html">
+<meta property="og:site_name" content="Chant&#39;s Blog">
+<meta property="og:description" content="Random Walk（随机行走）前言本人对随机行走算法理解并不是非常透彻（甚至可以说是不理解），仅仅根据定义用python将随机行走进行实现出来，因此本文章一定漏洞百出，仅仅只能参考。 该程序是青岛科技大学PCB设计老师布置的作业，如果学弟学妹需要可以将本文写的程序作为参考。 我理解的定义给定一张图，图中包含$nv$个点和$ne$条无向边，给出一个起始点$s$，目的地$t$以及一个随机跳跃概率$">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-04-23T00:20:14.000Z">
+<meta property="article:modified_time" content="2021-09-21T04:22:31.451Z">
+<meta property="article:author" content="Chant Mee">
+<meta property="article:tag" content="算法">
+<meta property="article:tag" content="模拟">
+<meta property="article:tag" content="图论">
+<meta property="article:tag" content="概率">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>随机行走算法</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body class="max-width mx-auto px3 ltr">    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" "Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">主页</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇 " href="/2021/04/28/CF1471-B.%20Strange%20List/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇 " href="/2021/04/22/mac%E4%B8%8B%E5%9C%A8vscode%E6%90%AD%E5%BB%BApython%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部 " href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章 " href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://chantmee.github.io/2021/04/23/%E9%9A%8F%E6%9C%BA%E8%A1%8C%E8%B5%B0%E7%AE%97%E6%B3%95/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://chantmee.github.io/2021/04/23/%E9%9A%8F%E6%9C%BA%E8%A1%8C%E8%B5%B0%E7%AE%97%E6%B3%95/&text=随机行走算法"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://chantmee.github.io/2021/04/23/%E9%9A%8F%E6%9C%BA%E8%A1%8C%E8%B5%B0%E7%AE%97%E6%B3%95/&title=随机行走算法"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://chantmee.github.io/2021/04/23/%E9%9A%8F%E6%9C%BA%E8%A1%8C%E8%B5%B0%E7%AE%97%E6%B3%95/&is_video=false&description=随机行走算法"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=随机行走算法&body=Check out this article: http://chantmee.github.io/2021/04/23/%E9%9A%8F%E6%9C%BA%E8%A1%8C%E8%B5%B0%E7%AE%97%E6%B3%95/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://chantmee.github.io/2021/04/23/%E9%9A%8F%E6%9C%BA%E8%A1%8C%E8%B5%B0%E7%AE%97%E6%B3%95/&title=随机行走算法"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://chantmee.github.io/2021/04/23/%E9%9A%8F%E6%9C%BA%E8%A1%8C%E8%B5%B0%E7%AE%97%E6%B3%95/&title=随机行走算法"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://chantmee.github.io/2021/04/23/%E9%9A%8F%E6%9C%BA%E8%A1%8C%E8%B5%B0%E7%AE%97%E6%B3%95/&title=随机行走算法"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://chantmee.github.io/2021/04/23/%E9%9A%8F%E6%9C%BA%E8%A1%8C%E8%B5%B0%E7%AE%97%E6%B3%95/&title=随机行走算法"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://chantmee.github.io/2021/04/23/%E9%9A%8F%E6%9C%BA%E8%A1%8C%E8%B5%B0%E7%AE%97%E6%B3%95/&name=随机行走算法&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://chantmee.github.io/2021/04/23/%E9%9A%8F%E6%9C%BA%E8%A1%8C%E8%B5%B0%E7%AE%97%E6%B3%95/&t=随机行走算法"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Random-Walk%EF%BC%88%E9%9A%8F%E6%9C%BA%E8%A1%8C%E8%B5%B0%EF%BC%89"><span class="toc-number">1.</span> <span class="toc-text">Random Walk（随机行走）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%88%91%E7%90%86%E8%A7%A3%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="toc-number">1.2.</span> <span class="toc-text">我理解的定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%9D%E6%83%B3"><span class="toc-number">1.3.</span> <span class="toc-text">思想</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A4"><span class="toc-number">1.4.</span> <span class="toc-text">步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BC%AA%E4%BB%A3%E7%A0%81"><span class="toc-number">1.5.</span> <span class="toc-text">伪代码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.6.</span> <span class="toc-text">代码实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86"><span class="toc-number">1.6.1.</span> <span class="toc-text">前置知识</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81"><span class="toc-number">1.6.2.</span> <span class="toc-text">代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BE%93%E5%85%A5%E6%A0%BC%E5%BC%8F"><span class="toc-number">1.6.3.</span> <span class="toc-text">输入格式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90"><span class="toc-number">1.7.</span> <span class="toc-text">代码分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86%EF%BC%9A-Graph-%E7%B1%BB"><span class="toc-number">1.7.1.</span> <span class="toc-text">第一部分：$Graph$类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E9%83%A8%E5%88%86%EF%BC%9AIO%EF%BC%88%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%EF%BC%89"><span class="toc-number">1.7.2.</span> <span class="toc-text">第二部分：IO（输入输出）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#input%EF%BC%88%E8%BE%93%E5%85%A5%EF%BC%89"><span class="toc-number">1.7.2.1.</span> <span class="toc-text">input（输入）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E9%83%A8%E5%88%86"><span class="toc-number">1.7.3.</span> <span class="toc-text">第三部分</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E7%94%9F%E6%88%90"><span class="toc-number">1.8.</span> <span class="toc-text">数据生成</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BE%93%E5%85%A5%E6%A0%BC%E5%BC%8F-1"><span class="toc-number">1.8.1.</span> <span class="toc-text">输入格式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%EF%BC%88c-%EF%BC%89"><span class="toc-number">1.8.2.</span> <span class="toc-text">代码（c++）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">1.9.</span> <span class="toc-text">总结</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        随机行走算法
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Chant Mee</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2021-04-23T00:20:14.000Z" itemprop="datePublished">2021-04-23</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/%E5%9B%BE%E8%AE%BA/" rel="tag">图论</a>, <a class="tag-link-link" href="/tags/%E6%A6%82%E7%8E%87/" rel="tag">概率</a>, <a class="tag-link-link" href="/tags/%E6%A8%A1%E6%8B%9F/" rel="tag">模拟</a>, <a class="tag-link-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1 id="Random-Walk（随机行走）"><a href="#Random-Walk（随机行走）" class="headerlink" title="Random Walk（随机行走）"></a>Random Walk（随机行走）</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>本人对随机行走算法理解并不是非常透彻（甚至可以说是不理解），仅仅根据定义用python将随机行走进行实现出来，因此本文章一定漏洞百出，仅仅只能参考。</p>
+<p>该程序是青岛科技大学PCB设计老师布置的作业，如果学弟学妹需要可以将本文写的程序作为参考。</p>
+<h2 id="我理解的定义"><a href="#我理解的定义" class="headerlink" title="我理解的定义"></a>我理解的定义</h2><p>给定一张图，图中包含$nv$个点和$ne$条无向边，给出一个起始点$s$，目的地$t$以及一个随机跳跃概率$p$.</p>
+<p>从点$s$开始行走，这里设点所在的当前位置为$cur$.</p>
+<p>每次行走有$p$的概率行走到图中任意一个点上（包括$cur$），有$1-p$的概率行走到与点$cur$直接相连的任意一个点上。重复上面操作直到找到了目的地$t$，然后把路径打印出来。</p>
+<h2 id="思想"><a href="#思想" class="headerlink" title="思想"></a>思想</h2><p>该算法要实现的是搜索，从起始点<strong>s</strong>开始找到目的地<strong>t</strong>。</p>
+<p>给定一个图，从起点开始走的每一步都让其有一定的概率$\alpha$跳转到图中的任意一个点上，还有$1-\alpha$的概率会行走到任意一个与该点相连的点上。不断的重复上述过程，直到找到目的地中。</p>
+<p>该算法的思想也被应用到了pagerank算法中，pagerank算法中为了解决悬挂点和排他水槽的问题，也使得每个点有一定概率跳转到图中任意一个点中。</p>
+<h2 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h2><ol>
+<li><p>将实际问题抽象为图的形式，并用临接表、邻接矩阵等存图方式将图存储在计算机中；</p>
+</li>
+<li><p>用一个变量记录当前所处的位置（图中点的标号），每次随机一个[0, 1]之间的数，若其小于等于随机跳跃概率$\alpha$则随机一个[1, n]的数字并跳转，否则随机一个$x,x\in S$，其中S为与当前点相连的点的集合；</p>
+</li>
+<li>不断重复第二步并记录路径，直到找到目的地t.</li>
+</ol>
+<h2 id="伪代码"><a href="#伪代码" class="headerlink" title="伪代码"></a>伪代码</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">read()								<span class="comment"># 读取数据</span></span><br><span class="line">cur = s</span><br><span class="line">path = [cur]						<span class="comment"># 记录路径</span></span><br><span class="line"><span class="keyword">while</span> s != t:</span><br><span class="line">  gotP = random()					<span class="comment"># 获得一个0-1.0的数</span></span><br><span class="line">  <span class="keyword">if</span> gotP &lt; p:						<span class="comment"># 行走到图中的任意一个点</span></span><br><span class="line">    cur = getRandomPoint(ALL)</span><br><span class="line">  <span class="keyword">else</span>:								<span class="comment"># 行走到与cur直接相连的点上</span></span><br><span class="line">    edges = getEdges(cur)</span><br><span class="line">    cur = getRadomPoint(edges)</span><br><span class="line">  path.append(cur)</span><br><span class="line">Print(path)</span><br></pre></td></tr></table></figure>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><h3 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h3><p>如果要理解这段代码，你可能需要的一些前置知识有：</p>
+<ol>
+<li>python的基本语法、类的基本操作以及random库的使用</li>
+<li>数据结构：链式前向星</li>
+</ol>
+<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> random</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Graph</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, nv, ne</span>):</span></span><br><span class="line">        self.head = [-<span class="number">1</span> <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(nv + <span class="number">1</span>)]</span><br><span class="line">        self.e = [<span class="number">0</span> <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(ne &lt;&lt; <span class="number">1</span>)]</span><br><span class="line">        self.ne = [<span class="number">0</span> <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(ne &lt;&lt; <span class="number">1</span>)]</span><br><span class="line">        self.tot = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add</span>(<span class="params">self, u, v</span>):</span></span><br><span class="line">        self.e[self.tot] = v</span><br><span class="line">        self.ne[self.tot] = self.head[u]</span><br><span class="line">        self.head[u] = self.tot</span><br><span class="line">        self.tot = self.tot + <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">getEdges</span>(<span class="params">self, u</span>):</span></span><br><span class="line">        res = []</span><br><span class="line">        cur = self.head[u]</span><br><span class="line">        <span class="keyword">while</span> cur != -<span class="number">1</span>:</span><br><span class="line">            res.append(self.e[cur])</span><br><span class="line">            cur = self.ne[cur]</span><br><span class="line">        <span class="keyword">return</span> res</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">readLine</span>():</span></span><br><span class="line">    line = <span class="built_in">input</span>()</span><br><span class="line">    line = line.split()</span><br><span class="line">    size = <span class="built_in">len</span>(line)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(size):</span><br><span class="line">        line[i] = <span class="built_in">int</span>(line[i])</span><br><span class="line">    <span class="keyword">return</span> line</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Print</span>(<span class="params">path</span>):</span></span><br><span class="line">    size = <span class="built_in">len</span>(path)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;We finally find the position %d!&#x27;</span> % (path[size - <span class="number">1</span>]))</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;We took a total of %d steps!&#x27;</span> % (size))</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;The path we took were:&#x27;</span>)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(size):</span><br><span class="line">        <span class="built_in">print</span>(path[i], end=<span class="string">&#x27; \n&#x27;</span>[i == size - <span class="number">1</span>])</span><br><span class="line">    <span class="built_in">print</span>()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">solve</span>():</span></span><br><span class="line">    line = readLine()</span><br><span class="line">    nv = line[<span class="number">0</span>]</span><br><span class="line">    ne = line[<span class="number">1</span>]</span><br><span class="line">    s = line[<span class="number">2</span>]</span><br><span class="line">    t = line[<span class="number">3</span>]</span><br><span class="line">    p = <span class="built_in">float</span>(<span class="built_in">input</span>())</span><br><span class="line"></span><br><span class="line">    graph = Graph(nv, ne)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(ne):</span><br><span class="line">        line = readLine()</span><br><span class="line">        u = line[<span class="number">0</span>]</span><br><span class="line">        v = line[<span class="number">1</span>]</span><br><span class="line">        graph.add(u, v)</span><br><span class="line">        graph.add(v, u)</span><br><span class="line"></span><br><span class="line">    path = [s]</span><br><span class="line">    <span class="keyword">while</span> s != t:</span><br><span class="line">        gotP = random.random()</span><br><span class="line">        <span class="keyword">if</span> gotP &lt; p:</span><br><span class="line">            s = random.randint(<span class="number">0</span>, nv - <span class="number">1</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            edges = graph.getEdges(s)</span><br><span class="line">            size = <span class="built_in">len</span>(edges)</span><br><span class="line">            s = edges[random.randint(<span class="number">0</span>, size - <span class="number">1</span>)]</span><br><span class="line">        path.append(s)</span><br><span class="line"></span><br><span class="line">    Print(path)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__==<span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    solve()</span><br></pre></td></tr></table></figure>
+<h3 id="输入格式"><a href="#输入格式" class="headerlink" title="输入格式"></a>输入格式</h3><p>第一行有$4$个数字$nv$, $ne$, $s$, $t$，分别为点的数量，边的数量，起点，终点.<br>第二行有一个数字$p$, 代表跳转发生概率.<br>从第$3$行到第$ne + 2$行，每行有两个数字$u$, $v$，表示$u$, $v$之间有一条无向边连接.</p>
+<h2 id="代码分析"><a href="#代码分析" class="headerlink" title="代码分析"></a>代码分析</h2><p>代码分为三大部分。</p>
+<h3 id="第一部分：-Graph-类"><a href="#第一部分：-Graph-类" class="headerlink" title="第一部分：$Graph$类"></a>第一部分：$Graph$类</h3><p>$Graph$类内部是用链式前向星实现的。</p>
+<p>支持的操作有：</p>
+<ol>
+<li><p>添加一条有向边（$add$）；</p>
+</li>
+<li><p>获取与点$u$相连的点有哪些（$getEdges$），返回一个列表。</p>
+</li>
+</ol>
+<h3 id="第二部分：IO（输入输出）"><a href="#第二部分：IO（输入输出）" class="headerlink" title="第二部分：IO（输入输出）"></a>第二部分：IO（输入输出）</h3><p>这书粉可以分为两个部分，输入和输出。由于输出部分实现很简单，功能望眼欲穿，因此不做解释。</p>
+<h4 id="input（输入）"><a href="#input（输入）" class="headerlink" title="input（输入）"></a>input（输入）</h4><p>由于python只支持一次性读入一行字符串，因此需要对字符串进行处理才能进行使用。这里通过python自带的函数<strong>split</strong>将读入的字符串以空格作为分割标志对字符串进行分割，分割之后将每个部分类型强制转换成<strong>int</strong>类型，将结果以列表的形式返回。</p>
+<p>这个函数美中不足的是，它只能读取并转换<strong>int</strong>类型的数字，而不能读入<strong>float</strong>类型的数字。这个要修改其实也很简单：</p>
+<p>读入字符串然后分割，对于分割后的每个子字符串用python自带的<strong>find</strong>函数看看这个字符串中是否存在<strong>‘.’</strong>，就是浮点数里面的点，如果存在就强制转换成浮点数，否则转换成整数.</p>
+<p>由于该问题仅仅只需要读入一个浮点数，因此这里不对原程序进行修改了。</p>
+<h3 id="第三部分"><a href="#第三部分" class="headerlink" title="第三部分"></a>第三部分</h3><p>第三部分就是$solve$函数。这部分代码前半部分是输入，很简单。后半部分是$Random Walk$算法的核心代码，完全是按照定义写的，这部分如果定义看懂了应该不会有太大的阅读困难，因此也不做过多的解释。</p>
+<h2 id="数据生成"><a href="#数据生成" class="headerlink" title="数据生成"></a>数据生成</h2><h3 id="输入格式-1"><a href="#输入格式-1" class="headerlink" title="输入格式"></a>输入格式</h3><p>一共一行，有两个数字用空格隔开，分别是点的数量和边的数量</p>
+<h3 id="代码（c-）"><a href="#代码（c-）" class="headerlink" title="代码（c++）"></a>代码（c++）</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;ctime&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;set&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> pii pair<span class="meta-string">&lt;int, int&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> mp(a, b) make_pair(a, b)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> fr first</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> sc second</span></span><br><span class="line"></span><br><span class="line">std::set&lt;std::pii&gt; inUse;</span><br><span class="line"></span><br><span class="line"><span class="function">std::pii <span class="title">getRandomEdge</span><span class="params">(<span class="keyword">int</span> nv)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> u = <span class="built_in">rand</span>() % nv;</span><br><span class="line">    <span class="keyword">int</span> v = <span class="built_in">rand</span>() % nv;</span><br><span class="line">    <span class="keyword">while</span> (u == v) v = <span class="built_in">rand</span>() % nv;</span><br><span class="line">    <span class="keyword">return</span> std::<span class="built_in">mp</span>(u, v);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">solve</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">srand</span>(<span class="built_in">time</span>(<span class="number">0</span>));</span><br><span class="line">    <span class="keyword">int</span> nv, ne;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d %d&quot;</span>, &amp;nv, &amp;ne);</span><br><span class="line">    std::pii ST = <span class="built_in">getRandomEdge</span>(nv);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d %d %d %d\n&quot;</span>, nv, ne, ST.fr, ST.sc);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; ne; i++) &#123;</span><br><span class="line">        std::pii edge = <span class="built_in">getRandomEdge</span>(nv);</span><br><span class="line">        <span class="keyword">while</span> (inUse.<span class="built_in">count</span>(edge)) edge = <span class="built_in">getRandomEdge</span>(nv);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%d %d\n&quot;</span>, edge.fr, edge.sc);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">solve</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>该算法掌握定义之后，在实现上不会有太多的困难。</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">主页</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Random-Walk%EF%BC%88%E9%9A%8F%E6%9C%BA%E8%A1%8C%E8%B5%B0%EF%BC%89"><span class="toc-number">1.</span> <span class="toc-text">Random Walk（随机行走）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%88%91%E7%90%86%E8%A7%A3%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="toc-number">1.2.</span> <span class="toc-text">我理解的定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%9D%E6%83%B3"><span class="toc-number">1.3.</span> <span class="toc-text">思想</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A4"><span class="toc-number">1.4.</span> <span class="toc-text">步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BC%AA%E4%BB%A3%E7%A0%81"><span class="toc-number">1.5.</span> <span class="toc-text">伪代码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.6.</span> <span class="toc-text">代码实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86"><span class="toc-number">1.6.1.</span> <span class="toc-text">前置知识</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81"><span class="toc-number">1.6.2.</span> <span class="toc-text">代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BE%93%E5%85%A5%E6%A0%BC%E5%BC%8F"><span class="toc-number">1.6.3.</span> <span class="toc-text">输入格式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90"><span class="toc-number">1.7.</span> <span class="toc-text">代码分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86%EF%BC%9A-Graph-%E7%B1%BB"><span class="toc-number">1.7.1.</span> <span class="toc-text">第一部分：$Graph$类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E9%83%A8%E5%88%86%EF%BC%9AIO%EF%BC%88%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%EF%BC%89"><span class="toc-number">1.7.2.</span> <span class="toc-text">第二部分：IO（输入输出）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#input%EF%BC%88%E8%BE%93%E5%85%A5%EF%BC%89"><span class="toc-number">1.7.2.1.</span> <span class="toc-text">input（输入）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E9%83%A8%E5%88%86"><span class="toc-number">1.7.3.</span> <span class="toc-text">第三部分</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E7%94%9F%E6%88%90"><span class="toc-number">1.8.</span> <span class="toc-text">数据生成</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BE%93%E5%85%A5%E6%A0%BC%E5%BC%8F-1"><span class="toc-number">1.8.1.</span> <span class="toc-text">输入格式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%EF%BC%88c-%EF%BC%89"><span class="toc-number">1.8.2.</span> <span class="toc-text">代码（c++）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">1.9.</span> <span class="toc-text">总结</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://chantmee.github.io/2021/04/23/%E9%9A%8F%E6%9C%BA%E8%A1%8C%E8%B5%B0%E7%AE%97%E6%B3%95/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://chantmee.github.io/2021/04/23/%E9%9A%8F%E6%9C%BA%E8%A1%8C%E8%B5%B0%E7%AE%97%E6%B3%95/&text=随机行走算法"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://chantmee.github.io/2021/04/23/%E9%9A%8F%E6%9C%BA%E8%A1%8C%E8%B5%B0%E7%AE%97%E6%B3%95/&title=随机行走算法"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://chantmee.github.io/2021/04/23/%E9%9A%8F%E6%9C%BA%E8%A1%8C%E8%B5%B0%E7%AE%97%E6%B3%95/&is_video=false&description=随机行走算法"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=随机行走算法&body=Check out this article: http://chantmee.github.io/2021/04/23/%E9%9A%8F%E6%9C%BA%E8%A1%8C%E8%B5%B0%E7%AE%97%E6%B3%95/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://chantmee.github.io/2021/04/23/%E9%9A%8F%E6%9C%BA%E8%A1%8C%E8%B5%B0%E7%AE%97%E6%B3%95/&title=随机行走算法"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://chantmee.github.io/2021/04/23/%E9%9A%8F%E6%9C%BA%E8%A1%8C%E8%B5%B0%E7%AE%97%E6%B3%95/&title=随机行走算法"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://chantmee.github.io/2021/04/23/%E9%9A%8F%E6%9C%BA%E8%A1%8C%E8%B5%B0%E7%AE%97%E6%B3%95/&title=随机行走算法"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://chantmee.github.io/2021/04/23/%E9%9A%8F%E6%9C%BA%E8%A1%8C%E8%B5%B0%E7%AE%97%E6%B3%95/&title=随机行走算法"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://chantmee.github.io/2021/04/23/%E9%9A%8F%E6%9C%BA%E8%A1%8C%E8%B5%B0%E7%AE%97%E6%B3%95/&name=随机行走算法&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://chantmee.github.io/2021/04/23/%E9%9A%8F%E6%9C%BA%E8%A1%8C%E8%B5%B0%E7%AE%97%E6%B3%95/&t=随机行走算法"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<footer id="footer">
+  <div class="visit-num">
+    文章阅读量<span id="busuanzi_value_page_pv"></span>次
+  </div>
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2019-2021
+    Chant Mee
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">主页</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+</body>
+</html>

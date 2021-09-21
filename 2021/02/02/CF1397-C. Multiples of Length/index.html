@@ -14,7 +14,7 @@
 <meta property="og:description" content="题意：给出一个长度为$n$的序列，让你进行下面操作三次使得整个序列全部变为$0$： ​    在序列中选中一段序列$(l, r)$，之后对这个序列中每个数字都加上一个$(l - r + 1)$的倍数，这个倍数可以是负数，可以是零。  思路：对于前$n-1$个数字中的每个数字$a_i$都加上它自身的$(n-1)$倍，这样每个数字都变为自己原来的$n$倍。在对第$n$个数字加上它自身的$(-1)$倍就">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-02-02T03:39:53.000Z">
-<meta property="article:modified_time" content="2021-09-18T07:27:40.000Z">
+<meta property="article:modified_time" content="2021-09-20T04:03:00.313Z">
 <meta property="article:author" content="Chant Mee">
 <meta property="article:tag" content="ACM">
 <meta property="article:tag" content="算法">
@@ -62,8 +62,7 @@
 	
 <meta name="generator" content="Hexo 5.4.0"></head>
 
-<body class="max-width mx-auto px3 ltr">
-    
+<body class="max-width mx-auto px3 ltr">    
       <div id="header-post">
   <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
   <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
@@ -322,6 +321,23 @@
 <!-- Umami Analytics -->
 
 <!-- Disqus Comments -->
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 
 
 </body>

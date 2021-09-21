@@ -14,7 +14,7 @@
 <meta property="og:description" content="题意给出一个长度为n的数组a，然你找出一个长度为n的数组b，使得： 对于每一个 $i(1&lt;&#x3D;i&lt;&#x3D;n)$ 有$MEX(b_1,b_2,…,b_i)&#x3D;a_i$. $MEX$的定义如下：$MEX(b_1,b_2,…,b_i)$为最小的不在$\{b_1,b_2,…,b_i\}$集合中的非负整数。 题目保证数组$a$是非降序的。  思路首先考虑到，第一个数字，如果$a_1$为$1$那么$b_1">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-02-23T08:34:11.000Z">
-<meta property="article:modified_time" content="2021-09-18T07:27:40.000Z">
+<meta property="article:modified_time" content="2021-09-20T04:03:24.150Z">
 <meta property="article:author" content="Chant Mee">
 <meta property="article:tag" content="ACM">
 <meta property="article:tag" content="算法">
@@ -62,8 +62,7 @@
 	
 <meta name="generator" content="Hexo 5.4.0"></head>
 
-<body class="max-width mx-auto px3 ltr">
-    
+<body class="max-width mx-auto px3 ltr">    
       <div id="header-post">
   <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
   <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
@@ -326,6 +325,23 @@
 <!-- Umami Analytics -->
 
 <!-- Disqus Comments -->
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 
 
 </body>

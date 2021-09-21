@@ -14,10 +14,12 @@
 <meta property="og:description" content="预备小知识： Rook（国际象棋中的车）。 国际象棋中的棋子。每人有2个，他只能直走，不能斜走，除王车易位外不能越子。 —— 来自《百度百科》   题意：题目给出一个$n\times n$的棋盘，棋盘中有$m(m&lt;n)$个车。最一开始任意两个车都不能打到对方（即都不在同一行或同一列）。 每一个回合你可以让一个车水平或垂直移动任意距离，但是要求车移动后不能让其他车可以打到它。现在问你至少多少回">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-01-19T03:22:09.000Z">
-<meta property="article:modified_time" content="2021-09-20T03:46:14.528Z">
+<meta property="article:modified_time" content="2021-09-20T04:04:19.058Z">
 <meta property="article:author" content="Chant Mee">
 <meta property="article:tag" content="ACM">
 <meta property="article:tag" content="算法">
+<meta property="article:tag" content="并查集">
+<meta property="article:tag" content="模拟">
 <meta name="twitter:card" content="summary">
     
     
@@ -62,8 +64,7 @@
 	
 <meta name="generator" content="Hexo 5.4.0"></head>
 
-<body class="max-width mx-auto px3 ltr">
-    
+<body class="max-width mx-auto px3 ltr">    
       <div id="header-post">
   <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
   <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
@@ -161,7 +162,7 @@
       
     <div class="article-tag">
         <i class="fas fa-tag"></i>
-        <a class="tag-link-link" href="/tags/ACM/" rel="tag">ACM</a>, <a class="tag-link-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a>
+        <a class="tag-link-link" href="/tags/ACM/" rel="tag">ACM</a>, <a class="tag-link-link" href="/tags/%E5%B9%B6%E6%9F%A5%E9%9B%86/" rel="tag">并查集</a>, <a class="tag-link-link" href="/tags/%E6%A8%A1%E6%8B%9F/" rel="tag">模拟</a>, <a class="tag-link-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a>
     </div>
 
 
@@ -332,6 +333,23 @@
 <!-- Umami Analytics -->
 
 <!-- Disqus Comments -->
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 
 
 </body>

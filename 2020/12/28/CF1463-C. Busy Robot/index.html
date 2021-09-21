@@ -14,10 +14,11 @@
 <meta property="og:description" content="题意：你有一个机器人，这个机器人在一维坐标轴上移动。你可以给这个机器人下达指令，指令的形式为 $t_i, x_i$ ,意味着机器人在第$t_i$秒的时候获得一条指令，此时这个机器人以$1&#x2F;s$的速度从现在的位置开始向$x_i$移动。若机器人执行当前指令的过程中收到其他命令，那么其他命令会被忽略。 现在问你给出的指令中被成功执行的命令有几条，被成功执行的命令的定义并不是字面意义上的成功之行，题目给出">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-12-28T12:38:05.000Z">
-<meta property="article:modified_time" content="2021-09-20T03:45:34.209Z">
+<meta property="article:modified_time" content="2021-09-20T04:04:50.773Z">
 <meta property="article:author" content="Chant Mee">
 <meta property="article:tag" content="ACM">
 <meta property="article:tag" content="算法">
+<meta property="article:tag" content="模拟">
 <meta name="twitter:card" content="summary">
     
     
@@ -62,8 +63,7 @@
 	
 <meta name="generator" content="Hexo 5.4.0"></head>
 
-<body class="max-width mx-auto px3 ltr">
-    
+<body class="max-width mx-auto px3 ltr">    
       <div id="header-post">
   <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
   <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
@@ -161,7 +161,7 @@
       
     <div class="article-tag">
         <i class="fas fa-tag"></i>
-        <a class="tag-link-link" href="/tags/ACM/" rel="tag">ACM</a>, <a class="tag-link-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a>
+        <a class="tag-link-link" href="/tags/ACM/" rel="tag">ACM</a>, <a class="tag-link-link" href="/tags/%E6%A8%A1%E6%8B%9F/" rel="tag">模拟</a>, <a class="tag-link-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a>
     </div>
 
 
@@ -330,6 +330,23 @@
 <!-- Umami Analytics -->
 
 <!-- Disqus Comments -->
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 
 
 </body>

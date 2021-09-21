@@ -14,10 +14,11 @@
 <meta property="og:description" content="题意：在$x$轴上有$n$个点（从$1$到$n$），每个点都有一个值$0$或$1$，$0$代表这个点不能走，$1$代表这个点可以走。你可以对这$n$个点执行一下两个操作：  花费$x$让一个值为$0$的点变为$1$。  花费$y$删除第一个点，其余的点的$x$轴坐标整体减一。   完成上面操作之后，你从点$p$出发，每次向前跳$k$个单位，即你能跳的位置有$\{p,p+k,p+2k,…\}$ 直到">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-01-24T09:38:21.000Z">
-<meta property="article:modified_time" content="2021-09-20T03:42:53.926Z">
+<meta property="article:modified_time" content="2021-09-20T04:01:39.275Z">
 <meta property="article:author" content="Chant Mee">
 <meta property="article:tag" content="ACM">
 <meta property="article:tag" content="算法">
+<meta property="article:tag" content="DP">
 <meta name="twitter:card" content="summary">
     
     
@@ -62,8 +63,7 @@
 	
 <meta name="generator" content="Hexo 5.4.0"></head>
 
-<body class="max-width mx-auto px3 ltr">
-    
+<body class="max-width mx-auto px3 ltr">    
       <div id="header-post">
   <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
   <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
@@ -161,7 +161,7 @@
       
     <div class="article-tag">
         <i class="fas fa-tag"></i>
-        <a class="tag-link-link" href="/tags/ACM/" rel="tag">ACM</a>, <a class="tag-link-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a>
+        <a class="tag-link-link" href="/tags/ACM/" rel="tag">ACM</a>, <a class="tag-link-link" href="/tags/DP/" rel="tag">DP</a>, <a class="tag-link-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a>
     </div>
 
 
@@ -331,6 +331,23 @@
 <!-- Umami Analytics -->
 
 <!-- Disqus Comments -->
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 
 
 </body>

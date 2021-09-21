@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="前言最近刚刚监督学习线性回归算法，再加上最近青岛天气异常多变，天气预报一直预测的不准确于是想亲自写一个气温预测的功能。 数据获取本次数据是在天气+获取的。由于一开始没有想用特别多的数据来训练模型所以选择手动复制然后写程序预处理这些数据。但是后来发现模型不太准确于是就手动获取了四五年的数据。。 最一开始复制过来的数据大概是这样的： 1234567891011121314151617181920212">
+<meta property="og:type" content="article">
+<meta property="og:title" content="利用线性回归进行气温预测">
+<meta property="og:url" content="http://chantmee.github.io/2021/09/15/%E5%88%A9%E7%94%A8%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E8%BF%9B%E8%A1%8C%E6%B0%94%E6%B8%A9%E9%A2%84%E6%B5%8B/index.html">
+<meta property="og:site_name" content="Chant&#39;s Blog">
+<meta property="og:description" content="前言最近刚刚监督学习线性回归算法，再加上最近青岛天气异常多变，天气预报一直预测的不准确于是想亲自写一个气温预测的功能。 数据获取本次数据是在天气+获取的。由于一开始没有想用特别多的数据来训练模型所以选择手动复制然后写程序预处理这些数据。但是后来发现模型不太准确于是就手动获取了四五年的数据。。 最一开始复制过来的数据大概是这样的： 1234567891011121314151617181920212">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-09-15T10:08:01.000Z">
+<meta property="article:modified_time" content="2021-09-21T04:21:00.838Z">
+<meta property="article:author" content="Chant Mee">
+<meta property="article:tag" content="机器学习,线性回归,线性代数,爬虫,数据处理">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>利用线性回归进行气温预测</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body class="max-width mx-auto px3 ltr">    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" "Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">主页</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇 " href="/2021/09/17/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E5%85%AC%E5%BC%8F%E6%8E%A8%E5%AF%BC/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇 " href="/2021/09/14/%E5%88%A9%E7%94%A8bash-shell%E6%89%B9%E9%87%8F%E6%B7%BB%E5%8A%A0%E5%88%A0%E9%99%A4%E7%94%A8%E6%88%B7/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部 " href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章 " href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://chantmee.github.io/2021/09/15/%E5%88%A9%E7%94%A8%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E8%BF%9B%E8%A1%8C%E6%B0%94%E6%B8%A9%E9%A2%84%E6%B5%8B/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://chantmee.github.io/2021/09/15/%E5%88%A9%E7%94%A8%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E8%BF%9B%E8%A1%8C%E6%B0%94%E6%B8%A9%E9%A2%84%E6%B5%8B/&text=利用线性回归进行气温预测"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://chantmee.github.io/2021/09/15/%E5%88%A9%E7%94%A8%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E8%BF%9B%E8%A1%8C%E6%B0%94%E6%B8%A9%E9%A2%84%E6%B5%8B/&title=利用线性回归进行气温预测"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://chantmee.github.io/2021/09/15/%E5%88%A9%E7%94%A8%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E8%BF%9B%E8%A1%8C%E6%B0%94%E6%B8%A9%E9%A2%84%E6%B5%8B/&is_video=false&description=利用线性回归进行气温预测"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=利用线性回归进行气温预测&body=Check out this article: http://chantmee.github.io/2021/09/15/%E5%88%A9%E7%94%A8%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E8%BF%9B%E8%A1%8C%E6%B0%94%E6%B8%A9%E9%A2%84%E6%B5%8B/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://chantmee.github.io/2021/09/15/%E5%88%A9%E7%94%A8%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E8%BF%9B%E8%A1%8C%E6%B0%94%E6%B8%A9%E9%A2%84%E6%B5%8B/&title=利用线性回归进行气温预测"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://chantmee.github.io/2021/09/15/%E5%88%A9%E7%94%A8%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E8%BF%9B%E8%A1%8C%E6%B0%94%E6%B8%A9%E9%A2%84%E6%B5%8B/&title=利用线性回归进行气温预测"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://chantmee.github.io/2021/09/15/%E5%88%A9%E7%94%A8%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E8%BF%9B%E8%A1%8C%E6%B0%94%E6%B8%A9%E9%A2%84%E6%B5%8B/&title=利用线性回归进行气温预测"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://chantmee.github.io/2021/09/15/%E5%88%A9%E7%94%A8%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E8%BF%9B%E8%A1%8C%E6%B0%94%E6%B8%A9%E9%A2%84%E6%B5%8B/&title=利用线性回归进行气温预测"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://chantmee.github.io/2021/09/15/%E5%88%A9%E7%94%A8%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E8%BF%9B%E8%A1%8C%E6%B0%94%E6%B8%A9%E9%A2%84%E6%B5%8B/&name=利用线性回归进行气温预测&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://chantmee.github.io/2021/09/15/%E5%88%A9%E7%94%A8%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E8%BF%9B%E8%A1%8C%E6%B0%94%E6%B8%A9%E9%A2%84%E6%B5%8B/&t=利用线性回归进行气温预测"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E8%8E%B7%E5%8F%96"><span class="toc-number">2.</span> <span class="toc-text">数据获取</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83"><span class="toc-number">3.</span> <span class="toc-text">模型训练</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%AD%E7%BB%83%E7%BB%93%E6%9E%9C"><span class="toc-number">4.</span> <span class="toc-text">训练结果</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E6%95%B0"><span class="toc-number">5.</span> <span class="toc-text">参数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%88%E6%9E%9C"><span class="toc-number">6.</span> <span class="toc-text">效果</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#TEST1"><span class="toc-number">6.1.</span> <span class="toc-text">TEST1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TEST2"><span class="toc-number">6.2.</span> <span class="toc-text">TEST2</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TEST3"><span class="toc-number">6.3.</span> <span class="toc-text">TEST3</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E8%AE%BA"><span class="toc-number">7.</span> <span class="toc-text">结论</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        利用线性回归进行气温预测
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Chant Mee</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2021-09-15T10:08:01.000Z" itemprop="datePublished">2021-09-15</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92-%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0-%E7%88%AC%E8%99%AB-%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/" rel="tag">机器学习,线性回归,线性代数,爬虫,数据处理</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近刚刚监督学习线性回归算法，再加上最近青岛天气异常多变，天气预报一直预测的不准确于是想亲自写一个气温预测的功能。</p>
+<h2 id="数据获取"><a href="#数据获取" class="headerlink" title="数据获取"></a>数据获取</h2><p>本次数据是在<a target="_blank" rel="noopener" href="http://lishi.tianqi.com/">天气+</a>获取的。由于一开始没有想用特别多的数据来训练模型所以选择手动复制然后写程序预处理这些数据。但是后来发现模型不太准确于是就手动获取了四五年的数据。。</p>
+<p>最一开始复制过来的数据大概是这样的：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">2017-01-01 星期日</span><br><span class="line">3℃</span><br><span class="line">-3℃</span><br><span class="line">霾</span><br><span class="line">东南风 1级</span><br><span class="line">2017-01-02 星期一</span><br><span class="line">6℃</span><br><span class="line">-6℃</span><br><span class="line">晴</span><br><span class="line">西南风 2级</span><br><span class="line">2017-01-03 星期二</span><br><span class="line">5℃</span><br><span class="line">-5℃</span><br><span class="line">霾</span><br><span class="line">南风 1级</span><br><span class="line">2017-01-04 星期三</span><br><span class="line">6℃</span><br><span class="line">-5℃</span><br><span class="line">霾</span><br><span class="line">东风 1级</span><br><span class="line">2017-01-05 星期四</span><br><span class="line">2℃</span><br><span class="line">-4℃</span><br><span class="line">小雪</span><br><span class="line">东北风 1级</span><br></pre></td></tr></table></figure>
+<p>然后用python对数据进行了处理，处理程序为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Data</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self</span>) -&gt; <span class="literal">None</span>:</span></span><br><span class="line">        self.N = <span class="built_in">int</span>(<span class="number">8565</span>/<span class="number">5</span>)</span><br><span class="line">        self.file_name = <span class="string">&#x27;/Users/chant/data.txt&#x27;</span>	<span class="comment"># 原始数据的存储位置</span></span><br><span class="line">        self.Days = []</span><br><span class="line">        self.parameter = [<span class="string">&#x27;year&#x27;</span>, <span class="string">&#x27;month&#x27;</span>, <span class="string">&#x27;day&#x27;</span>, <span class="string">&#x27;sat&#x27;</span>, <span class="string">&#x27;tmax&#x27;</span>, <span class="string">&#x27;tmin&#x27;</span>, <span class="string">&#x27;weather&#x27;</span>, <span class="string">&#x27;cloud&#x27;</span>, <span class="string">&#x27;cloud_grade&#x27;</span>]</span><br><span class="line">        self.Sat = &#123;</span><br><span class="line">            <span class="string">&quot;星期一&quot;</span>: <span class="number">1</span>,</span><br><span class="line">            <span class="string">&quot;星期二&quot;</span>: <span class="number">2</span>,</span><br><span class="line">            <span class="string">&quot;星期三&quot;</span>: <span class="number">3</span>,</span><br><span class="line">            <span class="string">&quot;星期四&quot;</span>: <span class="number">4</span>,</span><br><span class="line">            <span class="string">&quot;星期五&quot;</span>: <span class="number">5</span>,</span><br><span class="line">            <span class="string">&quot;星期六&quot;</span>: <span class="number">6</span>,</span><br><span class="line">            <span class="string">&quot;星期日&quot;</span>: <span class="number">7</span>,</span><br><span class="line">        &#125;</span><br><span class="line">        self.Weather = &#123;</span><br><span class="line">            <span class="string">&#x27;雪&#x27;</span>: <span class="number">0</span>,</span><br><span class="line">            <span class="string">&#x27;雨夹雪&#x27;</span>: <span class="number">1</span>,</span><br><span class="line">            <span class="string">&#x27;阴转雪&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">            <span class="string">&#x27;雪转阴&#x27;</span>: <span class="number">3</span>,</span><br><span class="line">            <span class="string">&#x27;多云转雪&#x27;</span>: <span class="number">4</span>,</span><br><span class="line">            <span class="string">&#x27;雪转晴&#x27;</span>: <span class="number">5</span>,</span><br><span class="line">            <span class="string">&#x27;小雪&#x27;</span>: <span class="number">6</span>,</span><br><span class="line">            <span class="string">&#x27;大雨到暴风雨&#x27;</span>: <span class="number">7</span>,</span><br><span class="line">            <span class="string">&#x27;大雨到暴雨&#x27;</span>: <span class="number">8</span>,</span><br><span class="line">            <span class="string">&#x27;大雨转雨&#x27;</span>: <span class="number">9</span>,</span><br><span class="line">            <span class="string">&#x27;中雨到暴雨&#x27;</span>: <span class="number">10</span>,</span><br><span class="line">            <span class="string">&#x27;小雨到暴风雨&#x27;</span>: <span class="number">11</span>,</span><br><span class="line">            <span class="string">&#x27;小雨到暴雨&#x27;</span>: <span class="number">12</span>,</span><br><span class="line">            <span class="string">&#x27;小雨到大雨转雨&#x27;</span>: <span class="number">13</span>,</span><br><span class="line">            <span class="string">&#x27;中到大雨&#x27;</span>: <span class="number">14</span>,</span><br><span class="line">            <span class="string">&#x27;中雨转雨&#x27;</span>: <span class="number">15</span>,</span><br><span class="line">            <span class="string">&#x27;中雨&#x27;</span>: <span class="number">16</span>,</span><br><span class="line">            <span class="string">&#x27;风转雨&#x27;</span>: <span class="number">17</span>,</span><br><span class="line">            <span class="string">&#x27;雨&#x27;</span>: <span class="number">18</span>,</span><br><span class="line">            <span class="string">&#x27;小雨到大雨&#x27;</span>: <span class="number">19</span>,</span><br><span class="line">            <span class="string">&#x27;小雨到中雨&#x27;</span>: <span class="number">20</span>,</span><br><span class="line">            <span class="string">&#x27;雷阵雨&#x27;</span>: <span class="number">21</span>,</span><br><span class="line">            <span class="string">&#x27;阵雨&#x27;</span>: <span class="number">22</span>,</span><br><span class="line">            <span class="string">&#x27;小到中雨&#x27;</span>: <span class="number">23</span>,</span><br><span class="line">            <span class="string">&#x27;小雨转雨&#x27;</span>: <span class="number">24</span>,</span><br><span class="line">            <span class="string">&#x27;多云转小雨&#x27;</span>: <span class="number">25</span>, </span><br><span class="line">            <span class="string">&#x27;小雨&#x27;</span>: <span class="number">26</span>,</span><br><span class="line">            <span class="string">&#x27;小雨转阴&#x27;</span>: <span class="number">27</span>, </span><br><span class="line">            <span class="string">&#x27;阴到小雨&#x27;</span>: <span class="number">28</span>,</span><br><span class="line">            <span class="string">&#x27;阴转雨&#x27;</span>: <span class="number">29</span>,</span><br><span class="line">            <span class="string">&#x27;晴转雨&#x27;</span>: <span class="number">30</span>,</span><br><span class="line">            <span class="string">&#x27;阴转小雨&#x27;</span>: <span class="number">31</span>,</span><br><span class="line">            <span class="string">&#x27;小雨转多云&#x27;</span>: <span class="number">32</span>,</span><br><span class="line">            <span class="string">&#x27;多云转雨&#x27;</span>: <span class="number">33</span>,</span><br><span class="line">            <span class="string">&#x27;晴转小雨&#x27;</span>: <span class="number">34</span>,</span><br><span class="line">            <span class="string">&#x27;雾&#x27;</span>: <span class="number">35</span>,</span><br><span class="line">            <span class="string">&#x27;多云&#x27;</span>: <span class="number">36</span>, </span><br><span class="line">            <span class="string">&#x27;多云转阴&#x27;</span>: <span class="number">37</span>,</span><br><span class="line">            <span class="string">&#x27;阴&#x27;</span>: <span class="number">38</span>,</span><br><span class="line">            <span class="string">&#x27;阴转多云&#x27;</span>: <span class="number">39</span>,</span><br><span class="line">            <span class="string">&#x27;霾&#x27;</span>: <span class="number">40</span>,</span><br><span class="line">            <span class="string">&#x27;霾转多云&#x27;</span>: <span class="number">41</span>,</span><br><span class="line">            <span class="string">&#x27;霾转晴&#x27;</span>: <span class="number">42</span>,</span><br><span class="line">            <span class="string">&#x27;浮尘&#x27;</span>: <span class="number">43</span>,</span><br><span class="line">            <span class="string">&#x27;多云转晴&#x27;</span>: <span class="number">44</span>,</span><br><span class="line">            <span class="string">&#x27;晴转多云&#x27;</span>: <span class="number">45</span>,</span><br><span class="line">            <span class="string">&#x27;阴转晴&#x27;</span>: <span class="number">46</span>,</span><br><span class="line">            <span class="string">&#x27;晴&#x27;</span>: <span class="number">47</span>,</span><br><span class="line">        &#125;</span><br><span class="line">        self.Cloud = &#123;</span><br><span class="line">            <span class="string">&#x27;西南风&#x27;</span>: <span class="number">0</span>,</span><br><span class="line">            <span class="string">&#x27;西北风&#x27;</span>: <span class="number">1</span>,</span><br><span class="line">            <span class="string">&#x27;东北风&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">            <span class="string">&#x27;西风&#x27;</span>: <span class="number">3</span>,</span><br><span class="line">            <span class="string">&#x27;北风&#x27;</span>: <span class="number">4</span>,</span><br><span class="line">            <span class="string">&#x27;东风&#x27;</span>: <span class="number">5</span>,</span><br><span class="line">            <span class="string">&#x27;南风&#x27;</span>: <span class="number">6</span>,</span><br><span class="line">            <span class="string">&#x27;东南风&#x27;</span>: <span class="number">7</span>,</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_processData</span>(<span class="params">self</span>):</span></span><br><span class="line">        res = []</span><br><span class="line">        <span class="keyword">with</span> <span class="built_in">open</span>(self.file_name, <span class="string">&quot;r&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">            <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(self.N):</span><br><span class="line">                line = []</span><br><span class="line">                <span class="keyword">for</span> __ <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">5</span>):</span><br><span class="line">                    line.append(f.readline())</span><br><span class="line">                res.append(line)</span><br><span class="line">            f.close()</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(res)):</span><br><span class="line">            date = res[i][<span class="number">0</span>]</span><br><span class="line">            date = date.split()</span><br><span class="line">            date[<span class="number">0</span>] = date[<span class="number">0</span>].split(<span class="string">&#x27;-&#x27;</span>)</span><br><span class="line">            Day = &#123;</span><br><span class="line">                <span class="string">&#x27;year&#x27;</span>: date[<span class="number">0</span>][<span class="number">0</span>],</span><br><span class="line">                <span class="string">&#x27;month&#x27;</span>: date[<span class="number">0</span>][<span class="number">1</span>],</span><br><span class="line">                <span class="string">&#x27;day&#x27;</span>: date[<span class="number">0</span>][<span class="number">2</span>],</span><br><span class="line">                <span class="string">&#x27;sat&#x27;</span>: self.Sat[date[<span class="number">1</span>]],</span><br><span class="line">                <span class="string">&#x27;tmax&#x27;</span>: res[i][<span class="number">1</span>].split(<span class="string">&#x27;℃&#x27;</span>)[<span class="number">0</span>],</span><br><span class="line">                <span class="string">&#x27;tmin&#x27;</span>: res[i][<span class="number">2</span>].split(<span class="string">&#x27;℃&#x27;</span>)[<span class="number">0</span>],</span><br><span class="line">                <span class="string">&#x27;weather&#x27;</span>: self.Weather[res[i][<span class="number">3</span>].split()[<span class="number">0</span>]],</span><br><span class="line">                <span class="string">&#x27;cloud&#x27;</span>: self.Cloud[res[i][<span class="number">4</span>].split()[<span class="number">0</span>]],</span><br><span class="line">                <span class="string">&#x27;cloud_grade&#x27;</span>: res[i][<span class="number">4</span>].split()[<span class="number">1</span>].split(<span class="string">&#x27;级&#x27;</span>)[<span class="number">0</span>],</span><br><span class="line">            &#125;</span><br><span class="line">            self.Days.append(Day)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_getData</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;train_data.txt&#x27;</span>, <span class="string">&quot;w&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">            <span class="keyword">for</span> day <span class="keyword">in</span> self.Days:</span><br><span class="line">                line = []</span><br><span class="line">                <span class="keyword">for</span> i <span class="keyword">in</span> self.parameter:</span><br><span class="line">                    line.append(<span class="built_in">str</span>(day[i]))</span><br><span class="line">                tmax = <span class="built_in">int</span>(day[<span class="string">&#x27;tmax&#x27;</span>])</span><br><span class="line">                tmin = <span class="built_in">int</span>(day[<span class="string">&#x27;tmin&#x27;</span>])</span><br><span class="line">                ave_t = <span class="built_in">str</span>(<span class="built_in">int</span>((tmax + tmin) / <span class="number">2</span>))</span><br><span class="line">                line.append(ave_t)</span><br><span class="line">                f.write(<span class="string">&#x27; &#x27;</span>.join(line) + <span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line">            f.close()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">read</span>(<span class="params">self</span>):</span></span><br><span class="line">        self._processData()</span><br><span class="line">        self._getData()</span><br><span class="line"></span><br><span class="line">data = Data()</span><br><span class="line">data.read()</span><br></pre></td></tr></table></figure>
+<p>处理之后的数据的形式为：（以上面提到的数据为例）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">2017 01 01 7 3 -3 40 7 1 0</span><br><span class="line">2017 01 02 1 6 -6 47 0 2 0</span><br><span class="line">2017 01 03 2 5 -5 40 6 1 0</span><br><span class="line">2017 01 04 3 6 -5 40 5 1 0</span><br><span class="line">2017 01 05 4 2 -4 6 2 1 -1</span><br></pre></td></tr></table></figure>
+<h2 id="模型训练"><a href="#模型训练" class="headerlink" title="模型训练"></a>模型训练</h2><p>采用线性回归模型，对之前的模型进行了抽象使得它能够适应不同的训练对象。</p>
+<p>代码中N为训练集中有多少组数据，M为用几组数据作为一个大组数据。这里解释一下，这次是采取用连续的M天的天气数据来预测第M+1天的气温，你可以认为我是将每M组数据看成一组数据，然后用这样一个个大的数据来训练模型。正常情况下如果要用这个程序训练其他模型，那么一般取M=1即可。</p>
+<p>无论之后要训练什么线性回归模型都可以仅仅改变这两个变量，然后遵循数据输入格式就可以训练得到所要模型。</p>
+<p>数据的输入格式就像上面提到的那样，一组数据占一行，属性与属性之间用空格隔开即可。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">N, M = <span class="number">1713</span>, <span class="number">7</span></span><br><span class="line">X, Y = [], []</span><br><span class="line">data = []</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getData</span>():</span></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;train_data.txt&#x27;</span>, <span class="string">&#x27;r&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(N):</span><br><span class="line">            day = f.readline()</span><br><span class="line">            day = day.split()</span><br><span class="line">            x = []</span><br><span class="line">            <span class="keyword">if</span> j &gt;= M:</span><br><span class="line">                Y.append([<span class="built_in">int</span>(day[-<span class="number">1</span>])])</span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="built_in">len</span>(day), <span class="number">1</span>):</span><br><span class="line">                x.append(<span class="built_in">int</span>(day[i]))</span><br><span class="line">            data.append(x)</span><br><span class="line">        f.close()</span><br><span class="line"></span><br><span class="line">getData()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(N - M):</span><br><span class="line">    x = []</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(i, i + M):</span><br><span class="line">        <span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(data[i])):</span><br><span class="line">            x.append(data[j][k])</span><br><span class="line">    X.append(x)</span><br><span class="line"></span><br><span class="line">Y = np.array(Y)</span><br><span class="line">X = np.array(X)</span><br><span class="line"></span><br><span class="line">R = np.dot(X.T, X)</span><br><span class="line">R = np.linalg.inv(R)</span><br><span class="line">X = np.dot(R, X.T)</span><br><span class="line">X = np.dot(X, Y)</span><br><span class="line"><span class="built_in">print</span>(X)</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    x = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(M):</span><br><span class="line">        line = <span class="built_in">input</span>()</span><br><span class="line">        line = line.split()</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="built_in">len</span>(line)):</span><br><span class="line">            x.append(<span class="built_in">int</span>(line[j]))</span><br><span class="line">    x = np.array([x])</span><br><span class="line">    <span class="built_in">print</span>(np.dot(x, X))</span><br></pre></td></tr></table></figure>
+<h2 id="训练结果"><a href="#训练结果" class="headerlink" title="训练结果"></a>训练结果</h2><h2 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[[-0.00960554][-0.00098373][-0.03482452][-0.09874913][-0.01522894][-0.00690102]</span><br><span class="line"> [-0.00360833][ 0.18596758][ 0.2011527 ][-0.13787361][-0.03879721][-0.04515376]</span><br><span class="line"> [-0.29584184][-0.27286385][-0.00626221][ 0.03855616][ 0.07607454][ 0.68998697]</span><br><span class="line"> [-0.03383131][ 0.02315778][ 0.03845914][-0.2146056 ][-0.18112698][ 0.00590247]</span><br><span class="line"> [ 0.0142927 ][ 0.05891823][ 0.44073106][ 0.22455274][ 0.02297105][-0.08009145]</span><br><span class="line"> [-0.04295759][ 0.02611487][-0.0213408 ][ 0.00678582][ 0.33901778][-0.002793  ]</span><br><span class="line"> [-0.14366115][-0.00638387][ 0.01944473][ 0.05172225][ 0.04167949][-0.01063384]</span><br><span class="line"> [ 0.01878481][ 0.11036187][ 0.1236436 ][-0.30618289][-0.03072733][-0.04739046]</span><br><span class="line"> [ 0.26877076][ 0.32194008][ 0.01257415][ 0.03803252][ 0.04066905][-0.45336595]</span><br><span class="line"> [ 0.32240357][ 0.02578947][ 0.01805024][ 0.18960214][-0.21082523][ 0.0194945 ]</span><br><span class="line"> [-0.01308654][-0.49200897][ 0.41322758]]</span><br></pre></td></tr></table></figure>
+<h2 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h2><p>这里采用的测试集为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">2021 09 01 3 29 18 21 6 2 23</span><br><span class="line">2021 09 02 4 29 18 15 5 1 23</span><br><span class="line">2021 09 03 5 30 22 13 6 1 26</span><br><span class="line">2021 09 04 6 23 20 8 5 1 21</span><br><span class="line">2021 09 05 7 24 20 6 4 1 22</span><br><span class="line">2021 09 06 1 23 14 21 2 1 18</span><br><span class="line">2021 09 07 2 27 17 21 5 2 22</span><br><span class="line">2021 09 08 3 29 19 13 1 2 24</span><br><span class="line">2021 09 09 4 26 18 15 2 1 22</span><br><span class="line">2021 09 10 5 29 19 21 0 2 24</span><br></pre></td></tr></table></figure>
+<h3 id="TEST1"><a href="#TEST1" class="headerlink" title="TEST1"></a>TEST1</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">2021 09 01 3 29 18 21 6 2 23</span><br><span class="line">2021 09 02 4 29 18 15 5 1 23</span><br><span class="line">2021 09 03 5 30 22 13 6 1 26</span><br><span class="line">2021 09 04 6 23 20 8 5 1 21</span><br><span class="line">2021 09 05 7 24 20 6 4 1 22</span><br><span class="line">2021 09 06 1 23 14 21 2 1 18</span><br><span class="line">2021 09 07 2 27 17 21 5 2 22</span><br><span class="line">[[21.8357464]]</span><br></pre></td></tr></table></figure>
+<p>真实值为24，预测值为22.</p>
+<h3 id="TEST2"><a href="#TEST2" class="headerlink" title="TEST2"></a>TEST2</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">2021 09 02 4 29 18 15 5 1 23</span><br><span class="line">2021 09 03 5 30 22 13 6 1 26</span><br><span class="line">2021 09 04 6 23 20 8 5 1 21</span><br><span class="line">2021 09 05 7 24 20 6 4 1 22</span><br><span class="line">2021 09 06 1 23 14 21 2 1 18</span><br><span class="line">2021 09 07 2 27 17 21 5 2 22</span><br><span class="line">2021 09 08 3 29 19 13 1 2 24</span><br><span class="line">[[21.83227695]]</span><br></pre></td></tr></table></figure>
+<p>真实值为22，预测值为22.</p>
+<h3 id="TEST3"><a href="#TEST3" class="headerlink" title="TEST3"></a>TEST3</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">2021 09 03 5 30 22 13 6 1 26</span><br><span class="line">2021 09 04 6 23 20 8 5 1 21</span><br><span class="line">2021 09 05 7 24 20 6 4 1 22</span><br><span class="line">2021 09 06 1 23 14 21 2 1 18</span><br><span class="line">2021 09 07 2 27 17 21 5 2 22</span><br><span class="line">2021 09 08 3 29 19 13 1 2 24</span><br><span class="line">2021 09 09 4 26 18 15 2 1 22</span><br><span class="line">[[21.98230886]]</span><br></pre></td></tr></table></figure>
+<p>真实值24，预测值为22.</p>
+<hr>
+<p>现在感觉预测结果还不错，于是我去训练集中找了一个温差比较大的数据：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">2017 04 08 6 19 7 38 3 4 13</span><br><span class="line">2017 04 09 7 19 8 36 0 4 13</span><br><span class="line">2017 04 10 1 20 10 36 0 5 15</span><br><span class="line">2017 04 11 2 22 7 47 4 3 14</span><br><span class="line">2017 04 12 3 25 9 47 4 3 17</span><br><span class="line">2017 04 13 4 21 8 38 3 3 14</span><br><span class="line">2017 04 14 5 26 11 36 3 4 18</span><br></pre></td></tr></table></figure>
+<p>模型的预测结果为16，但是真实值为7.    :(</p>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>模型在温差不大的情况下预测结果尚能接受，但是当温差比较大的时候预测值与真实值的结果相差极大。</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">主页</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E8%8E%B7%E5%8F%96"><span class="toc-number">2.</span> <span class="toc-text">数据获取</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83"><span class="toc-number">3.</span> <span class="toc-text">模型训练</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%AD%E7%BB%83%E7%BB%93%E6%9E%9C"><span class="toc-number">4.</span> <span class="toc-text">训练结果</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E6%95%B0"><span class="toc-number">5.</span> <span class="toc-text">参数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%88%E6%9E%9C"><span class="toc-number">6.</span> <span class="toc-text">效果</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#TEST1"><span class="toc-number">6.1.</span> <span class="toc-text">TEST1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TEST2"><span class="toc-number">6.2.</span> <span class="toc-text">TEST2</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TEST3"><span class="toc-number">6.3.</span> <span class="toc-text">TEST3</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E8%AE%BA"><span class="toc-number">7.</span> <span class="toc-text">结论</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://chantmee.github.io/2021/09/15/%E5%88%A9%E7%94%A8%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E8%BF%9B%E8%A1%8C%E6%B0%94%E6%B8%A9%E9%A2%84%E6%B5%8B/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://chantmee.github.io/2021/09/15/%E5%88%A9%E7%94%A8%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E8%BF%9B%E8%A1%8C%E6%B0%94%E6%B8%A9%E9%A2%84%E6%B5%8B/&text=利用线性回归进行气温预测"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://chantmee.github.io/2021/09/15/%E5%88%A9%E7%94%A8%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E8%BF%9B%E8%A1%8C%E6%B0%94%E6%B8%A9%E9%A2%84%E6%B5%8B/&title=利用线性回归进行气温预测"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://chantmee.github.io/2021/09/15/%E5%88%A9%E7%94%A8%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E8%BF%9B%E8%A1%8C%E6%B0%94%E6%B8%A9%E9%A2%84%E6%B5%8B/&is_video=false&description=利用线性回归进行气温预测"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=利用线性回归进行气温预测&body=Check out this article: http://chantmee.github.io/2021/09/15/%E5%88%A9%E7%94%A8%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E8%BF%9B%E8%A1%8C%E6%B0%94%E6%B8%A9%E9%A2%84%E6%B5%8B/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://chantmee.github.io/2021/09/15/%E5%88%A9%E7%94%A8%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E8%BF%9B%E8%A1%8C%E6%B0%94%E6%B8%A9%E9%A2%84%E6%B5%8B/&title=利用线性回归进行气温预测"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://chantmee.github.io/2021/09/15/%E5%88%A9%E7%94%A8%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E8%BF%9B%E8%A1%8C%E6%B0%94%E6%B8%A9%E9%A2%84%E6%B5%8B/&title=利用线性回归进行气温预测"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://chantmee.github.io/2021/09/15/%E5%88%A9%E7%94%A8%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E8%BF%9B%E8%A1%8C%E6%B0%94%E6%B8%A9%E9%A2%84%E6%B5%8B/&title=利用线性回归进行气温预测"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://chantmee.github.io/2021/09/15/%E5%88%A9%E7%94%A8%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E8%BF%9B%E8%A1%8C%E6%B0%94%E6%B8%A9%E9%A2%84%E6%B5%8B/&title=利用线性回归进行气温预测"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://chantmee.github.io/2021/09/15/%E5%88%A9%E7%94%A8%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E8%BF%9B%E8%A1%8C%E6%B0%94%E6%B8%A9%E9%A2%84%E6%B5%8B/&name=利用线性回归进行气温预测&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://chantmee.github.io/2021/09/15/%E5%88%A9%E7%94%A8%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E8%BF%9B%E8%A1%8C%E6%B0%94%E6%B8%A9%E9%A2%84%E6%B5%8B/&t=利用线性回归进行气温预测"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<footer id="footer">
+  <div class="visit-num">
+    文章阅读量<span id="busuanzi_value_page_pv"></span>次
+  </div>
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2019-2021
+    Chant Mee
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">主页</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/categories/">分类</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+</body>
+</html>
