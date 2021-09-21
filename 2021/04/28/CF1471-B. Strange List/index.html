@@ -14,7 +14,7 @@
 <meta property="og:description" content="题意：给定一个由$n$个数字组成的数组以及一个$x$。现在从前往后遍历数组，若当前遍历的数字$a[i]$可以被$x$整除，那么就在数组的最后加上$x$个数字$\frac {a[i]}x$；若当前遍历的数字不能被$x$整除，那么就停止遍历。 问题是当遍历完这个数组之后，数组中所有数字的总和$\sum_{i&#x3D;1}^na[i]$等于多少。 思路：本题一开始是想通过模拟整个过程来计算结果的，当时很不幸在测">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-04-28T02:55:04.000Z">
-<meta property="article:modified_time" content="2021-09-20T03:48:19.485Z">
+<meta property="article:modified_time" content="2021-09-21T05:51:14.136Z">
 <meta property="article:author" content="Chant Mee">
 <meta property="article:tag" content="ACM">
 <meta property="article:tag" content="算法">
@@ -62,7 +62,8 @@
 	
 <meta name="generator" content="Hexo 5.4.0"></head>
 
-<body class="max-width mx-auto px3 ltr">    
+<body class="max-width mx-auto px3 ltr">
+    
       <div id="header-post">
   <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
   <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
@@ -172,7 +173,7 @@
     <h2 id="题意："><a href="#题意：" class="headerlink" title="题意："></a>题意：</h2><p>给定一个由$n$个数字组成的数组以及一个$x$。现在从前往后遍历数组，若当前遍历的数字$a[i]$可以被$x$整除，那么就在数组的最后加上$x$个数字$\frac {a[i]}x$；若当前遍历的数字不能被$x$整除，那么就停止遍历。</p>
 <p>问题是当遍历完这个数组之后，数组中所有数字的总和$\sum_{i=1}^na[i]$等于多少。</p>
 <h2 id="思路："><a href="#思路：" class="headerlink" title="思路："></a>思路：</h2><p>本题一开始是想通过模拟整个过程来计算结果的，当时很不幸在测试<code>test5</code>的时候MLE了，所以这题出题人本意肯定是让找出规律。</p>
-<p>首先要想明白的明白的是，假设数字$a[i]$可以被$x$整除，那么整个数组所有数字的总和就会被加上$\frac{a[i]}x <em> x$也就是$a[i]$这么多；对于被加到数组后面的$\frac{a[i]}x$,如果有一个$\frac{a[i]}x$可以被再次遍历到，那么其他所有的$\frac{a[i]}x$也都可以遍历到（原因很明显，他们是并排放进去的），若$\frac{a[i]}x$还可以被$x$整除，那么对于每个$\frac{a[i]}x$都会在数组最后加上$x$个$\frac{\frac{a[i]}x}x$，那么一个$x$个$\frac{a[i]}x$，所以数组所有数字总和一共加上了$x</em>x*\frac{\frac{a[i]}x}x$这么多，约分一下还是$a[i]$这么多。若继续下去会发现，每次都是加上了$a[i]$这么多。</p>
+<p>首先要想明白的明白的是，假设数字$a[i]$可以被$x$整除，那么整个数组所有数字的总和就会被加上$\frac{a[i]}x\times x$也就是$a[i]$这么多；对于被加到数组后面的$\frac{a[i]}x$,如果有一个$\frac{a[i]}x$可以被再次遍历到，那么其他所有的$\frac{a[i]}x$也都可以遍历到（原因很明显，他们是并排放进去的），若$\frac{a[i]}x$还可以被$x$整除，那么对于每个$\frac{a[i]}x$都会在数组最后加上$x$个$\frac{\frac{a[i]}x}x$，那么一个$x$个$\frac{a[i]}x$，所以数组所有数字总和一共加上了$x<em>x</em>\frac{\frac{a[i]}x}x$这么多，约分一下还是$a[i]$这么多。若继续下去会发现，每次都是加上了$a[i]$这么多。</p>
 <p>现在假设这$n$个数字，每个数字能被$x$除的次数为$b[i]$，那么在不考虑其他限制条件的情况下，每个数字能够对数组数字总和的额外贡献最多可以是$a[i]*b[i]$（根据上面的结论，一个数字被整除一次就可以多贡献$a[i]$）。</p>
 <p>但是实际上每个数字并不是都能贡献$b[i]$这么多次，原因在于：如果其中一个数字的$b[i]$太小了，比如特别极端的，$b[i]=1$的话，那么对于其他任何数字$a[j]$他们最多只能贡献两次，第一次是$a[j]$的时候，一次是$\frac{a[j]}x$的时候（这一次不一定能够遍历到，需要满足$j&lt;i$，这里的$i$是所有的最小的$b[i]$中最小的$i$），因为当数组遍历到$\frac{a[i]}x$的时候，这个数字不能再被$x$整除，数组的遍历就会结束，那么对于后面的数字虽然$b[j]$可能会很大，但是数组不能够遍历到那里了，也就不会再有贡献了。</p>
 <p>所以要取得所有数字中$b[i]$的最小值，这里设最小值为$b_{min}$，这里的$min$为出现最早的$min$，即若$b[i]$的最小值为$1$，有$b[2]=1, b[3]=1$，那么就取$min=2$，原因就是上面说到的，要求满足$j&lt;i$，$i$是所有的最小的$b[i]$中最小的$i$。</p>
@@ -325,23 +326,6 @@
 <!-- Umami Analytics -->
 
 <!-- Disqus Comments -->
-
-
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-            processEscapes: true
-        }
-    });
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax();
-        for (var i = 0; i < all.length; ++i)
-            all[i].SourceElement().parentNode.className += ' has-jax';
-    });
-</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 
 
 </body>
